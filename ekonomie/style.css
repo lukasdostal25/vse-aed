@@ -352,3 +352,7 @@ dl.glossary dd { margin: .2em 0 0; }
 .slide-excel .tag { background: #1d6f42; color: #fff; }
 .slide-html table { font-size: 13px; }
 .slide-html .formula { font-family: ui-monospace, Menlo, Consolas, monospace; background: var(--surface-2); padding: 6px 8px; border-radius: 6px; display: block; overflow-x: auto; white-space: pre; margin: .4em 0; }
+.slide-text h4 { margin: 0 0 .4em; font-size: 1.02em; }
+.slide-en summary { cursor: pointer; color: var(--ink-2); font-size: 13px; margin-top: 8px; }
+.slide-html .step, .slide-text .step { border-left: 2px solid var(--extra-line); padding-left: 10px; margin: .4em 0 .7em; }
+.slide-text .formula, .slide-html .formula { font-family: ui-monospace, Menlo, Consolas, monospace; background: var(--surface-2); padding: 6px 8px; border-radius: 6px; overflow-x: auto; }

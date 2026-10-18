@@ -1,1 +1,14 @@
-{"locked": true, "lec": [], "sem": [], "hw": []}
+{
+ "locked": true,
+ "lec": [
+  {
+   "id": "l01",
+   "title": "Prosperity, inequality, and planetary limits",
+   "label": "Přednáška 1",
+   "n": 59,
+   "extra": 7
+  }
+ ],
+ "sem": [],
+ "hw": []
+}

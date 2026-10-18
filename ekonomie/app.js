@@ -727,14 +727,20 @@ async function slideImg(d, src) {
   return (blobCache[src] = URL.createObjectURL(new Blob([pt], { type: src.endsWith('.png') ? 'image/png' : 'image/webp' })));
 }
 function slideHtml(sl, i, lang) {
-  const text = (lang === 'cs' && sl.cs) ? sl.cs : sl.en;
-  const tag = { orig: '', extra: '★ Navíc – není z originálu', excel: 'Excel', task: '' }[sl.k] || '';
-  const num = sl.k === 'orig' || sl.k === 'task' ? `<span class="slide-no">${sl.no || i + 1}</span>` : '';
+  const cs = lang === 'cs' && sl.cs;
+  const tag = { extra: '★ Navíc – není z originálu', excel: 'Excel' }[sl.k] || '';
+  const num = sl.k === 'orig' ? `<span class="slide-no">${sl.no || i + 1}</span>` : '';
+  const title = sl.k === 'orig' ? (cs ? sl.title_cs : sl.title) : sl.title;
+  let text = '';
+  if (sl.k === 'orig') {
+    if (cs) text = `<div class="slide-text">${sl.title_cs ? `<h4>${sl.title_cs}</h4>` : ''}${sl.cs}</div>`;
+    else if (sl.en) text = `<details class="slide-en"><summary>Text slidu</summary><div class="slide-text">${sl.en}</div></details>`;
+  }
   return `<section class="slide slide-${sl.k}" data-t="${i}">
-    <div class="slide-head">${num}${tag ? `<span class="tag">${tag}</span>` : ''}${sl.title ? `<b>${(lang === 'cs' && sl.title_cs) || sl.title}</b>` : ''}</div>
-    ${sl.img ? `<div class="slide-img"><img data-src="${esc(sl.img)}" alt="Slide ${sl.no || i + 1}"></div>` : ''}
-    ${text ? `<div class="slide-text">${text}</div>` : ''}
-    ${sl.html ? `<div class="slide-html">${(lang === 'cs' && sl.html_cs) || sl.html}</div>` : ''}
+    <div class="slide-head">${num}${tag ? `<span class="tag">${tag}</span>` : ''}${title && sl.k !== 'orig' ? `<b>${title}</b>` : ''}</div>
+    ${sl.img ? `<div class="slide-img"><img data-src="${esc(sl.img)}" alt="${esc(sl.title || 'Slide ' + (sl.no || i + 1))}"></div>` : ''}
+    ${text}
+    ${sl.html ? `<div class="slide-html">${sl.html}</div>` : ''}
   </section>`;
 }
 async function renderDeck(id, opts = {}) {
