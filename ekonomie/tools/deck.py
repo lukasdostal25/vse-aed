@@ -134,6 +134,8 @@ def build(did, kind, title, sdir, stext, src, app, label=None, title_cs=None, in
     os.makedirs(outdir, exist_ok=True)
     imgs = sorted(f for f in os.listdir(sdir) if f.endswith('.png')) if sdir != '-' else [None] * len(pages)
     slides = []
+    hp = os.path.join(outdir, 'hashes.json')  # sha256 of the source PNGs, so unchanged slides are not re-encrypted
+    hashes = json.load(open(hp)) if os.path.exists(hp) else {}
     def add_extras(n):
         for b in extras.get(n, []):
             body = '\n'.join(b['body']).strip()
@@ -141,6 +143,15 @@ def build(did, kind, title, sdir, stext, src, app, label=None, title_cs=None, in
     add_extras(0)
     for i, f in enumerate(imgs, 1):
         if f:
+            import hashlib
+            h = hashlib.sha256(open(os.path.join(sdir, f), 'rb').read()).hexdigest()
+            binp = os.path.join(outdir, '%02d.bin' % i)
+            if hashes.get(f) == h and os.path.exists(binp):
+                f_done = True
+            else:
+                f_done = False
+                hashes[f] = h
+        if f and not f_done:
             im = Image.open(os.path.join(sdir, f)).convert('RGB')
             buf = io.BytesIO(); im.save(buf, 'WEBP', quality=78, method=6)
             iv, ct = enc(key, buf.getvalue())
@@ -154,6 +165,8 @@ def build(did, kind, title, sdir, stext, src, app, label=None, title_cs=None, in
             sl['title_cs'] = ct_t; sl['cs'] = ct_h
         slides.append(sl)
         add_extras(i)
+    if sdir != '-':
+        json.dump(hashes, open(hp, 'w'), indent=0)
     deck = {'id': did, 'title': title, 'title_cs': title_cs, 'intro': intro, 'enc': True, 'slides': slides}
     iv, ct = enc(key, json.dumps(deck, ensure_ascii=False).encode())
     json.dump({'iv': base64.b64encode(iv).decode(), 'ct': base64.b64encode(ct).decode()},
