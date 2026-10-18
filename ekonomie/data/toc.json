@@ -561,7 +561,7 @@
 {
 "unit": 9,
 "title": "Unit 9 Lenders and borrowers and differences in wealth",
-"extra": false,
+"extra": true,
 "sections": [
 {
 "id": "09-lenders-borrowers-01-chambar-moneylenders",
@@ -628,7 +628,7 @@
 {
 "unit": 10,
 "title": "Unit 10 Market successes and failures: The societal effects of private decisions",
-"extra": false,
+"extra": true,
 "sections": [
 {
 "id": "10-market-successes-failures-01-bananas-fish-cancer",
