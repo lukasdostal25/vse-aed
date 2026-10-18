@@ -705,6 +705,7 @@ async function renderDeckList(kind) {
   }).join('');
   $('#main').innerHTML = `<div class="home"><h1>${K.name}</h1><p class="lead">${K.hint}</p>
     ${items || `<div class="extra"><span class="tag">Připravuje se</span><p>Sem přijdou ${K.name.toLowerCase()}, jakmile nahraješ podklady.</p></div>`}
+    ${kind === 'hw' && p.hw_note ? `<p class="fine">${esc(p.hw_note)}</p>` : ''}
     ${p.locked ? '<p class="fine">Materiály z VŠE jsou autorské dílo vyučujících, proto jsou zašifrované a otevřou se jen s tvým heslem.</p>' : ''}</div>`;
   window.scrollTo(0, 0); setProgress();
 }
@@ -734,6 +735,7 @@ function slideHtml(sl, i, lang) {
   let text = '';
   if (sl.k === 'orig') {
     if (cs) text = `<div class="slide-text">${sl.title_cs ? `<h4>${sl.title_cs}</h4>` : ''}${sl.cs}</div>`;
+    else if (sl.en && !sl.img) text = `<div class="slide-text">${sl.title ? `<h4>${sl.title}</h4>` : ''}${sl.en}</div>`;
     else if (sl.en) text = `<details class="slide-en"><summary>Text slidu</summary><div class="slide-text">${sl.en}</div></details>`;
   }
   return `<section class="slide slide-${sl.k}" data-t="${i}">

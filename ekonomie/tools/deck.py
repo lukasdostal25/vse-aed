@@ -116,6 +116,11 @@ def build(did, kind, title, sdir, stext, src, app, label=None, title_cs=None, in
     key = key_from(app)
     pages = split_pages(stext)
     blocks = parse_src(src) if os.path.exists(src) else []
+    pj = src.replace('.cs.txt', '.parts.json')
+    if os.path.exists(pj):
+        parts = json.load(open(pj, encoding='utf-8'))
+        for b in blocks:
+            b['body'] = [re.sub(r'\{\{(\w+)\}\}', lambda m: parts[m.group(1)], l) for l in b['body']]
     cs = {int(b['h'].split()[0]): '\n'.join(b['body']) for b in blocks if b['k'] == 'orig'}
     extras = {}
     last = 0
@@ -127,7 +132,7 @@ def build(did, kind, title, sdir, stext, src, app, label=None, title_cs=None, in
             extras.setdefault(last, []).append(b)
     outdir = os.path.join(app, 'data', 'decks', did)
     os.makedirs(outdir, exist_ok=True)
-    imgs = sorted(f for f in os.listdir(sdir) if f.endswith('.png'))
+    imgs = sorted(f for f in os.listdir(sdir) if f.endswith('.png')) if sdir != '-' else [None] * len(pages)
     slides = []
     def add_extras(n):
         for b in extras.get(n, []):
@@ -135,12 +140,15 @@ def build(did, kind, title, sdir, stext, src, app, label=None, title_cs=None, in
             slides.append({'k': b['k'], 'title': b['h'], 'html': markup_html(body, title=False)[1] if not body.startswith('<') else body})
     add_extras(0)
     for i, f in enumerate(imgs, 1):
-        im = Image.open(os.path.join(sdir, f)).convert('RGB')
-        buf = io.BytesIO(); im.save(buf, 'WEBP', quality=78, method=6)
-        iv, ct = enc(key, buf.getvalue())
-        open(os.path.join(outdir, '%02d.bin' % i), 'wb').write(iv + ct)
+        if f:
+            im = Image.open(os.path.join(sdir, f)).convert('RGB')
+            buf = io.BytesIO(); im.save(buf, 'WEBP', quality=78, method=6)
+            iv, ct = enc(key, buf.getvalue())
+            open(os.path.join(outdir, '%02d.bin' % i), 'wb').write(iv + ct)
         en_t, en_h = markup_html(clean_en(pages.get(i, [])))
-        sl = {'k': 'orig', 'no': i, 'img': '%s/%02d.bin' % (did, i), 'title': en_t, 'en': en_h}
+        sl = {'k': 'orig', 'no': i, 'title': en_t, 'en': en_h}
+        if f:
+            sl['img'] = '%s/%02d.bin' % (did, i)
         if i in cs:
             ct_t, ct_h = markup_html(cs[i])
             sl['title_cs'] = ct_t; sl['cs'] = ct_h

@@ -30,6 +30,30 @@
    "extra": 13
   }
  ],
- "sem": [],
- "hw": []
+ "sem": [
+  {
+   "id": "s01",
+   "title": "Models, data, correlation and causation",
+   "label": "Cvičení 1",
+   "n": 38,
+   "extra": 13
+  },
+  {
+   "id": "s02",
+   "title": "Well-being: GDP, HDI and inequality (data session)",
+   "label": "Cvičení 2",
+   "n": 1,
+   "extra": 11
+  }
+ ],
+ "hw": [
+  {
+   "id": "hw4",
+   "title": "Quiz 4: Strategic interactions and social dilemmas",
+   "label": "Domácí úkol 4",
+   "n": 10,
+   "extra": 12
+  }
+ ],
+ "hw_note": "Úkoly 1–3 zatím chybí – doplním, jakmile je nahraješ."
 }
