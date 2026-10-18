@@ -851,37 +851,133 @@ function openViewer({ pages, start = 0, label = '', onShow }) {
 }
 function closeViewer(silent) {
   if (!vw) return;
-  document.removeEventListener('keydown', vw.key); removeEventListener('resize', vw.rs);
+  document.removeEventListener('keydown', vw.key); removeEventListener('resize', vw.rs); removeEventListener('orientationchange', vw.rs);
+  try { screen.orientation?.unlock?.(); } catch (e) {}
   if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
   vw.el.remove(); vw = null; document.body.classList.remove('vw-open');
   if (!silent && history.state && history.state.viewer) history.back();
 }
 addEventListener('popstate', () => { if (vw) closeViewer(true); });
 
-function slidePage(sl, i, lang) {
+/* presentation mode: landscape stage like a native slideshow; in portrait the stage is rotated 90°
+   so the slide uses the whole screen (works with iOS orientation lock, where the Screen Orientation API is unavailable) */
+function presSlide(sl, lang) {
   const cs = lang === 'cs' && sl.cs;
   if (sl.k === 'orig' && sl.img) {
-    const txt = cs ? `${sl.title_cs ? `<h4>${sl.title_cs}</h4>` : ''}${sl.cs}` : '';
-    return `<div class="vw-img"><img data-src="${esc(sl.img)}" alt=""></div>${txt ? `<div class="vw-text">${txt}</div>` : ''}`;
+    const note = cs ? `${sl.title_cs ? `<h4>${sl.title_cs}</h4>` : ''}${sl.cs}` : '';
+    return `<div class="pr-img"><img data-src="${esc(sl.img)}" alt=""></div>${note ? `<div class="pr-note">${note}</div>` : ''}`;
   }
   const tag = { extra: '★ Navíc – není z originálu', excel: 'Excel' }[sl.k];
   const title = sl.k === 'orig' ? (cs ? sl.title_cs : sl.title) : sl.title;
   const body = sl.k === 'orig' ? (cs ? sl.cs : sl.en) : sl.html;
-  return `<div class="vw-card">${tag ? `<span class="tag">${tag}</span>` : ''}${title ? `<h3>${title}</h3>` : ''}<div class="slide-html">${body || ''}</div></div>`;
+  return `<div class="pr-card"><div class="pr-card-in">${tag ? `<span class="tag">${tag}</span>` : ''}${title ? `<h3>${title}</h3>` : ''}<div class="slide-html">${body || ''}</div></div></div>`;
 }
 function openDeckViewer(d, start) {
-  const lang = state.lang;
-  const el = openViewer({
-    pages: d.slides.map((sl, i) => slidePage(sl, i, lang)), start, label: (lang === 'cs' && d.title_cs) || d.title,
-    onShow: (i, el) => {
-      for (const j of [i - 1, i, i + 1, i + 2]) {
-        const im = $(`.vw-page[data-i="${j}"] img[data-src]`, el);
-        if (im && !im.src) slideImg(d, im.dataset.src).then(u => { im.src = u; }).catch(() => {});
-      }
-      const s = $$('.slide')[i]; if (s) s.scrollIntoView({ block: 'start' });
-    },
+  closeViewer(true);
+  const lang = state.lang, n = d.slides.length;
+  let notes = false;
+  try { notes = localStorage.getItem('econ:prNotes') === '1'; } catch (e) {}
+  const hasNotes = d.slides.some(sl => lang === 'cs' && sl.k === 'orig' && sl.img && sl.cs);
+  const el = document.createElement('div');
+  el.className = 'pres' + (notes ? ' notes-on' : '');
+  el.innerHTML = `<div class="pr-stage"><div class="pr-track">${d.slides.map((sl, i) => `<div class="pr-page" data-i="${i}">${presSlide(sl, lang)}</div>`).join('')}</div>
+    <div class="pr-ui"><div class="pr-top"><span class="pr-label">${esc((lang === 'cs' && d.title_cs) || d.title)}</span><span class="pr-count"></span>
+      ${hasNotes ? '<button class="pr-btn pr-cz" aria-label="Český překlad">CZ</button>' : ''}<button class="pr-btn pr-x" aria-label="Zavřít">×</button></div>
+      <div class="pr-hint">Klepni vpravo / vlevo nebo táhni prstem · klepnutím doprostřed skryješ ovládání</div></div>
+    <div class="pr-bar"><i></i></div></div>`;
+  document.body.appendChild(el); document.body.classList.add('vw-open');
+  const stage = $('.pr-stage', el), track = $('.pr-track', el);
+  let idx = Math.max(0, Math.min(n - 1, start)), W = 0, H = 0, rot = false, hideT;
+  const layout = () => {
+    const vw_ = innerWidth, vh_ = innerHeight;
+    rot = vh_ > vw_;
+    W = rot ? vh_ : vw_; H = rot ? vw_ : vh_;
+    Object.assign(stage.style, { width: W + 'px', height: H + 'px', transform: rot ? `translateX(${vw_}px) rotate(90deg)` : 'none' });
+    el.classList.toggle('rot', rot);
+    $$('.pr-card-in', el).forEach(c => {
+      const s = Math.min(W / 960, H / 540) * .96;
+      c.style.transform = `translate(-50%,-50%) scale(${s})`;
+    });
+    place(0, false);
+  };
+  const place = (dx, anim) => {
+    track.style.transition = anim ? 'transform .28s cubic-bezier(.2,.7,.2,1)' : 'none';
+    track.style.transform = `translateX(${-idx * W + dx}px)`;
+  };
+  const load = () => {
+    for (const j of [idx - 1, idx, idx + 1, idx + 2]) {
+      const im = $(`.pr-page[data-i="${j}"] img[data-src]`, el);
+      if (im && !im.src) slideImg(d, im.dataset.src).then(u => { im.src = u; }).catch(() => {});
+    }
+    $('.pr-count', el).textContent = `${idx + 1} / ${n}`;
+    $('.pr-bar i', el).style.width = ((idx + 1) / n * 100) + '%';
+    const s = $$('.slide')[idx]; if (s) s.scrollIntoView({ block: 'start' });
+  };
+  const go = i => { idx = Math.max(0, Math.min(n - 1, i)); place(0, true); load(); };
+  const ui = show => { el.classList.toggle('ui-on', show); clearTimeout(hideT); if (show) hideT = setTimeout(() => el.classList.remove('ui-on'), 3000); };
+  // gestures: pointer coordinates are converted to stage coordinates (rotated in portrait)
+  let p0 = null;
+  const pt = e => rot ? { x: e.clientY, y: innerWidth - e.clientX } : { x: e.clientX, y: e.clientY };
+  stage.addEventListener('pointerdown', e => {
+    if (e.target.closest('button')) return;
+    const p = pt(e);
+    p0 = { ...p, t: Date.now(), mode: null, sc: e.target.closest('.pr-card-in, .pr-note'), top: 0 };
+    if (p0.sc) p0.top = p0.sc.scrollTop;
+    stage.setPointerCapture(e.pointerId);
   });
+  stage.addEventListener('pointermove', e => {
+    if (!p0) return;
+    const p = pt(e), dx = p.x - p0.x, dy = p.y - p0.y;
+    if (!p0.mode && Math.hypot(dx, dy) > 8) p0.mode = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+    if (p0.mode === 'x') {
+      const edge = (idx === 0 && dx > 0) || (idx === n - 1 && dx < 0);
+      place(edge ? dx / 3 : dx, false);
+    } else if (p0.mode === 'y' && p0.sc) {
+      const s = p0.sc.matches('.pr-card-in') ? (parseFloat(p0.sc.style.transform.match(/scale\(([\d.]+)/)?.[1]) || 1) : 1;
+      p0.sc.scrollTop = p0.top - dy / s;
+    }
+  });
+  const end = e => {
+    if (!p0) return;
+    const p = pt(e), dx = p.x - p0.x, dt = Date.now() - p0.t, mode = p0.mode;
+    p0 = null;
+    if (mode === 'x') {
+      if (dx < -W * .15 || (dx < -30 && dt < 300)) go(idx + 1);
+      else if (dx > W * .15 || (dx > 30 && dt < 300)) go(idx - 1);
+      else place(0, true);
+    } else if (!mode) {
+      if (p.x > W * .7) go(idx + 1);
+      else if (p.x < W * .3) go(idx - 1);
+      else ui(!el.classList.contains('ui-on'));
+    }
+  };
+  stage.addEventListener('pointerup', end);
+  stage.addEventListener('pointercancel', () => { p0 = null; place(0, true); });
+  stage.addEventListener('wheel', e => {
+    const sc = e.target.closest('.pr-card-in, .pr-note');
+    if (sc && sc.scrollHeight > sc.clientHeight + 2) return;
+    if (Math.abs(e.deltaX) > 30 || Math.abs(e.deltaY) > 30) { e.preventDefault(); go(idx + ((e.deltaX || e.deltaY) > 0 ? 1 : -1)); }
+  }, { passive: false });
+  $('.pr-x', el).onclick = () => closeViewer();
+  if (hasNotes) $('.pr-cz', el).onclick = () => {
+    notes = !notes; el.classList.toggle('notes-on', notes);
+    try { localStorage.setItem('econ:prNotes', notes ? '1' : '0'); } catch (e) {}
+    ui(true);
+  };
+  const key = e => {
+    if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); go(idx + 1); }
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); go(idx - 1); }
+    else if (e.key === 'Home') go(0); else if (e.key === 'End') go(n - 1);
+    else if (e.key === 'Escape') closeViewer();
+  };
+  const rs = () => setTimeout(layout, 60);
+  document.addEventListener('keydown', key); addEventListener('resize', rs); addEventListener('orientationchange', rs);
+  vw = { el, key, rs };
   renderMath(el); enhance(el);
+  layout(); load(); ui(true);
+  // Android/desktop: real fullscreen + landscape lock where supported (no-op on iPhone, the rotation above covers it)
+  if (el.requestFullscreen) el.requestFullscreen({ navigationUI: 'hide' }).then(() => screen.orientation?.lock?.('landscape')).then(() => {}, () => {});
+  history.pushState({ viewer: 1 }, '', location.href);
 }
 
 /* step-by-step Excel guide: <div class="xl-guide" data-title="…"><section class="g-step">…</section>…</div> */
