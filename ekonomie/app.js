@@ -175,7 +175,7 @@ function readingList() {
 }
 const sameItem = (a, b) => a && b && a.type === b.type && (a.type === 'sec' ? a.id === b.id : a.unit === b.unit);
 const itemHash = it => it.type === 'sec' ? '#/s/' + it.id : it.type === 'deck' ? '#/d/' + it.id : '#/x/' + it.unit;
-const itemTitle = it => it.type === 'sec' ? sectionTitle(it.id) : it.type === 'deck' ? (it.title || 'Prezentace') : `★ Navíc k Unit ${it.unit}`;
+const itemTitle = it => it.type === 'sec' ? sectionTitle(it.id) : it.type === 'deck' ? (it.title || 'Prezentace') : `★ Navíc ke kapitole ${it.unit}`;
 
 /* ---------------- table of contents ---------------- */
 function buildToc() {
@@ -256,12 +256,12 @@ async function renderExtra(u, opts = {}) {
   main.innerHTML = '<div class="loading">Načítám…</div>';
   const x = await loadExtra(u);
   state.cur = { type: 'extra', unit: u };
-  $('#bar-title').textContent = `★ Navíc · Unit ${u}`;
+  $('#bar-title').textContent = `★ Navíc · ${state.lang === 'cs' ? 'Kapitola' : 'Unit'} ${u}`;
   const t = state.toc.find(z => z.unit === u);
   main.innerHTML = `<article class="reader extra-page">
-    <div class="extra-banner"><span style="font-size:24px">★</span><div><b>Navíc k Unit ${u} — není součástí učebnice</b>
+    <div class="extra-banner"><span style="font-size:24px">★</span><div><b>Navíc ke kapitole ${u} — není součástí učebnice</b>
     <small>Moje doplňující poznámky: látka vysvětlená jinými slovy, řešené příklady krok za krokem, tipy a časté chyby.</small></div></div>
-    <h1><strong>Unit ${u}</strong>${esc(unitLabel(t))}</h1>
+    <h1><strong>${state.lang === 'cs' ? 'Kapitola' : 'Unit'} ${u}</strong>${esc(unitLabel(t))}</h1>
     ${x ? x.html : '<p>Doplňky k této kapitole se připravují.</p>'}</article>${pagerHtml(state.cur)}`;
   const art = $('.reader', main);
   enhance(art);
