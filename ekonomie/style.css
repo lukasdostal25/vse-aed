@@ -54,6 +54,7 @@ body {
   font: 400 var(--fs)/1.6 var(--serif);
   padding-top: calc(var(--bar-h) + env(safe-area-inset-top));
   overflow-x: hidden;
+  padding-bottom: calc(64px + env(safe-area-inset-bottom));
 }
 button { font: inherit; color: inherit; }
 a { color: var(--link); text-decoration-thickness: 1px; text-underline-offset: 2px; }
@@ -314,3 +315,40 @@ dl.glossary dd { margin: .2em 0 0; }
   background: var(--ink); color: var(--bg); padding: 9px 14px; border-radius: 999px; font-family: var(--sans); font-size: 14px; max-width: 90vw;
 }
 .loading { padding: 40px 0; text-align: center; color: var(--ink-2); font-family: var(--sans); }
+
+/* ---------- bottom tabs ---------- */
+.tabs {
+  position: fixed; z-index: 30; left: 0; right: 0; bottom: 0; display: grid; grid-template-columns: repeat(5, 1fr);
+  padding: 4px max(4px, env(safe-area-inset-right)) env(safe-area-inset-bottom) max(4px, env(safe-area-inset-left));
+  background: color-mix(in srgb, var(--bg) 96%, transparent); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+  border-top: 1px solid var(--line); font-family: var(--sans);
+}
+.tab { border: 0; background: none; cursor: pointer; padding: 6px 2px 8px; font-size: 11px; color: var(--ink-2); display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.tab span { font-size: 19px; line-height: 1.1; }
+.tab.on { color: var(--accent); font-weight: 600; }
+.toast { bottom: calc(80px + env(safe-area-inset-bottom)); }
+.pop { bottom: calc(76px + env(safe-area-inset-bottom)); }
+
+/* ---------- hub ---------- */
+.hub-card { display: flex; gap: 14px; align-items: center; }
+.hub-card > div:last-child { flex: 1; min-width: 0; }
+.hub-ico { font-size: 28px; width: 46px; height: 46px; display: grid; place-items: center; background: var(--surface-2); border-radius: 12px; flex: none; }
+.hub-sub { font-size: 13px; color: var(--ink-2); margin: -4px 0 8px; }
+
+/* ---------- slides ---------- */
+.slide { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 12px; margin: 0 0 18px; box-shadow: var(--shadow); font-family: var(--sans); font-size: .9em; }
+.slide-head { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; font-size: 14px; flex-wrap: wrap; }
+.slide-no { min-width: 26px; height: 26px; border-radius: 8px; background: var(--surface-2); display: grid; place-items: center; font-size: 12px; font-weight: 700; color: var(--ink-2); padding: 0 6px; }
+.slide-img { background: #fff; border-radius: 8px; overflow: hidden; line-height: 0; }
+.slide-img img { width: 100%; height: auto; min-height: 120px; display: block; }
+.slide-text { margin-top: 10px; line-height: 1.5; }
+.slide-text p, .slide-html p { margin: 0 0 .5em; }
+.slide-text ul, .slide-html ul { margin: 0 0 .5em; padding-left: 1.2em; }
+.slide .tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; border-radius: 999px; padding: 2px 8px; }
+.slide-extra { background: var(--extra); border: 2px solid var(--extra-line); }
+.slide-extra .tag { background: var(--extra-line); color: #fff; }
+.slide-extra .slide-head b { color: var(--extra-ink); }
+.slide-excel { border-left: 4px solid #1d6f42; }
+.slide-excel .tag { background: #1d6f42; color: #fff; }
+.slide-html table { font-size: 13px; }
+.slide-html .formula { font-family: ui-monospace, Menlo, Consolas, monospace; background: var(--surface-2); padding: 6px 8px; border-radius: 6px; display: block; overflow-x: auto; white-space: pre; margin: .4em 0; }

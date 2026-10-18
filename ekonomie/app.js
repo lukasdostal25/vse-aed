@@ -161,8 +161,8 @@ function readingList() {
   return out;
 }
 const sameItem = (a, b) => a && b && a.type === b.type && (a.type === 'sec' ? a.id === b.id : a.unit === b.unit);
-const itemHash = it => it.type === 'sec' ? '#/s/' + it.id : '#/x/' + it.unit;
-const itemTitle = it => it.type === 'sec' ? sectionTitle(it.id) : `★ Navíc k Unit ${it.unit}`;
+const itemHash = it => it.type === 'sec' ? '#/s/' + it.id : it.type === 'deck' ? '#/d/' + it.id : '#/x/' + it.unit;
+const itemTitle = it => it.type === 'sec' ? sectionTitle(it.id) : it.type === 'deck' ? (it.title || 'Prezentace') : `★ Navíc k Unit ${it.unit}`;
 
 /* ---------------- table of contents ---------------- */
 function buildToc() {
@@ -187,11 +187,12 @@ function buildToc() {
 
 /* ---------------- home ---------------- */
 function renderHome() {
-  state.cur = { type: 'home' };
+  state.cur = { type: 'home', tab: 'book' };
   $('#bar-title').textContent = 'The Economy 2.0 · Microeconomics';
   const pos = store.get('pos', null);
-  const cont = pos && (pos.type === 'extra' || state.secIndex[pos.id])
-    ? `<button class="continue" data-go="${itemHash(pos)}"><small>Pokračovat, kde jsi skončil(a)</small><span>${esc(itemTitle(pos))}</span></button>` : '';
+  const bpos = store.get('bookpos', null) || pos;
+  const cont = bpos && (bpos.type === 'extra' || state.secIndex[bpos.id])
+    ? `<button class="continue" data-go="${itemHash(bpos)}" data-pos="book"><small>Pokračovat, kde jsi skončil(a)</small><span>${esc(itemTitle(bpos))}</span></button>` : '';
   const units = state.toc.filter(u => u.unit > 0).map(u => {
     const seen = u.sections.filter(s => state.seen[s.id]).length;
     return `<button class="unit-card" data-go="#/s/${u.sections[0].id}"><div class="u">Unit ${u.unit}</div>
@@ -414,7 +415,9 @@ function savePos() {
   const a = topAnchor();
   const pos = { type: cur.type, id: cur.id, unit: cur.unit, a: a ? anchorKey(a.el) : null, off: a ? Math.round(a.off) : 0, y: Math.round(scrollY) };
   store.set('pos', pos);
-  const per = store.get('secpos', {}); per[cur.type === 'sec' ? cur.id : 'x' + cur.unit] = pos; store.set('secpos', per);
+  if (cur.type !== 'deck') store.set('bookpos', pos);
+  if (cur.type === 'deck') pos.title = cur.title;
+  const per = store.get('secpos', {}); per[cur.type === 'sec' ? cur.id : cur.type === 'deck' ? 'd:' + cur.id : 'x' + cur.unit] = pos; store.set('secpos', per);
 }
 let saveT = null;
 function onScroll() {
@@ -470,9 +473,16 @@ async function route() {
     await renderSection(id, opts);
   } else if ((m = h.match(/^#\/x\/(\d+)/))) {
     await renderExtra(+m[1], opts);
-  } else {
+  } else if (h === '#/book') {
     renderHome();
+  } else if ((m = h.match(/^#\/(lec|sem|hw)$/))) {
+    await renderDeckList(m[1]);
+  } else if ((m = h.match(/^#\/d\/([^/?#]+)/))) {
+    await renderDeck(decodeURIComponent(m[1]), opts);
+  } else {
+    await renderHub();
   }
+  setTabs();
   openDrawer(false);
 }
 function go(hash, opts) {
@@ -486,7 +496,7 @@ async function setLang(lang) {
   if (lang === 'cs') {
     if (!state.key) {
       const meta = await csInfo();
-      if (!meta.units.length) { toast('Český překlad se teprve připravuje.'); return; }
+      if (!meta.units.length && !(await portalInfo()).locked) { toast('Český překlad se teprve připravuje.'); return; }
       if (!(await askPassword())) return;
     }
   }
@@ -496,6 +506,7 @@ async function setLang(lang) {
   const cur = state.cur;
   if (cur && cur.type === 'sec') await renderSection(cur.id, keep || {});
   else if (cur && cur.type === 'extra') await renderExtra(cur.unit, keep || {});
+  else if (cur && cur.type === 'deck') await renderDeck(cur.id, keep || {});
 }
 
 /* ---------------- search ---------------- */
@@ -598,6 +609,7 @@ function bind() {
   let qt = null;
   $('#q').addEventListener('input', e => { clearTimeout(qt); qt = setTimeout(() => doSearch(e.target.value), 200); });
   $('#btn-home').onclick = () => go('#/');
+  $$('.tab').forEach(t => t.onclick = () => go(t.dataset.href));
   $('#btn-theme').onclick = () => {
     const order = ['auto', 'light', 'dark']; const t = store.get('theme', 'auto');
     const n = order[(order.indexOf(t) + 1) % 3]; store.set('theme', n); applyTheme();
@@ -610,7 +622,7 @@ function bind() {
   $$('.flag').forEach(b => b.onclick = () => setLang(b.dataset.lang));
   document.addEventListener('click', e => {
     const g = e.target.closest('[data-go]');
-    if (g) { e.preventDefault(); const h = g.dataset.go; go(h, { resume: g.closest('.continue') ? true : false, ...(g.closest('.continue') ? store.get('pos', {}) : {}) }); return; }
+    if (g) { e.preventDefault(); const h = g.dataset.go; const c = g.closest('.continue'); go(h, c ? { ...(store.get(c.dataset.pos === 'book' ? 'bookpos' : 'pos', {})) } : {}); return; }
     const a = e.target.closest('a[data-sec]');
     if (a) {
       e.preventDefault();
@@ -642,6 +654,125 @@ function bind() {
   });
 }
 
+/* ---------------- portal: hub, lecture slides, seminars, homework ---------------- */
+const KINDS = {
+  lec: { name: 'Přednášky', one: 'Přednáška', icon: '▤', hint: 'Slidy z přednášek 1:1, s českým překladem textu a mými vloženými slidy ★.' },
+  sem: { name: 'Cvičení', one: 'Cvičení', icon: '▦', hint: 'Prezentace ze cvičení a excelové úlohy: data, vzorce a graf řešení.' },
+  hw:  { name: 'Domácí úkoly', one: 'Domácí úkol', icon: '✎', hint: 'Zadání domácích úkolů k procvičení, upozornění na záludnosti a nové podobné úlohy.' },
+};
+let portal = null;
+async function portalInfo() {
+  if (!portal) { try { portal = await getJSON('data/portal.json'); } catch (e) { portal = { locked: false, lec: [], sem: [], hw: [] }; } }
+  return portal;
+}
+function setTabs() {
+  const c = state.cur || {};
+  const tab = c.tab || (c.type === 'sec' || c.type === 'extra' ? 'book' : 'hub');
+  $$('.tab').forEach(t => t.classList.toggle('on', t.dataset.tab === tab));
+}
+async function renderHub() {
+  state.cur = { type: 'home', tab: 'hub' };
+  $('#bar-title').textContent = 'Ekonomie · studijní portál';
+  const p = await portalInfo();
+  const pos = store.get('pos', null);
+  const okPos = pos && (pos.type === 'extra' || pos.type === 'deck' || state.secIndex[pos.id]);
+  const seen = Object.keys(state.seen).length, total = Object.keys(state.secIndex).length;
+  const card = (href, icon, name, sub, meter) => `<button class="unit-card hub-card" data-go="${href}"><div class="hub-ico">${icon}</div>
+    <div><div class="t">${name}</div><div class="hub-sub">${sub}</div>${meter != null ? `<div class="meter"><i style="width:${meter}%"></i></div>` : ''}</div></button>`;
+  const cnt = k => p[k].length ? `${p[k].length} ${p[k].length === 1 ? 'položka' : p[k].length < 5 ? 'položky' : 'položek'}` : 'připravuje se';
+  $('#main').innerHTML = `<div class="home">
+    <h1>Principles of Economics</h1>
+    <p class="lead">Všechno k předmětu na jednom místě. Vlajka vpravo nahoře přepíná EN/CZ všude, 🔍 hledá v učebnici,
+    a aplikace si pamatuje, kde jsi skončil(a).</p>
+    ${okPos ? `<button class="continue" data-go="${itemHash(pos)}" data-pos="all"><small>Pokračovat, kde jsi skončil(a)</small><span>${esc(itemTitle(pos))}</span></button>` : ''}
+    ${card('#/book', '📖', 'Učebnice', 'The Economy 2.0: Microeconomics · 10 kapitol + ★ Navíc', Math.round(100 * seen / total))}
+    ${card('#/lec', KINDS.lec.icon, 'Přednášky', cnt('lec'))}
+    ${card('#/sem', KINDS.sem.icon, 'Cvičení', cnt('sem'))}
+    ${card('#/hw', KINDS.hw.icon, 'Domácí úkoly', cnt('hw'))}
+  </div>`;
+  window.scrollTo(0, 0); setProgress();
+}
+async function renderDeckList(kind) {
+  state.cur = { type: 'home', tab: kind };
+  const K = KINDS[kind], p = await portalInfo();
+  $('#bar-title').textContent = K.name;
+  const per = store.get('secpos', {});
+  const items = p[kind].map(d => {
+    const seenN = (store.get('deckseen', {})[d.id] || []).length;
+    return `<button class="unit-card" data-go="#/d/${d.id}"><div class="u">${esc(d.label || K.one)}</div><div class="t">${esc(d.title)}</div>
+      <div class="hub-sub">${d.n ? d.n + ' slidů' : ''}${d.extra ? ` · ${d.extra} ★ navíc` : ''}${per['d:' + d.id] ? ' · rozpracováno' : ''}</div>
+      ${d.n ? `<div class="meter"><i style="width:${Math.round(100 * Math.min(1, seenN / d.n))}%"></i></div>` : ''}</button>`;
+  }).join('');
+  $('#main').innerHTML = `<div class="home"><h1>${K.name}</h1><p class="lead">${K.hint}</p>
+    ${items || `<div class="extra"><span class="tag">Připravuje se</span><p>Sem přijdou ${K.name.toLowerCase()}, jakmile nahraješ podklady.</p></div>`}
+    ${p.locked ? '<p class="fine">Materiály z VŠE jsou autorské dílo vyučujících, proto jsou zašifrované a otevřou se jen s tvým heslem.</p>' : ''}</div>`;
+  window.scrollTo(0, 0); setProgress();
+}
+const deckCache = {}, blobCache = {};
+async function loadDeck(id) {
+  if (deckCache[id]) return deckCache[id];
+  let d = await getJSON(`data/decks/${id}.json`);
+  if (d.ct) {
+    if (!state.key && !(await askPassword())) return null;
+    d = JSON.parse(await decrypt(state.key, d));
+  }
+  deckCache[id] = d;
+  return d;
+}
+async function slideImg(d, src) {
+  if (!d.enc) return src;
+  if (blobCache[src]) return blobCache[src];
+  const buf = new Uint8Array(await (await fetch('data/decks/' + src)).arrayBuffer());
+  const pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: buf.slice(0, 12) }, state.key, buf.slice(12));
+  return (blobCache[src] = URL.createObjectURL(new Blob([pt], { type: src.endsWith('.png') ? 'image/png' : 'image/webp' })));
+}
+function slideHtml(sl, i, lang) {
+  const text = (lang === 'cs' && sl.cs) ? sl.cs : sl.en;
+  const tag = { orig: '', extra: '★ Navíc – není z originálu', excel: 'Excel', task: '' }[sl.k] || '';
+  const num = sl.k === 'orig' || sl.k === 'task' ? `<span class="slide-no">${sl.no || i + 1}</span>` : '';
+  return `<section class="slide slide-${sl.k}" data-t="${i}">
+    <div class="slide-head">${num}${tag ? `<span class="tag">${tag}</span>` : ''}${sl.title ? `<b>${(lang === 'cs' && sl.title_cs) || sl.title}</b>` : ''}</div>
+    ${sl.img ? `<div class="slide-img"><img data-src="${esc(sl.img)}" alt="Slide ${sl.no || i + 1}"></div>` : ''}
+    ${text ? `<div class="slide-text">${text}</div>` : ''}
+    ${sl.html ? `<div class="slide-html">${(lang === 'cs' && sl.html_cs) || sl.html}</div>` : ''}
+  </section>`;
+}
+async function renderDeck(id, opts = {}) {
+  const main = $('#main');
+  main.innerHTML = '<div class="loading">Načítám…</div>';
+  const p = await portalInfo();
+  let kind = 'lec', meta = null;
+  for (const k of Object.keys(KINDS)) { const f = p[k].find(x => x.id === id); if (f) { kind = k; meta = f; } }
+  const d = await loadDeck(id).catch(() => null);
+  if (!d) { main.innerHTML = '<div class="loading">Tento materiál se nepodařilo otevřít.</div>'; return; }
+  state.cur = { type: 'deck', id, tab: kind, title: d.title };
+  $('#bar-title').textContent = d.title;
+  const lang = state.lang;
+  main.innerHTML = `<article class="reader deck">
+    <h1><strong>${esc((meta && meta.label) || KINDS[kind].one)}</strong>${esc((lang === 'cs' && d.title_cs) || d.title)}</h1>
+    ${d.intro ? `<p class="subheadline">${d.intro}</p>` : ''}
+    ${d.slides.map((sl, i) => slideHtml(sl, i, lang)).join('')}
+  </article>
+  <nav class="pager"><button data-go="#/${kind}"><small>← Zpět</small><span>${KINDS[kind].name}</span></button></nav>`;
+  const art = $('.reader', main);
+  // decrypt / load images lazily as they approach the viewport
+  const io = new IntersectionObserver(es => es.forEach(async e => {
+    if (!e.isIntersecting) return;
+    io.unobserve(e.target);
+    try { e.target.src = await slideImg(d, e.target.dataset.src); } catch (err) {}
+  }), { rootMargin: '1200px 0px' });
+  $$('img[data-src]', art).forEach(im => io.observe(im));
+  renderMath(art);
+  enhance(art);
+  // remember which slides were seen
+  const seenAll = store.get('deckseen', {}); const set = new Set(seenAll[id] || []);
+  const so = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { set.add(+e.target.dataset.t); seenAll[id] = [...set]; store.set('deckseen', seenAll); }
+  }), { threshold: 0.5 });
+  $$('.slide', art).forEach(s => so.observe(s));
+  afterRender(opts);
+}
+
 /* ---------------- boot ---------------- */
 async function boot() {
   applyTheme(); applySize();
@@ -653,7 +784,7 @@ async function boot() {
   // reopen exactly where the reader left off
   const pos = store.get('pos', null);
   if (!location.hash || location.hash === '#' ) {
-    if (pos && (pos.type === 'extra' || state.secIndex[pos.id])) {
+    if (pos && (pos.type === 'extra' || pos.type === 'deck' || state.secIndex[pos.id])) {
       pendingOpts = { a: pos.a, off: pos.off, y: pos.y };
       history.replaceState(null, '', itemHash(pos));
     }
