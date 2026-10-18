@@ -4,6 +4,10 @@ Interaktivní příprava na všech šest povinných předmětů zimního semestr
 matematika (4MM110), Principles of Economics (4ES104), statistika (4ST102),
 demografie (4DM201), programování v R (4ST110) a řešení problémů (44F102).
 
+**Nově:** čtečka učebnice *The Economy 2.0: Microeconomics* (Principles of Economics) s českým
+překladem a doplňky je ve složce [`ekonomie/`](ekonomie/) — adresa `https://TVOJE-JMENO.github.io/vse-aed/ekonomie/`,
+dá se přidat na plochu jako samostatná aplikace.
+
 95 lekcí · 1214 testových otázek · blokové testy s časomírou · závěrečné zkoušky ·
 taháky, studijní plány a přehledy nejčastějších chyb.
 

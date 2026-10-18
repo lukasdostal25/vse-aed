@@ -1,0 +1,676 @@
+[
+{
+"unit": 0,
+"title": "Back matter",
+"sections": [
+{
+"id": "50-02-glossary",
+"title": "Glossary"
+},
+{
+"id": "50-01-looking-forward",
+"title": "Looking forward to economics after The Economy 2.0"
+},
+{
+"id": "50-03-bibliography",
+"title": "Bibliography"
+},
+{
+"id": "50-04-copyright-acknowledgements",
+"title": "Copyright acknowledgements"
+}
+]
+},
+{
+"unit": 1,
+"title": "Unit 1 Prosperity, inequality, and planetary limits",
+"sections": [
+{
+"id": "01-prosperity-inequality-01-ibn-battuta",
+"title": "1.1 Ibn Battuta’s fourteenth-century travels in a flat world"
+},
+{
+"id": "01-prosperity-inequality-02-historys-hockey-stick",
+"title": "1.2 History’s hockey stick"
+},
+{
+"id": "01-prosperity-inequality-03-climate-change",
+"title": "1.3 Another hockey stick: Climate change"
+},
+{
+"id": "01-prosperity-inequality-04-income-inequality",
+"title": "1.4 Inequality in global income"
+},
+{
+"id": "01-prosperity-inequality-05-technological-revolution",
+"title": "1.5 The continuous technological revolution"
+},
+{
+"id": "01-prosperity-inequality-06-production-function",
+"title": "1.6 Explaining the flat part of the hockey stick: Production functions and the diminishing average product of labour"
+},
+{
+"id": "01-prosperity-inequality-07-malthusian-trap",
+"title": "1.7 Explaining the flat part of the hockey stick: The Malthusian trap, population, and the average product of labour"
+},
+{
+"id": "01-prosperity-inequality-08-capitalist-institutions",
+"title": "1.8 Capitalist institutions"
+},
+{
+"id": "01-prosperity-inequality-09-structural-transformation",
+"title": "1.9 Structural transformation: From farm to firm"
+},
+{
+"id": "01-prosperity-inequality-10-capitalism-causation",
+"title": "1.10 Capitalism, causation, and history’s hockey stick"
+},
+{
+"id": "01-prosperity-inequality-11-british-colonization-india",
+"title": "1.11 Application: Did the British colonization of India reduce Indian living standards?"
+},
+{
+"id": "01-prosperity-inequality-12-capitalism-varieties",
+"title": "1.12 Varieties of capitalism: Institutions, government, and politics"
+},
+{
+"id": "01-prosperity-inequality-13-economics-biosphere",
+"title": "1.13 Economics, the economy, and the biosphere"
+},
+{
+"id": "01-prosperity-inequality-14-summary",
+"title": "1.14 Summary"
+},
+{
+"id": "01-prosperity-inequality-15-references",
+"title": "1.15 References"
+}
+]
+},
+{
+"unit": 2,
+"title": "Unit 2 Technology and incentives",
+"sections": [
+{
+"id": "02-technology-incentives-01-kutesmart-tailoring",
+"title": "2.1 Kutesmart automates personalized tailoring"
+},
+{
+"id": "02-technology-incentives-02-economic-decisions",
+"title": "2.2 Economic decisions: Opportunity costs, economic rents, and incentives"
+},
+{
+"id": "02-technology-incentives-03-comparative-advantage",
+"title": "2.3 Comparative advantage, specialization, and markets"
+},
+{
+"id": "02-technology-incentives-04-firms-technology-production",
+"title": "2.4 Firms, technology, and production"
+},
+{
+"id": "02-technology-incentives-05-technology-costs",
+"title": "2.5 Modelling a dynamic economy: Technology and costs"
+},
+{
+"id": "02-technology-incentives-06-innovation-profit",
+"title": "2.6 Modelling a dynamic economy: Innovation and profit"
+},
+{
+"id": "02-technology-incentives-07-industrial-revolution-technologies",
+"title": "2.7 Cheap coal, expensive labour: The Industrial Revolution in Britain and incentives for new technologies"
+},
+{
+"id": "02-technology-incentives-08-economic-models",
+"title": "2.8 Economic models: How to see more by looking at less"
+},
+{
+"id": "02-technology-incentives-09-industrial-revolution-colonies",
+"title": "2.9 Markets, cheap calories, and cotton: The colonies, slavery, and the Industrial Revolution in Britain"
+},
+{
+"id": "02-technology-incentives-10-malthusian-trap",
+"title": "2.10 Growth: Escaping the Malthusian trap"
+},
+{
+"id": "02-technology-incentives-11-capitalism-climate-change",
+"title": "2.11 Capitalism + carbon = hockey stick growth + climate change"
+},
+{
+"id": "02-technology-incentives-12-how-good-is-the-model",
+"title": "2.12 How good is the model? Economists, historians, and the Industrial Revolution"
+},
+{
+"id": "02-technology-incentives-13-summary",
+"title": "2.13 Summary"
+},
+{
+"id": "02-technology-incentives-14-references",
+"title": "2.14 References"
+}
+]
+},
+{
+"unit": 3,
+"title": "Unit 3 Doing the best you can: Scarcity, wellbeing, and working hours",
+"sections": [
+{
+"id": "03-scarcity-wellbeing-01-work-fewer-hours",
+"title": "3.1 Would you work fewer hours if your hourly wage doubled?"
+},
+{
+"id": "03-scarcity-wellbeing-02-choice-and-scarcity",
+"title": "3.2 A problem of choice and scarcity"
+},
+{
+"id": "03-scarcity-wellbeing-03-goods-and-preferences",
+"title": "3.3 Goods and preferences"
+},
+{
+"id": "03-scarcity-wellbeing-04-feasible-set",
+"title": "3.4 The feasible set"
+},
+{
+"id": "03-scarcity-wellbeing-05-decision-making-scarcity",
+"title": "3.5 Decision-making and scarcity"
+},
+{
+"id": "03-scarcity-wellbeing-06-hours-technological-progress",
+"title": "3.6 Hours of work and technological progress"
+},
+{
+"id": "03-scarcity-wellbeing-07-income-substitution-effects",
+"title": "3.7 Income and substitution effects on hours of work and free time"
+},
+{
+"id": "03-scarcity-wellbeing-08-a-good-model",
+"title": "3.8 Is this a good model?"
+},
+{
+"id": "03-scarcity-wellbeing-09-changes-over-time",
+"title": "3.9 Explaining our working hours: Changes over time"
+},
+{
+"id": "03-scarcity-wellbeing-10-hours-free-time-inequality",
+"title": "3.10 Application: Work hours, free time, and inequality"
+},
+{
+"id": "03-scarcity-wellbeing-11-gender-working-time",
+"title": "3.11 Explaining our working hours: Gender and working time"
+},
+{
+"id": "03-scarcity-wellbeing-12-differences-between-countries",
+"title": "3.12 Explaining our working hours: Differences between countries"
+},
+{
+"id": "03-scarcity-wellbeing-13-summary",
+"title": "3.13 Summary"
+},
+{
+"id": "03-scarcity-wellbeing-14-references",
+"title": "3.14 References"
+}
+]
+},
+{
+"unit": 4,
+"title": "Unit 4 Strategic interactions and social dilemmas",
+"sections": [
+{
+"id": "04-strategic-interactions-01-climate-negotiations",
+"title": "4.1 Climate negotiations: Conflicts and common interests"
+},
+{
+"id": "04-strategic-interactions-02-game-theory",
+"title": "4.2 Social interactions: Game theory"
+},
+{
+"id": "04-strategic-interactions-03-nash-equilibrium",
+"title": "4.3 Best responses in the rice–cassava game: Nash equilibrium"
+},
+{
+"id": "04-strategic-interactions-04-dominant-strategy-equilibrium",
+"title": "4.4 Dominant strategy equilibrium and the prisoners’ dilemma"
+},
+{
+"id": "04-strategic-interactions-05-pareto-criterion",
+"title": "4.5 Evaluating outcomes: The Pareto criterion"
+},
+{
+"id": "04-strategic-interactions-06-public-good-games",
+"title": "4.6 Public good games and cooperation"
+},
+{
+"id": "04-strategic-interactions-07-social-preferences",
+"title": "4.7 Social preferences: Altruism"
+},
+{
+"id": "04-strategic-interactions-08-repeated-interaction",
+"title": "4.8 Repeated interaction: Social norms, reciprocity, and peer punishment in public good games"
+},
+{
+"id": "04-strategic-interactions-09-using-experiments",
+"title": "4.9 Using experiments to study economic behaviour"
+},
+{
+"id": "04-strategic-interactions-10-cooperation-negotiation-conflicts",
+"title": "4.10 Cooperation, negotiation, and conflicts of interest"
+},
+{
+"id": "04-strategic-interactions-11-ultimatum-game",
+"title": "4.11 The ultimatum game: Dividing a pie (or leaving it on the table)"
+},
+{
+"id": "04-strategic-interactions-12-experimental-results",
+"title": "4.12 Fair farmers, self-interested students? Experimental results of the ultimatum game"
+},
+{
+"id": "04-strategic-interactions-13-coordination-games",
+"title": "4.13 Coordination games and conflicts of interest"
+},
+{
+"id": "04-strategic-interactions-14-modelling-climate-change",
+"title": "4.14 Modelling the global climate change problem"
+},
+{
+"id": "04-strategic-interactions-15-summary",
+"title": "4.15 Summary"
+},
+{
+"id": "04-strategic-interactions-16-references",
+"title": "4.16 References"
+}
+]
+},
+{
+"unit": 5,
+"title": "Unit 5 The rules of the game: Who gets what and why",
+"sections": [
+{
+"id": "05-the-rules-of-the-game-01-pirate-economics",
+"title": "5.1 Pirate economics"
+},
+{
+"id": "05-the-rules-of-the-game-02-institutions-and-power",
+"title": "5.2 Institutions and power"
+},
+{
+"id": "05-the-rules-of-the-game-03-evaluating-institutions-outcomes",
+"title": "5.3 Evaluating institutions and outcomes: Fairness"
+},
+{
+"id": "05-the-rules-of-the-game-04-technology-and-preferences",
+"title": "5.4 Setting up a model: Technology and preferences"
+},
+{
+"id": "05-the-rules-of-the-game-05-independent-farmer",
+"title": "5.5 Institutions, and the case of the independent farmer"
+},
+{
+"id": "05-the-rules-of-the-game-06-forced-labour",
+"title": "5.6 Case 1: Forced labour"
+},
+{
+"id": "05-the-rules-of-the-game-07-take-it-or-leave-it",
+"title": "5.7 Case 2: A take-it-or-leave-it contract"
+},
+{
+"id": "05-the-rules-of-the-game-08-bargaining-in-democracy",
+"title": "5.8 Case 3: Bargaining in a democracy"
+},
+{
+"id": "05-the-rules-of-the-game-09-pareto-efficient-sharing",
+"title": "5.9 Case 3 continued: Negotiating to a Pareto-efficient sharing of the surplus"
+},
+{
+"id": "05-the-rules-of-the-game-10-impact-efficiency-fairness",
+"title": "5.10 Lessons on the impact of institutions on efficiency and fairness"
+},
+{
+"id": "05-the-rules-of-the-game-11-distribution-of-income",
+"title": "5.11 The distribution of income: Endowments, technology, and institutions"
+},
+{
+"id": "05-the-rules-of-the-game-12-measuring-economic-inequality",
+"title": "5.12 Measuring economic inequality: The Gini coefficient"
+},
+{
+"id": "05-the-rules-of-the-game-13-redistribute-surplus-raise-efficiency",
+"title": "5.13 Application: A policy to redistribute the surplus and raise efficiency"
+},
+{
+"id": "05-the-rules-of-the-game-14-conflicts-and-bargaining",
+"title": "5.14 Application: Conflicts of interest and bargaining over wages, pollution, and jobs"
+},
+{
+"id": "05-the-rules-of-the-game-15-summary",
+"title": "5.15 Summary"
+},
+{
+"id": "05-the-rules-of-the-game-16-references",
+"title": "5.16 References"
+}
+]
+},
+{
+"unit": 6,
+"title": "Unit 6 The firm and its employees",
+"sections": [
+{
+"id": "06-firm-and-employees-01-exploding-tyres",
+"title": "6.1 Exploding tyres: The mystery unravelled"
+},
+{
+"id": "06-firm-and-employees-02-firm-structure",
+"title": "6.2 The structure of the firm: Owners, managers, and workers"
+},
+{
+"id": "06-firm-and-employees-03-separation-ownership-control",
+"title": "6.3 Other people’s money: The separation of ownership and control"
+},
+{
+"id": "06-firm-and-employees-04-finding-jobs",
+"title": "6.4 Finding jobs and filling vacancies"
+},
+{
+"id": "06-firm-and-employees-05-reservation-wage-curve",
+"title": "6.5 Managing hiring and quitting: The reservation wage curve"
+},
+{
+"id": "06-firm-and-employees-06-contracts-principals-agents",
+"title": "6.6 Getting the work done: Contracts, principals, and agents"
+},
+{
+"id": "06-firm-and-employees-07-job-loss-cost",
+"title": "6.7 Employment rents: The cost of job loss"
+},
+{
+"id": "06-firm-and-employees-08-rents-reservation-wages",
+"title": "6.8 Counting the cost of job loss: Rents and reservation wages"
+},
+{
+"id": "06-firm-and-employees-09-labour-discipline-model",
+"title": "6.9 Getting employees to work hard: The labour discipline model"
+},
+{
+"id": "06-firm-and-employees-10-wage-setting-model",
+"title": "6.10 Combining recruitment and labour discipline: The wage-setting model"
+},
+{
+"id": "06-firm-and-employees-11-wages-employment-unemployment",
+"title": "6.11 Putting the wage-setting model to work: Wages, employment, and the rate of unemployment"
+},
+{
+"id": "06-firm-and-employees-12-employers-exercise-power",
+"title": "6.12 How employers exercise power"
+},
+{
+"id": "06-firm-and-employees-13-minimum-wage",
+"title": "6.13 Application: The minimum wage"
+},
+{
+"id": "06-firm-and-employees-14-business-organization",
+"title": "6.14 Application: Another kind of business organization"
+},
+{
+"id": "06-firm-and-employees-15-summary",
+"title": "6.15 Summary"
+},
+{
+"id": "06-firm-and-employees-16-references",
+"title": "6.16 References"
+}
+]
+},
+{
+"unit": 7,
+"title": "Unit 7 The firm and its customers",
+"sections": [
+{
+"id": "07-firm-and-customers-01-winning-brands",
+"title": "7.1 Winning brands"
+},
+{
+"id": "07-firm-and-customers-02-breakfast-cereal",
+"title": "7.2 Breakfast cereal: Choosing a price"
+},
+{
+"id": "07-firm-and-customers-03-large-scale-production",
+"title": "7.3 Economies of scale and the cost advantages of large-scale production"
+},
+{
+"id": "07-firm-and-customers-04-beautiful-cars",
+"title": "7.4 Production and costs: The cost function for Beautiful Cars"
+},
+{
+"id": "07-firm-and-customers-05-demand-elasticity-revenue",
+"title": "7.5 Demand, elasticity, and revenue"
+},
+{
+"id": "07-firm-and-customers-06-maximize-profit",
+"title": "7.6 Setting price and quantity to maximize profit"
+},
+{
+"id": "07-firm-and-customers-07-divided-surplus",
+"title": "7.7 Gains from trade: The surplus and how it is divided"
+},
+{
+"id": "07-firm-and-customers-08-price-setting-competition-market",
+"title": "7.8 Price setting, competition, and the market"
+},
+{
+"id": "07-firm-and-customers-09-firms-differentiate-products",
+"title": "7.9 How firms differentiate their products"
+},
+{
+"id": "07-firm-and-customers-10-strategic-price-setting",
+"title": "7.10 Markets with few firms: Strategic price setting"
+},
+{
+"id": "07-firm-and-customers-11-decreasing-long-run-costs",
+"title": "7.11 Firms and markets with decreasing long-run average costs"
+},
+{
+"id": "07-firm-and-customers-12-influencing-market-power",
+"title": "7.12 Influencing market power, and competition policy"
+},
+{
+"id": "07-firm-and-customers-13-summary",
+"title": "7.13 Summary"
+},
+{
+"id": "07-firm-and-customers-14-references",
+"title": "7.14 References"
+}
+]
+},
+{
+"unit": 8,
+"title": "Unit 8 Supply and demand: Markets with many buyers and sellers",
+"sections": [
+{
+"id": "08-supply-demand-01-american-civil-war",
+"title": "8.1 How the American Civil War rocked global cotton prices"
+},
+{
+"id": "08-supply-demand-02-buying-and-selling",
+"title": "8.2 Buying and selling: Demand, supply, and the market-clearing price"
+},
+{
+"id": "08-supply-demand-03-competitive-equilibrium-price-taking",
+"title": "8.3 Competitive equilibrium and price-taking"
+},
+{
+"id": "08-supply-demand-04-firms-in-competitive-equilibrium",
+"title": "8.4 Firms in competitive equilibrium"
+},
+{
+"id": "08-supply-demand-05-gains-from-trade",
+"title": "8.5 Gains from trade in competitive equilibrium: Allocation and distribution"
+},
+{
+"id": "08-supply-demand-06-changes-in-supply-demand",
+"title": "8.6 Changes in supply and demand"
+},
+{
+"id": "08-supply-demand-07-equilibria",
+"title": "8.7 Short-run and long-run equilibria"
+},
+{
+"id": "08-supply-demand-08-market-dynamics",
+"title": "8.8 Application: Market dynamics in the oil market"
+},
+{
+"id": "08-supply-demand-09-how-competition-works",
+"title": "8.9 How competition works: Transforming a cartel coordination game into a competitive prisoners’ dilemma"
+},
+{
+"id": "08-supply-demand-10-supply-demand-competitive-equilibrium",
+"title": "8.10 Supply, demand, and competitive equilibrium: Is this a good model?"
+},
+{
+"id": "08-supply-demand-11-information-about-prices",
+"title": "8.11 Application: Why information about prices matters"
+},
+{
+"id": "08-supply-demand-12-effect-of-tax",
+"title": "8.12 The effect of a tax"
+},
+{
+"id": "08-supply-demand-13-price-controls",
+"title": "8.13 Price controls"
+},
+{
+"id": "08-supply-demand-14-summary",
+"title": "8.14 Summary"
+},
+{
+"id": "08-supply-demand-15-references",
+"title": "8.15 References"
+}
+]
+},
+{
+"unit": 9,
+"title": "Unit 9 Lenders and borrowers and differences in wealth",
+"sections": [
+{
+"id": "09-lenders-borrowers-01-chambar-moneylenders",
+"title": "9.1 The importance of Chambar moneylenders"
+},
+{
+"id": "09-lenders-borrowers-02-income-and-wealth",
+"title": "9.2 Income and wealth"
+},
+{
+"id": "09-lenders-borrowers-03-bringing-consumption-forward",
+"title": "9.3 Borrowing: Bringing consumption forward in time to the present"
+},
+{
+"id": "09-lenders-borrowers-04-reasons-to-borrow",
+"title": "9.4 Reasons to borrow: The value of spending now"
+},
+{
+"id": "09-lenders-borrowers-05-discounting-external-effects",
+"title": "9.5 Application: Discounting, external effects, and the future of the planet"
+},
+{
+"id": "09-lenders-borrowers-06-lending-and-storing",
+"title": "9.6 Lending and storing: Moving consumption to the future"
+},
+{
+"id": "09-lenders-borrowers-07-investing-consumption",
+"title": "9.7 Investing: Another way to move consumption to the future"
+},
+{
+"id": "09-lenders-borrowers-08-conflicts-over-gains",
+"title": "9.8 Conflicts over the gains made possible by borrowing and lending"
+},
+{
+"id": "09-lenders-borrowers-09-principal-agent-problem",
+"title": "9.9 Borrowers and lenders: A principal–agent problem"
+},
+{
+"id": "09-lenders-borrowers-10-inequality-credit-markets",
+"title": "9.10 Inequality: Lenders, borrowers, and those excluded from credit markets"
+},
+{
+"id": "09-lenders-borrowers-11-good-model",
+"title": "9.11 How good is the model?"
+},
+{
+"id": "09-lenders-borrowers-12-poverty-trap",
+"title": "9.12 A poverty trap for those with limited wealth"
+},
+{
+"id": "09-lenders-borrowers-13-reduce-risk-exposure",
+"title": "9.13 Application: Policies to reduce risk exposure of less well off people"
+},
+{
+"id": "09-lenders-borrowers-14-summary",
+"title": "9.14 Summary"
+},
+{
+"id": "09-lenders-borrowers-15-references",
+"title": "9.15 References"
+}
+]
+},
+{
+"unit": 10,
+"title": "Unit 10 Market successes and failures: The societal effects of private decisions",
+"sections": [
+{
+"id": "10-market-successes-failures-01-bananas-fish-cancer",
+"title": "10.1 Bananas, fish, and cancer"
+},
+{
+"id": "10-market-successes-failures-02-pollution-effects",
+"title": "10.2 The external effects of pollution: Private and social costs and benefits"
+},
+{
+"id": "10-market-successes-failures-03-bargaining-property-rights",
+"title": "10.3 Solving the problem: Private bargaining and property rights"
+},
+{
+"id": "10-market-successes-failures-04-regulation-taxation-compensation",
+"title": "10.4 Solving the problem: Regulation, taxation, and compensation"
+},
+{
+"id": "10-market-successes-failures-05-examples-diagnoses",
+"title": "10.5 External effects: More examples and diagnoses"
+},
+{
+"id": "10-market-successes-failures-06-radio-broadcasting",
+"title": "10.6 Public goods, non-rivalry, and excludability: A model of radio broadcasting"
+},
+{
+"id": "10-market-successes-failures-07-open-access-shared-resources",
+"title": "10.7 Public goods and bads, open access, and shared resources"
+},
+{
+"id": "10-market-successes-failures-08-principal-agent-relationships",
+"title": "10.8 Asymmetric information: Principal–agent relationships, hidden actions, and incomplete contracts"
+},
+{
+"id": "10-market-successes-failures-09-insurance-credit-markets",
+"title": "10.9 Hidden actions and risk: Market failure in insurance and credit markets"
+},
+{
+"id": "10-market-successes-failures-10-hidden-attributes",
+"title": "10.10 Asymmetric information: Hidden attributes and adverse selection"
+},
+{
+"id": "10-market-successes-failures-11-market-limits",
+"title": "10.11 The limits of markets"
+},
+{
+"id": "10-market-successes-failures-12-summary",
+"title": "10.12 Summary"
+},
+{
+"id": "10-market-successes-failures-13-references",
+"title": "10.13 References"
+}
+]
+}
+]

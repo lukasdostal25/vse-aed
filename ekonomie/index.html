@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>The Economy 2.0 · Micro</title>
+<meta name="description" content="Čtečka učebnice CORE Econ The Economy 2.0: Microeconomics s českým překladem a doplňky.">
+<meta name="theme-color" content="#fbfaf7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121418" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Ekonomie">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png" sizes="192x192">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="bar">
+  <button class="icon-btn" id="btn-menu" aria-label="Obsah">
+    <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+  </button>
+  <div class="bar-title" id="bar-title">The Economy 2.0</div>
+  <button class="icon-btn" id="btn-search" aria-label="Hledat">
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+  </button>
+  <div class="lang" role="group" aria-label="Jazyk">
+    <button class="flag" data-lang="en" aria-label="English" title="English">
+      <svg viewBox="0 0 60 30"><clipPath id="uk-c"><path d="M0 0v30h60V0z"/></clipPath><clipPath id="uk-t"><path d="M30 15h30v15zv15H0zH0V0zV0h30z"/></clipPath><g clip-path="url(#uk-c)"><path d="M0 0v30h60V0z" fill="#012169"/><path d="M0 0l60 30m0-30L0 30" stroke="#fff" stroke-width="6"/><path d="M0 0l60 30m0-30L0 30" clip-path="url(#uk-t)" stroke="#C8102E" stroke-width="4"/><path d="M30 0v30M0 15h60" stroke="#fff" stroke-width="10"/><path d="M30 0v30M0 15h60" stroke="#C8102E" stroke-width="6"/></g></svg>
+    </button>
+    <button class="flag" data-lang="cs" aria-label="Čeština" title="Čeština">
+      <svg viewBox="0 0 60 30"><path fill="#d7141a" d="M0 0h60v30H0z"/><path fill="#fff" d="M0 0h60v15H0z"/><path fill="#11457e" d="M0 0l30 15L0 30z"/></svg>
+    </button>
+  </div>
+  <div class="progress" id="progress"></div>
+</header>
+
+<nav class="drawer" id="drawer" aria-label="Obsah učebnice">
+  <div class="drawer-head">
+    <strong>Obsah</strong>
+    <button class="icon-btn" id="btn-close-drawer" aria-label="Zavřít"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+  <div class="drawer-body" id="toc"></div>
+  <div class="drawer-foot">
+    <button class="chip" id="btn-home">⌂ Úvod</button>
+    <button class="chip" id="btn-theme">◐ Motiv</button>
+    <button class="chip" id="btn-size">Aa Písmo</button>
+  </div>
+</nav>
+<div class="scrim" id="scrim"></div>
+
+<div class="search" id="search" hidden>
+  <div class="search-head">
+    <input id="q" type="search" placeholder="Hledat v učebnici…" autocomplete="off" enterkeyhint="search">
+    <button class="text-btn" id="btn-close-search">Zavřít</button>
+  </div>
+  <div class="search-results" id="results"></div>
+</div>
+
+<main id="main"></main>
+
+<div class="pop" id="pop" hidden></div>
+<div class="toast" id="toast" hidden></div>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
