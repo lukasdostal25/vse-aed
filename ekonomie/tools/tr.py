@@ -154,7 +154,29 @@ def pack(work, raw, app):
                   open(os.path.join(outdir, 'u%02d.json' % u), 'w'))
         units.add(u)
     meta['units'] = sorted(units)
+    json.dump(encrypt(key, json.dumps(titles(work, raw, app), ensure_ascii=False, separators=(',', ':'))),
+              open(os.path.join(outdir, 'titles.json'), 'w'))
     json.dump(meta, open(mpath, 'w'))
+
+def titles(work, raw, app):
+    # Czech unit and section titles for the table of contents, matched by English text
+    strip = lambda h: re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', ' ', h or '').replace('&nbsp;', ' ').replace('&amp;', '&')).strip()
+    out = {'units': {}, 'secs': {}}
+    for f in sorted(os.listdir(work)):
+        m = re.fullmatch(r'u(\d\d)\.cs\.txt', f)
+        if not m:
+            continue
+        u = int(m.group(1))
+        res, _, _ = build(work, raw, u)
+        for si, s in enumerate(load_unit(raw, u)['sections']):
+            cs = res.get(s['id'], [])
+            for t, seg in enumerate(s['segs']):
+                if strip(seg) == strip(s['title']) and t < len(cs) and cs[t]:
+                    out['secs'][s['id']] = strip(cs[t])
+                    break
+            if si == 0 and u and cs and cs[0]:
+                out['units'][str(u)] = re.sub(r'^Kapitola \d+\s*', '', strip(cs[0]))
+    return out
 
 if __name__ == '__main__':
     cmd = sys.argv[1]

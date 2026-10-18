@@ -82,6 +82,12 @@ async function restoreKey() {
   if (!k) return;
   try { state.key = await crypto.subtle.importKey('raw', b64(k), 'AES-GCM', true, ['decrypt']); } catch (e) { state.key = null; }
 }
+let csTitles = null;
+async function loadTitles() {
+  if (csTitles || !state.key) return csTitles;
+  try { csTitles = JSON.parse(await decrypt(state.key, await getJSON('data/cs/titles.json'))); } catch (e) { csTitles = null; }
+  return csTitles;
+}
 async function loadCs(u) {
   if (state.cs[u] !== undefined) return state.cs[u];
   const meta = await csInfo();
@@ -146,7 +152,14 @@ function renderMath(el) {
 }
 function sectionTitle(id) {
   const ix = state.secIndex[id]; if (!ix) return '';
-  return state.toc.find(u => u.unit === ix.unit).sections[ix.i].title;
+  const t = state.toc.find(u => u.unit === ix.unit).sections[ix.i].title;
+  if (state.lang !== 'cs') return t;
+  if (csTitles && csTitles.secs[id]) return csTitles.secs[id];
+  return t.replace(/References$/, 'Literatura').replace(/^Glossary$/, 'Glosář');
+}
+function unitLabel(u) {
+  if (state.lang === 'cs' && csTitles && csTitles.units[u.unit]) return csTitles.units[u.unit];
+  return u.title.replace(/^Unit \d+\s*/, '');
 }
 function unitOrder() { return state.toc.filter(u => u.unit > 0).concat(state.toc.filter(u => u.unit === 0)); }
 /* reading order: sections of each unit, with the extra page placed before References */
@@ -172,13 +185,13 @@ function buildToc() {
     const secs = u.sections;
     const seen = secs.filter(s => state.seen[s.id]).length;
     const open = cur.unit === u.unit ? ' open' : '';
-    const label = u.unit ? u.title.replace(/^Unit \d+\s*/, '') : 'Glosář a další';
+    const label = u.unit ? unitLabel(u) : 'Glosář a další';
     let items = '';
     secs.forEach(s => {
       if (u.extra && /References$/.test(s.title)) {
         items += `<button class="toc-sec extra${cur.type === 'extra' && cur.unit === u.unit ? ' cur' : ''}" data-go="#/x/${u.unit}">★ Navíc: vysvětlení, příklady, tipy</button>`;
       }
-      items += `<button class="toc-sec${state.seen[s.id] ? ' seen' : ''}${cur.id === s.id ? ' cur' : ''}" data-go="#/s/${s.id}">${esc(s.title)}</button>`;
+      items += `<button class="toc-sec${state.seen[s.id] ? ' seen' : ''}${cur.id === s.id ? ' cur' : ''}" data-go="#/s/${s.id}">${esc(sectionTitle(s.id))}</button>`;
     });
     return `<details class="toc-unit"${open}><summary><span class="num">${u.unit || '≡'}</span><span>${esc(label)}</span>
       <span class="bar-mini">${seen}/${secs.length}</span></summary>${items}</details>`;
@@ -196,7 +209,7 @@ function renderHome() {
   const units = state.toc.filter(u => u.unit > 0).map(u => {
     const seen = u.sections.filter(s => state.seen[s.id]).length;
     return `<button class="unit-card" data-go="#/s/${u.sections[0].id}"><div class="u">Unit ${u.unit}</div>
-      <div class="t">${esc(u.title.replace(/^Unit \d+\s*/, ''))}</div>
+      <div class="t">${esc(unitLabel(u))}</div>
       <div class="meter"><i style="width:${Math.round(100 * seen / u.sections.length)}%"></i></div></button>`;
   }).join('');
   $('#main').innerHTML = `<div class="home">
@@ -248,7 +261,7 @@ async function renderExtra(u, opts = {}) {
   main.innerHTML = `<article class="reader extra-page">
     <div class="extra-banner"><span style="font-size:24px">★</span><div><b>Navíc k Unit ${u} — není součástí učebnice</b>
     <small>Moje doplňující poznámky: látka vysvětlená jinými slovy, řešené příklady krok za krokem, tipy a časté chyby.</small></div></div>
-    <h1><strong>Unit ${u}</strong>${esc(t.title.replace(/^Unit \d+\s*/, ''))}</h1>
+    <h1><strong>Unit ${u}</strong>${esc(unitLabel(t))}</h1>
     ${x ? x.html : '<p>Doplňky k této kapitole se připravují.</p>'}</article>${pagerHtml(state.cur)}`;
   const art = $('.reader', main);
   enhance(art);
@@ -502,8 +515,11 @@ async function setLang(lang) {
   }
   const a = topAnchor();
   const keep = a ? { a: anchorKey(a.el), off: a.off } : null;
+  if (lang === 'cs') await loadTitles();
   state.lang = lang; store.set('lang', lang); setLangButtons();
+  if ($('#drawer').classList.contains('open')) buildToc();
   const cur = state.cur;
+  if (cur && cur.type === 'home' && cur.tab === 'book') renderHome();
   if (cur && cur.type === 'sec') await renderSection(cur.id, keep || {});
   else if (cur && cur.type === 'extra') await renderExtra(cur.unit, keep || {});
   else if (cur && cur.type === 'deck') await renderDeck(cur.id, keep || {});
@@ -788,6 +804,7 @@ async function boot() {
   try { await loadToc(); } catch (e) { $('#main').innerHTML = '<div class="loading">Nepodařilo se načíst obsah. Jsi online?</div>'; return; }
   await restoreKey();
   if (state.lang === 'cs' && !state.key) state.lang = 'en';
+  if (state.lang === 'cs') await loadTitles();
   setLangButtons();
   // reopen exactly where the reader left off
   const pos = store.get('pos', null);
