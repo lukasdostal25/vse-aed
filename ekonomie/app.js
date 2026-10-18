@@ -289,6 +289,17 @@ function applyCs(art, segs) {
 
 /* make book elements interactive */
 function enhance(art) {
+  // Excel: step-by-step guides and full-workbook previews
+  $$('.xl-guide', art).forEach(g => {
+    if (g.dataset.on) return; g.dataset.on = 1;
+    const b = document.createElement('button'); b.className = 'xl-btn';
+    b.textContent = '🧭 ' + (g.dataset.btn || 'Přesný postup v Excelu');
+    b.onclick = () => openGuide(g);
+    let bar = g.previousElementSibling;
+    if (!bar || !bar.classList.contains('xl-actions')) { bar = document.createElement('div'); bar.className = 'xl-actions'; g.parentNode.insertBefore(bar, g); }
+    bar.appendChild(b);
+  });
+  $$('[data-wb]', art).forEach(b => { b.onclick = () => openWorkbook(b.dataset.wb, b.dataset.title); });
   // step-through figures
   $$('.slides', art).forEach(sl => {
     const figs = $$(':scope > .figure', sl);
@@ -755,7 +766,7 @@ function slideHtml(sl, i, lang) {
     else if (sl.en) text = `<details class="slide-en"><summary>Text slidu</summary><div class="slide-text">${sl.en}</div></details>`;
   }
   return `<section class="slide slide-${sl.k}" data-t="${i}">
-    <div class="slide-head">${num}${tag ? `<span class="tag">${tag}</span>` : ''}${title && sl.k !== 'orig' ? `<b>${title}</b>` : ''}</div>
+    <div class="slide-head">${num}${tag ? `<span class="tag">${tag}</span>` : ''}${title && sl.k !== 'orig' ? `<b>${title}</b>` : ''}<button class="slide-full" aria-label="Celá obrazovka">⛶</button></div>
     ${sl.img ? `<div class="slide-img"><img data-src="${esc(sl.img)}" alt="${esc(sl.title || 'Slide ' + (sl.no || i + 1))}"></div>` : ''}
     ${text}
     ${sl.html ? `<div class="slide-html">${sl.html}</div>` : ''}
@@ -775,6 +786,7 @@ async function renderDeck(id, opts = {}) {
   main.innerHTML = `<article class="reader deck">
     <h1><strong>${esc((meta && meta.label) || KINDS[kind].one)}</strong>${esc((lang === 'cs' && d.title_cs) || d.title)}</h1>
     ${d.intro ? `<p class="subheadline">${d.intro}</p>` : ''}
+    <button class="deck-play">▶ Prezentační režim</button>
     ${d.slides.map((sl, i) => slideHtml(sl, i, lang)).join('')}
   </article>
   <nav class="pager"><button data-go="#/${kind}"><small>← Zpět</small><span>${KINDS[kind].name}</span></button></nav>`;
@@ -786,6 +798,14 @@ async function renderDeck(id, opts = {}) {
     try { e.target.src = await slideImg(d, e.target.dataset.src); } catch (err) {}
   }), { rootMargin: '1200px 0px' });
   $$('img[data-src]', art).forEach(im => io.observe(im));
+  $('.deck-play', art).onclick = () => {
+    const s = $$('.slide', art).findIndex(x => x.getBoundingClientRect().bottom > 80);
+    openDeckViewer(d, Math.max(0, s));
+  };
+  art.addEventListener('click', e => {
+    const t = e.target.closest('.slide-img, .slide-full'); if (!t) return;
+    openDeckViewer(d, +t.closest('.slide').dataset.t);
+  });
   renderMath(art);
   enhance(art);
   // remember which slides were seen
@@ -795,6 +815,123 @@ async function renderDeck(id, opts = {}) {
   }), { threshold: 0.5 });
   $$('.slide', art).forEach(s => so.observe(s));
   afterRender(opts);
+}
+
+/* ---------------- fullscreen viewer: presentation mode, Excel guides, workbook ---------------- */
+let vw = null;
+function openViewer({ pages, start = 0, label = '', onShow }) {
+  closeViewer(true);
+  const el = document.createElement('div');
+  el.className = 'viewer';
+  el.innerHTML = `<div class="vw-top"><span class="vw-label">${esc(label)}</span><span class="vw-count"></span>
+    <button class="vw-close" aria-label="Zavřít">×</button></div>
+    <div class="vw-track">${pages.map((h, i) => `<div class="vw-page" data-i="${i}"><div class="vw-inner">${h}</div></div>`).join('')}</div>
+    ${pages.length > 1 ? '<button class="vw-nav prev" aria-label="Předchozí">‹</button><button class="vw-nav next" aria-label="Další">›</button>' : ''}`;
+  document.body.appendChild(el); document.body.classList.add('vw-open');
+  const track = $('.vw-track', el), n = pages.length;
+  const cur = () => Math.round(track.scrollLeft / Math.max(1, track.clientWidth));
+  let idx = start, t;
+  const show = i => { idx = i; $('.vw-count', el).textContent = n > 1 ? `${i + 1} / ${n}` : ''; if (onShow) onShow(i, el); };
+  const go = i => { i = Math.max(0, Math.min(n - 1, i)); track.scrollTo({ left: i * track.clientWidth, behavior: 'smooth' }); };
+  track.addEventListener('scroll', () => { clearTimeout(t); t = setTimeout(() => { const i = cur(); if (i !== idx) show(i); }, 80); }, { passive: true });
+  if (n > 1) { $('.prev', el).onclick = () => go(idx - 1); $('.next', el).onclick = () => go(idx + 1); }
+  $('.vw-close', el).onclick = () => closeViewer();
+  const key = e => {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); go(idx + 1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(idx - 1); }
+    else if (e.key === 'Escape') closeViewer();
+  };
+  const rs = () => { track.scrollLeft = idx * track.clientWidth; };
+  document.addEventListener('keydown', key); addEventListener('resize', rs);
+  vw = { el, key, rs };
+  requestAnimationFrame(() => { track.scrollLeft = start * track.clientWidth; show(start); });
+  if (el.requestFullscreen && matchMedia('(pointer: fine)').matches) el.requestFullscreen().catch(() => {});
+  history.pushState({ viewer: 1 }, '', location.href);
+  return el;
+}
+function closeViewer(silent) {
+  if (!vw) return;
+  document.removeEventListener('keydown', vw.key); removeEventListener('resize', vw.rs);
+  if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+  vw.el.remove(); vw = null; document.body.classList.remove('vw-open');
+  if (!silent && history.state && history.state.viewer) history.back();
+}
+addEventListener('popstate', () => { if (vw) closeViewer(true); });
+
+function slidePage(sl, i, lang) {
+  const cs = lang === 'cs' && sl.cs;
+  if (sl.k === 'orig' && sl.img) {
+    const txt = cs ? `${sl.title_cs ? `<h4>${sl.title_cs}</h4>` : ''}${sl.cs}` : '';
+    return `<div class="vw-img"><img data-src="${esc(sl.img)}" alt=""></div>${txt ? `<div class="vw-text">${txt}</div>` : ''}`;
+  }
+  const tag = { extra: '★ Navíc – není z originálu', excel: 'Excel' }[sl.k];
+  const title = sl.k === 'orig' ? (cs ? sl.title_cs : sl.title) : sl.title;
+  const body = sl.k === 'orig' ? (cs ? sl.cs : sl.en) : sl.html;
+  return `<div class="vw-card">${tag ? `<span class="tag">${tag}</span>` : ''}${title ? `<h3>${title}</h3>` : ''}<div class="slide-html">${body || ''}</div></div>`;
+}
+function openDeckViewer(d, start) {
+  const lang = state.lang;
+  const el = openViewer({
+    pages: d.slides.map((sl, i) => slidePage(sl, i, lang)), start, label: (lang === 'cs' && d.title_cs) || d.title,
+    onShow: (i, el) => {
+      for (const j of [i - 1, i, i + 1, i + 2]) {
+        const im = $(`.vw-page[data-i="${j}"] img[data-src]`, el);
+        if (im && !im.src) slideImg(d, im.dataset.src).then(u => { im.src = u; }).catch(() => {});
+      }
+      const s = $$('.slide')[i]; if (s) s.scrollIntoView({ block: 'start' });
+    },
+  });
+  renderMath(el); enhance(el);
+}
+
+/* step-by-step Excel guide: <div class="xl-guide" data-title="…"><section class="g-step">…</section>…</div> */
+function openGuide(g) {
+  const steps = $$('.g-step', g).map(x => `<div class="g-step">${x.innerHTML}</div>`);
+  const el = openViewer({ pages: steps, label: '🧭 ' + (g.dataset.title || 'Přesný postup v Excelu') });
+  renderMath(el);
+}
+
+/* full workbook preview, data/decks/<deck>/wb_<name>.json (encrypted) */
+const wbCache = {};
+async function loadWorkbook(path) {
+  if (!wbCache[path]) wbCache[path] = getJSON(`data/decks/${path}.json`).then(async e => JSON.parse(await decrypt(state.key, e)));
+  return wbCache[path];
+}
+const colName = i => { let s = ''; i++; while (i) { const m = (i - 1) % 26; s = String.fromCharCode(65 + m) + s; i = Math.floor((i - 1) / 26); } return s; };
+async function openWorkbook(path, title) {
+  let wb;
+  try { wb = await loadWorkbook(path); } catch (e) { toast('Soubor se nepodařilo otevřít.'); return; }
+  const el = openViewer({ pages: ['<div class="wb"></div>'], label: '📗 ' + (title || wb.name) });
+  const box = $('.wb', el);
+  const draw = si => {
+    const sh = wb.sheets[si];
+    const nc = Math.max(1, ...sh.rows.map(r => r.length));
+    let h = `<div class="xl-fx"><b class="wb-ref">A1</b><i>fx</i><code class="wb-f"></code></div><div class="wb-grid"><table><tr><th class="rh"></th>`;
+    for (let c = 0; c < nc; c++) h += `<th>${colName(c)}</th>`;
+    h += '</tr>';
+    sh.rows.forEach((r, ri) => {
+      h += `<tr><th class="rh">${ri + 1}</th>`;
+      for (let c = 0; c < nc; c++) {
+        const v = r[c];
+        if (v == null) { h += '<td></td>'; continue; }
+        const o = typeof v === 'object' ? v : { v };
+        const cls = [o.t ? 't' : '', o.f ? 'f' : ''].join(' ').trim();
+        h += `<td${cls ? ` class="${cls}"` : ''}${o.bg ? ` style="background:${o.bg}"` : ''} data-r="${ri}" data-c="${c}">${esc(String(o.v ?? ''))}</td>`;
+      }
+      h += '</tr>';
+    });
+    h += `</table></div>${sh.note ? `<div class="wb-note">${esc(sh.note)}</div>` : ''}<div class="wb-tabs">${wb.sheets.map((x, i) => `<button data-s="${i}"${i === si ? ' class="on"' : ''}>${esc(x.name)}</button>`).join('')}</div>`;
+    box.innerHTML = h;
+    $$('.wb-tabs button', box).forEach(b => b.onclick = () => draw(+b.dataset.s));
+    $('.wb-grid', box).onclick = e => {
+      const td = e.target.closest('td[data-r]'); if (!td) return;
+      $$('td.on', box).forEach(x => x.classList.remove('on')); td.classList.add('on');
+      const o = sh.rows[+td.dataset.r][+td.dataset.c];
+      $('.wb-ref', box).textContent = colName(+td.dataset.c) + (+td.dataset.r + 1);
+      $('.wb-f', box).textContent = o && typeof o === 'object' && o.f ? o.f : String(o && typeof o === 'object' ? o.v ?? '' : o ?? '');
+    };
+  };
+  draw(0);
 }
 
 /* ---------------- boot ---------------- */

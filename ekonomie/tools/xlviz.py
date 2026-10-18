@@ -24,7 +24,23 @@ def _fmt(v, pct=False):
         return str(int(v))
     return ('%.2g' % v).replace('.', ',')
 
-COLORS = ['#c8102e', '#1f5fbf', '#1e8a4c', '#e3a82b', '#6c5ba8']
+COLORS = ['#c8102e', '#1f5fbf', '#1e8a4c', '#d98b00', '#6c5ba8']
+
+def _legend(items, W, y, mark='line'):
+    """Legend laid out in rows under the plot, so it never covers the data. Returns (svg, height)."""
+    out, x, rows = [], 12, 0
+    for name, c in items:
+        w = 26 + 6.6 * len(name)
+        if x + w > W - 8 and x > 12:
+            x = 12; rows += 1
+        yy = y + 16 * rows
+        if mark == 'line':
+            out.append('<line x1="%.1f" x2="%.1f" y1="%.1f" y2="%.1f" stroke="%s" stroke-width="3"/>' % (x, x + 16, yy - 4, yy - 4, c))
+        else:
+            out.append('<circle cx="%.1f" cy="%.1f" r="4.5" fill="%s"/>' % (x + 8, yy - 4, c))
+        out.append('<text x="%.1f" y="%.1f" fill="#222">%s</text>' % (x + 22, yy, html.escape(name)))
+        x += w + 14
+    return ''.join(out), 16 * (rows + 1) + 6
 
 def line_chart(series, title='', xlabel='', ylabel='', W=640, H=320, pct=False, zero=False, xticks=None, bands=None):
     """series: list of (name, [(x, y), ...]); x numeric (e.g. year as float)."""
@@ -34,10 +50,11 @@ def line_chart(series, title='', xlabel='', ylabel='', W=640, H=320, pct=False, 
     y0, y1, yt = _nice(min(ys + ([0] if zero else [])), max(ys))
     sx = lambda x: L + (x - x0) / (x1 - x0) * (W - L - R)
     sy = lambda y: H - B - (y - y0) / (y1 - y0) * (H - T - B)
-    out = ['<svg viewBox="0 0 %d %d" class="xl-chart" font-family="sans-serif" font-size="11">' % (W, H),
-           '<rect width="100%%" height="100%%" fill="#fff"/>']
+    leg, lh = _legend([(n, COLORS[i % 5]) for i, (n, _) in enumerate(series)], W, H + 8) if len(series) > 1 else ('', 0)
+    out = ['<svg viewBox="0 0 %d %d" class="xl-chart" font-family="sans-serif" font-size="11">' % (W, H + lh),
+           '<rect width="100%" height="100%" fill="#fff"/>', leg]
     if title:
-        out.append('<text x="%d" y="16" font-weight="700" font-size="12">%s</text>' % (L, html.escape(title)))
+        out.append('<text x="%d" y="16" font-weight="700" font-size="12" fill="#222">%s</text>' % (L, html.escape(title)))
     for b0, b1 in (bands or []):
         out.append('<rect x="%.1f" y="%d" width="%.1f" height="%d" fill="#f2c4cc" opacity=".45"/>' % (sx(b0), T, sx(b1) - sx(b0), H - T - B))
     for t in yt:
@@ -50,9 +67,7 @@ def line_chart(series, title='', xlabel='', ylabel='', W=640, H=320, pct=False, 
             out.append('<text x="%.1f" y="%d" text-anchor="middle" fill="#555">%s</text>' % (sx(t), H - B + 15, str(int(t)) if t == int(t) else _fmt(t)))
     for i, (name, pts) in enumerate(series):
         d = ' '.join('%s%.1f %.1f' % ('M' if j == 0 else 'L', sx(x), sy(y)) for j, (x, y) in enumerate(pts))
-        out.append('<path d="%s" fill="none" stroke="%s" stroke-width="1.6"/>' % (d, COLORS[i % 5]))
-        if len(series) > 1:
-            out.append('<text x="%d" y="%d" fill="%s" font-weight="700">%s</text>' % (W - R - 150, T + 14 + 14 * i, COLORS[i % 5], html.escape(name)))
+        out.append('<path d="%s" fill="none" stroke="%s" stroke-width="1.8" stroke-linejoin="round"/>' % (d, COLORS[i % 5]))
     if xlabel:
         out.append('<text x="%d" y="%d" text-anchor="middle" fill="#333">%s</text>' % ((L + W - R) / 2, H - 6, html.escape(xlabel)))
     if ylabel:
@@ -68,9 +83,10 @@ def scatter(groups, title='', xlabel='', ylabel='', W=640, H=320, fit=False, log
     x0, x1, xt = _nice(min(xs), max(xs), 6); y0, y1, yt = _nice(min(ys), max(ys))
     sx = lambda x: L + (tx(x) - x0) / (x1 - x0) * (W - L - R)
     sy = lambda y: H - B - (y - y0) / (y1 - y0) * (H - T - B)
-    out = ['<svg viewBox="0 0 %d %d" class="xl-chart" font-family="sans-serif" font-size="11">' % (W, H), '<rect width="100%" height="100%" fill="#fff"/>']
+    leg, lh = _legend([(n, COLORS[i % 5]) for i, (n, _) in enumerate(groups)], W, H + 8, mark='dot') if len(groups) > 1 else ('', 0)
+    out = ['<svg viewBox="0 0 %d %d" class="xl-chart" font-family="sans-serif" font-size="11">' % (W, H + lh), '<rect width="100%" height="100%" fill="#fff"/>', leg]
     if title:
-        out.append('<text x="%d" y="16" font-weight="700" font-size="12">%s</text>' % (L, html.escape(title)))
+        out.append('<text x="%d" y="16" font-weight="700" font-size="12" fill="#222">%s</text>' % (L, html.escape(title)))
     for t in yt:
         out.append('<line x1="%d" x2="%d" y1="%.1f" y2="%.1f" stroke="#e5e5e5"/>' % (L, W - R, sy(t), sy(t)))
         out.append('<text x="%d" y="%.1f" text-anchor="end" fill="#555">%s</text>' % (L - 6, sy(t) + 4, _fmt(t)))
@@ -80,9 +96,7 @@ def scatter(groups, title='', xlabel='', ylabel='', W=640, H=320, fit=False, log
     for i, (name, pts) in enumerate(groups):
         c = COLORS[i % 5] if len(groups) > 1 else '#1f5fbf'
         for x, y in pts:
-            out.append('<circle cx="%.1f" cy="%.1f" r="3" fill="%s" fill-opacity=".7"/>' % (sx(x), sy(y), c))
-        if len(groups) > 1:
-            out.append('<text x="%d" y="%d" fill="%s" font-weight="700">● %s</text>' % (W - R - 120, T + 14 + 14 * i, c, html.escape(name)))
+            out.append('<circle cx="%.1f" cy="%.1f" r="3.2" fill="%s" fill-opacity=".75" stroke="#fff" stroke-width=".6"/>' % (sx(x), sy(y), c))
     if fit:
         P = [(tx(x), y) for _, pts in groups for x, y in pts]
         mx = sum(p[0] for p in P) / len(P); my = sum(p[1] for p in P) / len(P)
