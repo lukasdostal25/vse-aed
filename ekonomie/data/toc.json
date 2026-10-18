@@ -2,6 +2,7 @@
 {
 "unit": 0,
 "title": "Back matter",
+"extra": false,
 "sections": [
 {
 "id": "50-02-glossary",
@@ -24,6 +25,7 @@
 {
 "unit": 1,
 "title": "Unit 1 Prosperity, inequality, and planetary limits",
+"extra": true,
 "sections": [
 {
 "id": "01-prosperity-inequality-01-ibn-battuta",
@@ -90,6 +92,7 @@
 {
 "unit": 2,
 "title": "Unit 2 Technology and incentives",
+"extra": false,
 "sections": [
 {
 "id": "02-technology-incentives-01-kutesmart-tailoring",
@@ -152,6 +155,7 @@
 {
 "unit": 3,
 "title": "Unit 3 Doing the best you can: Scarcity, wellbeing, and working hours",
+"extra": false,
 "sections": [
 {
 "id": "03-scarcity-wellbeing-01-work-fewer-hours",
@@ -214,6 +218,7 @@
 {
 "unit": 4,
 "title": "Unit 4 Strategic interactions and social dilemmas",
+"extra": false,
 "sections": [
 {
 "id": "04-strategic-interactions-01-climate-negotiations",
@@ -284,6 +289,7 @@
 {
 "unit": 5,
 "title": "Unit 5 The rules of the game: Who gets what and why",
+"extra": false,
 "sections": [
 {
 "id": "05-the-rules-of-the-game-01-pirate-economics",
@@ -354,6 +360,7 @@
 {
 "unit": 6,
 "title": "Unit 6 The firm and its employees",
+"extra": false,
 "sections": [
 {
 "id": "06-firm-and-employees-01-exploding-tyres",
@@ -424,6 +431,7 @@
 {
 "unit": 7,
 "title": "Unit 7 The firm and its customers",
+"extra": false,
 "sections": [
 {
 "id": "07-firm-and-customers-01-winning-brands",
@@ -486,6 +494,7 @@
 {
 "unit": 8,
 "title": "Unit 8 Supply and demand: Markets with many buyers and sellers",
+"extra": false,
 "sections": [
 {
 "id": "08-supply-demand-01-american-civil-war",
@@ -552,6 +561,7 @@
 {
 "unit": 9,
 "title": "Unit 9 Lenders and borrowers and differences in wealth",
+"extra": false,
 "sections": [
 {
 "id": "09-lenders-borrowers-01-chambar-moneylenders",
@@ -618,6 +628,7 @@
 {
 "unit": 10,
 "title": "Unit 10 Market successes and failures: The societal effects of private decisions",
+"extra": false,
 "sections": [
 {
 "id": "10-market-successes-failures-01-bananas-fish-cancer",
