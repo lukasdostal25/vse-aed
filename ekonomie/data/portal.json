@@ -48,12 +48,32 @@
  ],
  "hw": [
   {
+   "id": "hw1",
+   "title": "Quiz 1: Prosperity, Malthus and the capitalist revolution",
+   "label": "Domácí úkol 1",
+   "n": 8,
+   "extra": 9
+  },
+  {
+   "id": "hw2",
+   "title": "Quiz 2: Technology and incentives",
+   "label": "Domácí úkol 2",
+   "n": 10,
+   "extra": 11
+  },
+  {
+   "id": "hw3",
+   "title": "Quiz 3: Scarcity, wellbeing and working hours",
+   "label": "Domácí úkol 3",
+   "n": 10,
+   "extra": 11
+  },
+  {
    "id": "hw4",
    "title": "Quiz 4: Strategic interactions and social dilemmas",
    "label": "Domácí úkol 4",
    "n": 10,
    "extra": 12
   }
- ],
- "hw_note": "Úkoly 1–3 zatím chybí – doplním, jakmile je nahraješ."
+ ]
 }

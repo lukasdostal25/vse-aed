@@ -1,5 +1,5 @@
 /* Service worker — čtečka The Economy 2.0. Offline cache pro aplikaci, text i obrázky. */
-const CACHE = 'econ-v7';
+const CACHE = 'econ-v8';
 const SHELL = ['./', './index.html', './style.css', './app.js', './manifest.webmanifest', './data/toc.json', './data/cs/meta.json', './data/cs/titles.json', './data/portal.json',
   'https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css',
   'https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js',

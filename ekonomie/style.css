@@ -470,3 +470,9 @@ body.vw-open { overflow: hidden; }
 .pr-hint { position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); background: rgba(0,0,0,.65); color: #e8eaed; font-size: 12px; padding: 6px 12px; border-radius: 999px; white-space: nowrap; }
 .pr-bar { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: rgba(255,255,255,.08); pointer-events: none; }
 .pr-bar i { display: block; height: 100%; width: 0; background: var(--extra-line); transition: width .25s; }
+
+/* homework: option list with verdict + reason */
+.slide-text .opt, .pr-note .opt { margin: .45em 0; padding: .45em .7em; border-left: 3px solid var(--line); border-radius: 4px; }
+.slide-text .opt.ok, .pr-note .opt.ok { border-left-color: var(--ok); background: color-mix(in srgb, var(--ok) 9%, transparent); }
+.slide-text .opt .why, .pr-note .opt .why { display: block; color: var(--ink-2); font-size: .92em; margin-top: .25em; }
+.slide-html table.mtab td, .slide-html table.mtab th { padding: 4px 8px; }
