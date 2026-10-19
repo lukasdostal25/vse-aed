@@ -791,7 +791,9 @@ async function startTrainer(cat, mode) {
   // prefer questions not yet seen / answered wrong
   pool = shuffle(pool).sort((a, b) => (st[a.id] ? (st[a.id].last ? 2 : 1) : 0) - (st[b.id] ? (st[b.id].last ? 2 : 1) : 0));
   const n = mode === 'all' || mode === 'wrong' ? pool.length : cat === 'mix' ? 15 : 10;
-  const list = shuffle(pool.slice(0, n)).map(x => ({ ...x, order: shuffle(x.q.opts.map((_, k) => k)) }));
+  // options are shuffled like in Moodle, except panel labels such as "(a)" that must keep their order
+  const order = q => { const k = q.opts.map((_, i) => i); return q.opts.every(o => /^\([a-z]\)$/i.test(o.en.trim())) ? k : shuffle(k); };
+  const list = shuffle(pool.slice(0, n)).map(x => ({ ...x, order: order(x.q) }));
   if (!list.length) return renderTrainer();
   trSess = { cat, mode, list, i: 0, score: 0, res: [] };
   renderTrQ();
@@ -861,7 +863,7 @@ function renderTrEnd() {
       <button class="tr-go${wrong.length ? ' ghost' : ''}" data-go="#/t/${S.cat}" id="tr-again">Nové kolo</button>
       <button class="tr-go ghost" data-go="#/t">Zpět na kategorie</button></div></div>`;
   const rd = $('#tr-redo');
-  if (rd) rd.onclick = () => { trSess = { ...S, list: shuffle(wrong).map(x => ({ ...x, order: shuffle(x.order) })), i: 0, score: 0, res: [] }; renderTrQ(); };
+  if (rd) rd.onclick = () => { trSess = { ...S, list: shuffle(wrong).map(x => ({ ...x, order: x.q.opts.every(o => /^\([a-z]\)$/i.test(o.en.trim())) ? x.order : shuffle(x.order) })), i: 0, score: 0, res: [] }; renderTrQ(); };
   const ag = $('#tr-again'); ag.onclick = e => { e.stopPropagation(); startTrainer(S.cat, S.mode === 'all' ? 'all' : ''); };
   window.scrollTo(0, 0); setProgress();
 }
