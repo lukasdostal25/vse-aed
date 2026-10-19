@@ -757,15 +757,16 @@ async function renderTrainer() {
   const info = c => {
     const ids = c.q.map((_, i) => c.id + ':' + i), done = ids.filter(k => st[k]);
     const ok = done.filter(k => st[k].last).length;
-    return { n: ids.length, done: done.length, ok, wrong: done.length - ok };
+    return { n: ids.length, done: done.length, ok, wrong: done.length - ok, fig: c.q.filter(q => q.svg || q.table).length };
   };
-  const all = D.cats.reduce((s, c) => { const x = info(c); s.n += x.n; s.done += x.done; s.ok += x.ok; s.wrong += x.wrong; return s; }, { n: 0, done: 0, ok: 0, wrong: 0 });
+  const all = D.cats.reduce((s, c) => { const x = info(c); s.n += x.n; s.done += x.done; s.ok += x.ok; s.wrong += x.wrong; s.fig += x.fig; return s; }, { n: 0, done: 0, ok: 0, wrong: 0, fig: 0 });
   const card = c => {
     const x = info(c);
     return `<div class="unit-card tr-cat"><div class="u">${esc(c.name)}</div><div class="t">${esc(c.topic)}</div>
       <div class="hub-sub">${x.n} otázek · procvičeno ${x.done}${x.done ? ` · naposledy správně ${x.ok}/${x.done}` : ''}</div>
       <div class="meter"><i style="width:${Math.round(100 * x.ok / x.n)}%"></i></div>
       <div class="tr-btns"><button class="tr-go" data-go="#/t/${c.id}">▶ 10 náhodných</button>
+      ${x.fig ? `<button class="tr-go ghost" data-go="#/t/${c.id}/fig">📈 Grafy a tabulky (${x.fig})</button>` : ''}
       <button class="tr-go ghost" data-go="#/t/${c.id}/all">Všech ${x.n}</button>
       ${x.wrong ? `<button class="tr-go ghost" data-go="#/t/${c.id}/wrong">Chyby (${x.wrong})</button>` : ''}</div></div>`;
   };
@@ -775,6 +776,7 @@ async function renderTrainer() {
     <div class="unit-card tr-cat tr-mix"><div class="u">Mix všech úkolů</div><div class="t">Test nanečisto</div>
       <div class="hub-sub">${all.n} otázek celkem · procvičeno ${all.done} · naposledy správně ${all.ok}</div>
       <div class="tr-btns"><button class="tr-go" data-go="#/t/mix">▶ 15 náhodných ze všeho</button>
+      ${all.fig ? `<button class="tr-go ghost" data-go="#/t/mix/fig">📈 15 s grafy a tabulkami</button>` : ''}
       ${all.wrong ? `<button class="tr-go ghost" data-go="#/t/mix/wrong">Všechny chyby (${all.wrong})</button>` : ''}</div></div>
     ${D.cats.map(card).join('')}
     ${all.done ? '<p class="fine"><button class="linkish" id="tr-reset">Vymazat statistiky trenažéru</button></p>' : ''}</div>`;
@@ -788,9 +790,10 @@ async function startTrainer(cat, mode) {
   let pool = [];
   cats.forEach(c => c.q.forEach((q, i) => pool.push({ c, q, id: c.id + ':' + i })));
   if (mode === 'wrong') pool = pool.filter(x => st[x.id] && !st[x.id].last);
+  if (mode === 'fig') pool = pool.filter(x => x.q.svg || x.q.table);
   // prefer questions not yet seen / answered wrong
   pool = shuffle(pool).sort((a, b) => (st[a.id] ? (st[a.id].last ? 2 : 1) : 0) - (st[b.id] ? (st[b.id].last ? 2 : 1) : 0));
-  const n = mode === 'all' || mode === 'wrong' ? pool.length : cat === 'mix' ? 15 : 10;
+  const n = mode === 'all' || mode === 'wrong' ? pool.length : cat === 'mix' ? 15 : mode === 'fig' ? 12 : 10;
   // options are shuffled like in Moodle, except panel labels such as "(a)" that must keep their order
   const order = q => { const k = q.opts.map((_, i) => i); return q.opts.every(o => /^\([a-z]\)$/i.test(o.en.trim())) ? k : shuffle(k); };
   const list = shuffle(pool.slice(0, n)).map(x => ({ ...x, order: order(x.q) }));
@@ -864,7 +867,7 @@ function renderTrEnd() {
       <button class="tr-go ghost" data-go="#/t">Zpět na kategorie</button></div></div>`;
   const rd = $('#tr-redo');
   if (rd) rd.onclick = () => { trSess = { ...S, list: shuffle(wrong).map(x => ({ ...x, order: x.q.opts.every(o => /^\([a-z]\)$/i.test(o.en.trim())) ? x.order : shuffle(x.order) })), i: 0, score: 0, res: [] }; renderTrQ(); };
-  const ag = $('#tr-again'); ag.onclick = e => { e.stopPropagation(); startTrainer(S.cat, S.mode === 'all' ? 'all' : ''); };
+  const ag = $('#tr-again'); ag.onclick = e => { e.stopPropagation(); startTrainer(S.cat, S.mode === 'wrong' ? '' : S.mode); };
   window.scrollTo(0, 0); setProgress();
 }
 
