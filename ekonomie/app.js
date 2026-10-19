@@ -501,6 +501,10 @@ async function route() {
     renderHome();
   } else if ((m = h.match(/^#\/(lec|sem|hw)$/))) {
     await renderDeckList(m[1]);
+  } else if (h === '#/t') {
+    await renderTrainer();
+  } else if ((m = h.match(/^#\/t\/(\w+)(?:\/(\w+))?$/))) {
+    await startTrainer(m[1], m[2] || '');
   } else if ((m = h.match(/^#\/d\/([^/?#]+)/))) {
     await renderDeck(decodeURIComponent(m[1]), opts);
   } else {
@@ -601,7 +605,7 @@ function closeSearch() { $('#search').hidden = true; $('#q').blur(); }
 /* ---------------- offline ---------------- */
 async function downloadAll() {
   const btn = $('#btn-offline');
-  const urls = ['data/toc.json', ...state.toc.map(u => `data/en/u${pad(u.unit)}.json`)];
+  const urls = ['data/toc.json', 'data/trainer.json', ...state.toc.map(u => `data/en/u${pad(u.unit)}.json`)];
   state.toc.forEach(u => { if (u.extra) urls.push(`data/extra/u${pad(u.unit)}.json`); });
   const meta = await csInfo();
   meta.units.forEach(u => urls.push(`data/cs/u${pad(u)}.json`));
@@ -716,6 +720,7 @@ async function renderHub() {
     ${card('#/lec', KINDS.lec.icon, 'Přednášky', cnt('lec'))}
     ${card('#/sem', KINDS.sem.icon, 'Cvičení', cnt('sem'))}
     ${card('#/hw', KINDS.hw.icon, 'Domácí úkoly', cnt('hw'))}
+    ${card('#/t', '🎯', 'Trenažér', 'Otázky stejného typu jako v domácích úkolech – trénink na test')}
   </div>`;
   window.scrollTo(0, 0); setProgress();
 }
@@ -733,9 +738,134 @@ async function renderDeckList(kind) {
   $('#main').innerHTML = `<div class="home"><h1>${K.name}</h1><p class="lead">${K.hint}</p>
     ${items || `<div class="extra"><span class="tag">Připravuje se</span><p>Sem přijdou ${K.name.toLowerCase()}, jakmile nahraješ podklady.</p></div>`}
     ${kind === 'hw' && p.hw_note ? `<p class="fine">${esc(p.hw_note)}</p>` : ''}
+    ${kind === 'hw' ? '<button class="unit-card hub-card" data-go="#/t"><div class="hub-ico">🎯</div><div><div class="t">Trenažér</div><div class="hub-sub">Nové otázky jako v DÚ 1–4, s vysvětlením každé možnosti</div></div></button>' : ''}
     ${p.locked ? '<p class="fine">Materiály z VŠE jsou autorské dílo vyučujících, proto jsou zašifrované a otevřou se jen s tvým heslem.</p>' : ''}</div>`;
   window.scrollTo(0, 0); setProgress();
 }
+/* ---------- quiz trainer: questions of the same type as the homework quizzes ---------- */
+let trainerData = null, trSess = null;
+async function loadTrainer() {
+  if (!trainerData) trainerData = await getJSON('data/trainer.json');
+  return trainerData;
+}
+const trStats = () => store.get('trainer', {});
+function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+async function renderTrainer() {
+  state.cur = { type: 'home', tab: 'tr' };
+  $('#bar-title').textContent = 'Trenažér';
+  const D = await loadTrainer(), st = trStats();
+  const info = c => {
+    const ids = c.q.map((_, i) => c.id + ':' + i), done = ids.filter(k => st[k]);
+    const ok = done.filter(k => st[k].last).length;
+    return { n: ids.length, done: done.length, ok, wrong: done.length - ok };
+  };
+  const all = D.cats.reduce((s, c) => { const x = info(c); s.n += x.n; s.done += x.done; s.ok += x.ok; s.wrong += x.wrong; return s; }, { n: 0, done: 0, ok: 0, wrong: 0 });
+  const card = c => {
+    const x = info(c);
+    return `<div class="unit-card tr-cat"><div class="u">${esc(c.name)}</div><div class="t">${esc(c.topic)}</div>
+      <div class="hub-sub">${x.n} otázek · procvičeno ${x.done}${x.done ? ` · naposledy správně ${x.ok}/${x.done}` : ''}</div>
+      <div class="meter"><i style="width:${Math.round(100 * x.ok / x.n)}%"></i></div>
+      <div class="tr-btns"><button class="tr-go" data-go="#/t/${c.id}">▶ 10 náhodných</button>
+      <button class="tr-go ghost" data-go="#/t/${c.id}/all">Všech ${x.n}</button>
+      ${x.wrong ? `<button class="tr-go ghost" data-go="#/t/${c.id}/wrong">Chyby (${x.wrong})</button>` : ''}</div></div>`;
+  };
+  $('#main').innerHTML = `<div class="home"><h1>Trenažér</h1>
+    <p class="lead">Nové otázky stejného typu jako v domácích úkolech – na trénink na test. Otázky jsou anglicky jako v Moodlu,
+    tlačítkem <b>CZ</b> si zobrazíš překlad. Po kontrole uvidíš u každé možnosti, proč je správně / špatně.</p>
+    <div class="unit-card tr-cat tr-mix"><div class="u">Mix všech úkolů</div><div class="t">Test nanečisto</div>
+      <div class="hub-sub">${all.n} otázek celkem · procvičeno ${all.done} · naposledy správně ${all.ok}</div>
+      <div class="tr-btns"><button class="tr-go" data-go="#/t/mix">▶ 15 náhodných ze všeho</button>
+      ${all.wrong ? `<button class="tr-go ghost" data-go="#/t/mix/wrong">Všechny chyby (${all.wrong})</button>` : ''}</div></div>
+    ${D.cats.map(card).join('')}
+    ${all.done ? '<p class="fine"><button class="linkish" id="tr-reset">Vymazat statistiky trenažéru</button></p>' : ''}</div>`;
+  const r = $('#tr-reset'); if (r) r.onclick = () => { if (confirm('Opravdu vymazat statistiky trenažéru?')) { store.set('trainer', {}); renderTrainer(); } };
+  window.scrollTo(0, 0); setProgress();
+}
+async function startTrainer(cat, mode) {
+  const D = await loadTrainer(), st = trStats();
+  const cats = cat === 'mix' ? D.cats : D.cats.filter(c => c.id === cat);
+  if (!cats.length) return renderTrainer();
+  let pool = [];
+  cats.forEach(c => c.q.forEach((q, i) => pool.push({ c, q, id: c.id + ':' + i })));
+  if (mode === 'wrong') pool = pool.filter(x => st[x.id] && !st[x.id].last);
+  // prefer questions not yet seen / answered wrong
+  pool = shuffle(pool).sort((a, b) => (st[a.id] ? (st[a.id].last ? 2 : 1) : 0) - (st[b.id] ? (st[b.id].last ? 2 : 1) : 0));
+  const n = mode === 'all' || mode === 'wrong' ? pool.length : cat === 'mix' ? 15 : 10;
+  const list = shuffle(pool.slice(0, n)).map(x => ({ ...x, order: shuffle(x.q.opts.map((_, k) => k)) }));
+  if (!list.length) return renderTrainer();
+  trSess = { cat, mode, list, i: 0, score: 0, res: [] };
+  renderTrQ();
+}
+function renderTrQ() {
+  const S = trSess; if (!S) return renderTrainer();
+  state.cur = { type: 'home', tab: 'tr' };
+  if (S.i >= S.list.length) return renderTrEnd();
+  const it = S.list[S.i], q = it.q, cz = store.get('trCs', false);
+  $('#bar-title').textContent = `Trenažér · ${S.i + 1}/${S.list.length}`;
+  const opts = it.order.map((k, j) => {
+    const o = q.opts[k];
+    return `<li class="tr-opt" data-k="${k}"><span class="tr-box"></span><span class="tr-l">${String.fromCharCode(97 + j)}.</span>
+      <span class="tr-t">${o.en}${cz ? `<span class="tr-cs">${o.cs}</span>` : ''}</span></li>`;
+  }).join('');
+  $('#main').innerHTML = `<div class="home trq">
+    <div class="tr-head"><span class="tr-chip">${esc(it.c.name.replace('Otázky jako z ', ''))}</span><span class="tr-topic">${esc(q.t || '')}</span>
+      <button class="tr-cz${cz ? ' on' : ''}" title="Český překlad">CZ</button></div>
+    <div class="tr-prog"><i style="width:${Math.round(100 * S.i / S.list.length)}%"></i></div>
+    <div class="tr-card"><p class="tr-stem">${q.en}</p>${cz ? `<p class="tr-stem cs">${q.cs}</p>` : ''}
+      ${q.table ? `<div class="tr-table">${q.table}</div>` : ''}${q.svg ? `<div class="tr-fig">${q.svg}</div>` : ''}
+      <ul class="tr-opts">${opts}</ul>
+      <div class="tr-fb" hidden></div>
+      <div class="tr-actions"><button class="tr-go" id="tr-check">Zkontrolovat</button>
+      <button class="tr-go ghost" id="tr-quit">Ukončit</button></div></div></div>`;
+  $$('.tr-opt').forEach(li => li.onclick = () => { if (!$('.trq').classList.contains('done')) li.classList.toggle('picked'); });
+  $('.tr-cz').onclick = () => { store.set('trCs', !cz); const picked = $$('.tr-opt.picked').map(l => l.dataset.k); const done = $('.trq').classList.contains('done'); renderTrQ(); picked.forEach(k => $(`.tr-opt[data-k="${k}"]`).classList.add('picked')); if (done) checkTrQ(true); };
+  $('#tr-quit').onclick = () => { S.list = S.list.slice(0, S.i); renderTrEnd(); };
+  $('#tr-check').onclick = () => checkTrQ(false);
+  window.scrollTo(0, 0);
+}
+function checkTrQ(again) {
+  const S = trSess, it = S.list[S.i], q = it.q;
+  const lis = $$('.tr-opt');
+  if (!again && !lis.some(l => l.classList.contains('picked'))) { toast('Vyber aspoň jednu možnost'); return; }
+  let right = true;
+  lis.forEach(li => {
+    const o = q.opts[+li.dataset.k], picked = li.classList.contains('picked');
+    if (o.ok !== picked) right = false;
+    li.classList.add(o.ok ? 'is-ok' : (picked ? 'is-bad' : 'is-no'));
+    li.insertAdjacentHTML('beforeend', `<span class="tr-why"><b>${o.ok ? '✓ Správně' : '✗ Špatně'}${picked ? ' · tvoje volba' : ''}:</b> ${o.why}</span>`);
+  });
+  $('.trq').classList.add('done');
+  if (!again) {
+    S.res[S.i] = right; if (right) S.score++;
+    const st = trStats(), r = st[it.id] || { n: 0, ok: 0 };
+    r.n++; if (right) r.ok++; r.last = right; st[it.id] = r; store.set('trainer', st);
+  } else right = S.res[S.i];
+  const fb = $('.tr-fb'); fb.hidden = false;
+  fb.className = 'tr-fb ' + (right ? 'ok' : 'bad');
+  fb.innerHTML = (right ? '<b>✓ Správně!</b>' : '<b>✗ Ne úplně.</b> Správně: ' + $$('.tr-opt.is-ok .tr-l').map(x => x.textContent.replace('.', '')).join(', '))
+    + (q.tip ? `<div class="tr-tip">💡 ${q.tip}</div>` : '');
+  const b = $('#tr-check'); b.textContent = S.i + 1 < S.list.length ? 'Další otázka →' : 'Výsledek';
+  b.onclick = () => { S.i++; renderTrQ(); };
+}
+function renderTrEnd() {
+  const S = trSess; if (!S) return renderTrainer();
+  const n = S.res.filter(x => x != null).length;
+  const pct = n ? Math.round(100 * S.score / n) : 0;
+  const wrong = S.list.filter((_, i) => S.res[i] === false);
+  $('#bar-title').textContent = 'Trenažér · výsledek';
+  $('#main').innerHTML = `<div class="home"><h1>${n ? `${S.score} / ${n}` : 'Bez odpovědí'}</h1>
+    <p class="lead">${!n ? '' : pct >= 85 ? 'Výborně, tohle téma máš v malíčku. 🎉' : pct >= 60 ? 'Dobrý základ – projdi si chyby a zkus to znovu.' : 'Tohle chce ještě potrénovat. Projdi vysvětlení u chyb a zopakuj kolo.'}</p>
+    ${n ? `<div class="tr-prog big"><i style="width:${pct}%"></i></div>` : ''}
+    ${wrong.length ? `<h3>Chyby v tomto kole</h3><ul class="tr-miss">${wrong.map(x => `<li><span class="tr-chip">${esc(x.c.name.replace('Otázky jako z ', ''))}</span> ${esc(x.q.t || '')}</li>`).join('')}</ul>` : ''}
+    <div class="tr-btns">${wrong.length ? '<button class="tr-go" id="tr-redo">Zopakovat chyby</button>' : ''}
+      <button class="tr-go${wrong.length ? ' ghost' : ''}" data-go="#/t/${S.cat}" id="tr-again">Nové kolo</button>
+      <button class="tr-go ghost" data-go="#/t">Zpět na kategorie</button></div></div>`;
+  const rd = $('#tr-redo');
+  if (rd) rd.onclick = () => { trSess = { ...S, list: shuffle(wrong).map(x => ({ ...x, order: shuffle(x.order) })), i: 0, score: 0, res: [] }; renderTrQ(); };
+  const ag = $('#tr-again'); ag.onclick = e => { e.stopPropagation(); startTrainer(S.cat, S.mode === 'all' ? 'all' : ''); };
+  window.scrollTo(0, 0); setProgress();
+}
+
 const deckCache = {}, blobCache = {};
 async function loadDeck(id) {
   if (deckCache[id]) return deckCache[id];
