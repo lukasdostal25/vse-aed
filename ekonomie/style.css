@@ -523,3 +523,7 @@ body.vw-open { overflow: hidden; }
 .tr-actions { display: flex; gap: 8px; margin-top: 14px; }
 .tr-miss { padding-left: 1.1em; font-family: var(--sans); font-size: 14px; }
 .tr-miss li { margin: 4px 0; }
+
+/* wide tables in slide translations / extra slides scroll inside the card instead of widening the page */
+.slide-text table, .slide-html table, .pr-note table { display: block; max-width: 100%; overflow-x: auto; }
+.slide, .slide-text, .slide-html { min-width: 0; overflow-wrap: anywhere; }
