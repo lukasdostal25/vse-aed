@@ -746,6 +746,11 @@ async function renderDeckList(kind) {
 let trainerData = null, trSess = null;
 async function loadTrainer() {
   if (!trainerData) trainerData = await getJSON('data/trainer.json');
+  // categories built from the (licensed) textbook are encrypted like the translation; add them once unlocked
+  for (const e of trainerData.enc || []) {
+    if (e.loaded || !state.key || trainerData.cats.some(c => c.id === e.id)) continue;
+    try { trainerData.cats.push(JSON.parse(await decrypt(state.key, await getJSON(e.src)))); e.loaded = true; } catch (err) {}
+  }
   return trainerData;
 }
 const trStats = () => store.get('trainer', {});
@@ -760,6 +765,10 @@ async function renderTrainer() {
     return { n: ids.length, done: done.length, ok, wrong: done.length - ok, fig: c.q.filter(q => q.svg || q.table).length };
   };
   const all = D.cats.reduce((s, c) => { const x = info(c); s.n += x.n; s.done += x.done; s.ok += x.ok; s.wrong += x.wrong; s.fig += x.fig; return s; }, { n: 0, done: 0, ok: 0, wrong: 0, fig: 0 });
+  const units = c => {
+    const us = [...new Set(c.q.map(q => q.unit).filter(Boolean))].sort((a, b) => a - b);
+    return us.length ? `<div class="tr-btns tr-units">${us.map(u => `<button class="tr-go ghost" data-go="#/t/${c.id}/u${u}">Kap. ${u} (${c.q.filter(q => q.unit === u).length})</button>`).join('')}</div>` : '';
+  };
   const card = c => {
     const x = info(c);
     return `<div class="unit-card tr-cat"><div class="u">${esc(c.name)}</div><div class="t">${esc(c.topic)}</div>
@@ -768,7 +777,8 @@ async function renderTrainer() {
       <div class="tr-btns"><button class="tr-go" data-go="#/t/${c.id}">▶ 10 náhodných</button>
       ${x.fig ? `<button class="tr-go ghost" data-go="#/t/${c.id}/fig">📈 Grafy a tabulky (${x.fig})</button>` : ''}
       <button class="tr-go ghost" data-go="#/t/${c.id}/all">Všech ${x.n}</button>
-      ${x.wrong ? `<button class="tr-go ghost" data-go="#/t/${c.id}/wrong">Chyby (${x.wrong})</button>` : ''}</div></div>`;
+      ${x.wrong ? `<button class="tr-go ghost" data-go="#/t/${c.id}/wrong">Chyby (${x.wrong})</button>` : ''}</div>
+      ${units(c)}</div>`;
   };
   $('#main').innerHTML = `<div class="home"><h1>Trenažér</h1>
     <p class="lead">Nové otázky stejného typu jako v domácích úkolech – na trénink na test. Otázky jsou anglicky jako v Moodlu,
@@ -779,7 +789,11 @@ async function renderTrainer() {
       ${all.fig ? `<button class="tr-go ghost" data-go="#/t/mix/fig">📈 15 s grafy a tabulkami</button>` : ''}
       ${all.wrong ? `<button class="tr-go ghost" data-go="#/t/mix/wrong">Všechny chyby (${all.wrong})</button>` : ''}</div></div>
     ${D.cats.map(card).join('')}
+    ${(D.enc || []).filter(e => !D.cats.some(c => c.id === e.id)).map(e => `<div class="unit-card tr-cat"><div class="u">🔒 ${esc(e.name)}</div>
+      <div class="t">${esc(e.topic)}</div><div class="hub-sub">${e.n} otázek · obsahuje český překlad učebnice, proto je pod heslem</div>
+      <div class="tr-btns"><button class="tr-go" id="tr-unlock">Odemknout heslem</button></div></div>`).join('')}
     ${all.done ? '<p class="fine"><button class="linkish" id="tr-reset">Vymazat statistiky trenažéru</button></p>' : ''}</div>`;
+  const ul = $('#tr-unlock'); if (ul) ul.onclick = async e => { e.stopPropagation(); if (await askPassword()) renderTrainer(); };
   const r = $('#tr-reset'); if (r) r.onclick = () => { if (confirm('Opravdu vymazat statistiky trenažéru?')) { store.set('trainer', {}); renderTrainer(); } };
   window.scrollTo(0, 0); setProgress();
 }
@@ -791,9 +805,10 @@ async function startTrainer(cat, mode) {
   cats.forEach(c => c.q.forEach((q, i) => pool.push({ c, q, id: c.id + ':' + i })));
   if (mode === 'wrong') pool = pool.filter(x => st[x.id] && !st[x.id].last);
   if (mode === 'fig') pool = pool.filter(x => x.q.svg || x.q.table);
+  if (/^u\d+$/.test(mode)) pool = pool.filter(x => x.q.unit === +mode.slice(1));
   // prefer questions not yet seen / answered wrong
   pool = shuffle(pool).sort((a, b) => (st[a.id] ? (st[a.id].last ? 2 : 1) : 0) - (st[b.id] ? (st[b.id].last ? 2 : 1) : 0));
-  const n = mode === 'all' || mode === 'wrong' ? pool.length : cat === 'mix' ? 15 : mode === 'fig' ? 12 : 10;
+  const n = mode === 'all' || mode === 'wrong' || /^u\d+$/.test(mode) ? pool.length : cat === 'mix' ? 15 : mode === 'fig' ? 12 : 10;
   // options are shuffled like in Moodle, except panel labels such as "(a)" that must keep their order
   const order = q => { const k = q.opts.map((_, i) => i); return q.opts.every(o => /^\([a-z]\)$/i.test(o.en.trim())) ? k : shuffle(k); };
   const list = shuffle(pool.slice(0, n)).map(x => ({ ...x, order: order(x.q) }));

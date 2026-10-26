@@ -527,3 +527,5 @@ body.vw-open { overflow: hidden; }
 /* wide tables in slide translations / extra slides scroll inside the card instead of widening the page */
 .slide-text table, .slide-html table, .pr-note table { display: block; max-width: 100%; overflow-x: auto; }
 .slide, .slide-text, .slide-html { min-width: 0; overflow-wrap: anywhere; }
+.tr-units .tr-go { padding: 7px 10px; font-size: 13px; }
+.tr-fig img { display: block; }
