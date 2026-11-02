@@ -1,0 +1,135 @@
+<article data-id="t1" data-topic="typy" data-title="Urči proměnné">
+<p>V dotazníku jsou tyto proměnné: <b>obor studia</b>, <b>IQ</b>, <b>den narození</b>, <b>počet dětí</b>, <b>hodnocení služby (špatné, průměrné, dobré)</b>.</p>
+<details><summary>Nápověda</summary><div>Pro každou se zeptej: dává smysl odečítání? Jde to přirozeně seřadit? Může mezi dvěma hodnotami ležet další?</div></details>
+<details><summary>Řešení</summary><div><ul><li>Obor: <b>nominální</b>.</li><li>IQ: <b>kvantitativní</b>, v řešení cvičení „číselná“; bereme ji jako spojitou, protože ji kreslíme histogramem.</li><li>Den narození: řešení cvičení uvádí <b>číselná</b>, ale průměrný den narození věcně moc neřekne. Patří spíš do šedé zóny.</li><li>Počet dětí: <b>diskrétní</b>.</li><li>Hodnocení: <b>ordinální</b>.</li></ul></div></details>
+</article>
+<article data-id="t2" data-topic="typy" data-title="Vyber graf">
+<p>Který graf použiješ?</p><ol type="a"><li>Vývoj nezaměstnanosti 1993–2025</li><li>Počet studentů podle kraje</li><li>Rozdělení mezd 500 lidí a odlehlé hodnoty</li><li>Vztah rozlohy okresu a počtu obcí</li><li>Počet sourozenců 30 studentů</li></ol>
+<details><summary>Řešení</summary><div><ol type="a"><li>Spojnicový: vývoj v čase.</li><li>Sloupcový: nominální proměnná.</li><li>Krabicový, tvar doplní histogram.</li><li>Bodový: dvě číselné proměnné.</li><li>Sloupcový: diskrétní proměnná s málo hodnotami.</li></ol></div></details>
+</article>
+<article data-id="t3" data-topic="typy" data-title="Jaký typ dat">
+<p>Máš hodnoty HDP a nezaměstnanosti 27 států za roky 2000–2025. Tabulka má řádky <i>Země, Rok, HDP, Nezaměstnanost</i>.</p><p>O jaký typ dat jde a jaký je to formát?</p>
+<details><summary>Řešení</summary><div>Více jednotek a více období: <b>panelová</b> data. Každá kombinace země a roku má vlastní řádek: <b>long</b> formát. Ve wide by měl každý stát jeden řádek s mnoha sloupci jako HDP 2000, HDP 2001…</div></details>
+</article>
+<article data-id="t4" data-topic="cetnosti" data-title="Celá tabulka četností ručně">
+<p>30 studentů, počet sourozenců. Spočítej $N_i$, $p_i$, $P_i$, modus, medián, kvartily a průměr.</p>
+<div class="scroll"><table><tr><th class="n">$x_i$</th><th class="n">0</th><th class="n">1</th><th class="n">2</th><th class="n">3</th><th class="n">4</th></tr><tr><td class="n">$n_i$</td><td class="n">9</td><td class="n">12</td><td class="n">7</td><td class="n">1</td><td class="n">1</td></tr></table></div>
+<details><summary>Nápověda</summary><div>$N_i$ se postupně sčítá, $P_i$ je $N_i/30$. Pro kvantily hledej první $P_i$ nad hranicí.</div></details>
+<details><summary>Postup a výsledek</summary><div><p>$N_i$: 9, 21, 28, 29, 30. $P_i$: 0,3; 0,7; 0,933; 0,967; 1.</p><ul><li>Modus <b>1</b> (nejvyšší $n_i$).</li><li>$Q_1$ = <b>0</b>, medián = <b>1</b>, $Q_3$ = <b>2</b>.</li><li>Průměr: $(0+12+14+3+4)/30=$ <b>1,1</b>.</li><li>Výklad: 70 % studentů má nejvýše jednoho sourozence.</li></ul></div></details>
+</article>
+<article data-id="t5" data-topic="cetnosti" data-title="Tři procenta z jedné buňky">
+<p>Muži: fotbal 8, ostatní 7. Ženy: fotbal 5, ostatní 10. Spočítej a slovy vyjádři řádkové, sloupcové a celkové procento u <b>muži × fotbal</b>.</p>
+<details><summary>Řešení</summary><div><p>Celkem 30, mužů 15, fotbal 13.</p><ul><li>Z celku: 8/30 = <b>26,7 %</b> všech jsou muži preferující fotbal.</li><li>Z mužů: 8/15 = <b>53,3 %</b> mužů preferuje fotbal.</li><li>Z fotbalu: 8/13 = <b>61,5 %</b> fanoušků fotbalu jsou muži.</li></ul></div></details>
+</article>
+<article data-id="t6" data-topic="cetnosti" data-title="Ve kterém intervalu je medián">
+<div class="scroll"><table><tr><th>Příjem</th><th class="n">$n_i$</th></tr><tr><td>≤ 15 000</td><td class="n">5</td></tr><tr><td>15–30 tisíc</td><td class="n">23</td></tr><tr><td>30–45 tisíc</td><td class="n">26</td></tr><tr><td>45–60 tisíc</td><td class="n">22</td></tr><tr><td>60–75 tisíc</td><td class="n">11</td></tr><tr><td>75–90 tisíc</td><td class="n">10</td></tr><tr><td>90 tisíc +</td><td class="n">3</td></tr></table></div>
+<p>Najdi interval mediánu, obou kvartilů a modální interval. Bude průměr větší, nebo menší než medián?</p>
+<details><summary>Řešení</summary><div><p>$P_i$: 0,05; 0,28; 0,54; 0,76; 0,87; 0,97; 1.</p><ul><li>$Q_1$: <b>15–30 tisíc</b>.</li><li>Medián: <b>30–45 tisíc</b>.</li><li>$Q_3$: <b>45–60 tisíc</b>.</li><li>Modální: <b>30–45 tisíc</b>.</li><li>Pravý chvost je delší, průměr bude <b>větší</b>. Skutečně: 45 772 proti 43 640.</li></ul></div></details>
+</article>
+<article data-id="t7" data-topic="prumery" data-title="Vážený průměr: průměrný věk">
+<div class="scroll"><table><tr><th>Strana</th><th class="n">A</th><th class="n">B</th><th class="n">C</th><th class="n">D</th><th class="n">E</th></tr><tr><td>Voličů</td><td class="n">250</td><td class="n">50</td><td class="n">120</td><td class="n">200</td><td class="n">380</td></tr><tr><td>Průměrný věk</td><td class="n">25</td><td class="n">31</td><td class="n">32</td><td class="n">43</td><td class="n">51</td></tr></table></div>
+<p>Jaký je průměrný věk v celém vzorku?</p>
+<details><summary>Postup a výsledek</summary><div><p>$(250\cdot25+50\cdot31+120\cdot32+200\cdot43+380\cdot51)/1000=39\,620/1000=$ <b>39,62 roku</b>.</p></div></details>
+</article>
+<article data-id="t8" data-topic="prumery" data-title="Dopočítej neznámou">
+<p>100 poboček, celkový průměrný obrat 22,86 mil. Kč. Doplň $n_D$ a $x_C$.</p>
+<div class="scroll"><table><tr><th>Město</th><th class="n">A</th><th class="n">B</th><th class="n">C</th><th class="n">D</th><th class="n">E</th></tr><tr><td>Průměrný obrat</td><td class="n">27,2</td><td class="n">26,4</td><td class="n">?</td><td class="n">22,5</td><td class="n">19</td></tr><tr><td>Poboček</td><td class="n">10</td><td class="n">15</td><td class="n">17</td><td class="n">?</td><td class="n">32</td></tr></table></div>
+<details><summary>Nápověda</summary><div>Nejdřív počet z celku, pak rovnice $\sum x_jp_j = 22{,}86$.</div></details>
+<details><summary>Postup a výsledek</summary><div><p>$n_D=100-74=$ <b>26</b>.</p><p>$2{,}72+3{,}96+0{,}17x_C+5{,}85+6{,}08=22{,}86$, tedy $0{,}17x_C=4{,}25$, $x_C=$ <b>25 mil. Kč</b>.</p></div></details>
+</article>
+<article data-id="t9" data-topic="prumery" data-title="Harmonický: stejné úseky">
+<p>Čtyři úseky po 100 km rychlostmi 20, 25, 50 a 100 km/h. Jaká je průměrná rychlost?</p>
+<details><summary>Nápověda</summary><div>Spočítej celkový čas. Rychlost je dráha / čas.</div></details>
+<details><summary>Postup a výsledek</summary><div><p>Časy 5, 4, 2, 1 h, celkem 12 h. $400/12=$ <b>33,33 km/h</b>. Aritmetický průměr 48,75 je chybný.</p></div></details>
+</article>
+<article data-id="t10" data-topic="prumery" data-title="Harmonický: různé úseky">
+<p>Úseky 100, 150, 200 a 300 km rychlostmi 20, 25, 50 a 100 km/h.</p>
+<details><summary>Postup a výsledek</summary><div><p>Časy 5, 6, 4, 3 h, celkem 18 h. $750/18=$ <b>41,67 km/h</b>.</p></div></details>
+</article>
+<article data-id="t11" data-topic="prumery" data-title="Stejný čas: který průměr?">
+<p>Auto jede 1 hodinu rychlostí 60 km/h a 1 hodinu rychlostí 100 km/h. Jaká je průměrná rychlost a proč tady harmonický průměr nepatří?</p>
+<details><summary>Řešení</summary><div><p>Dráha $60+100=160$ km za 2 hodiny, tedy <b>80 km/h</b>. Stejný je tentokrát <b>čas, tedy jmenovatel</b>, proto stačí aritmetický průměr. Harmonický by byl správný při stejné dráze.</p></div></details>
+</article>
+<article data-id="t12" data-topic="prumery" data-title="Geometrický: měsíční změny">
+<p>Cena vzrostla o 10 %, o 5 %, klesla o 7 % a nezměnila se. Spočítej celkovou a průměrnou změnu.</p>
+<details><summary>Postup a výsledek</summary><div><p>$1{,}1\cdot1{,}05\cdot0{,}93\cdot1=1{,}07415$, celkem <b>+7,415 %</b>.</p><p>$1{,}07415^{1/4}=1{,}018$, průměrně <b>+1,8 % měsíčně</b>.</p></div></details>
+</article>
+<article data-id="t13" data-topic="prumery" data-title="Geometrický: začátek a konec">
+<p>Praha měla v roce 2004 celkem 1 165 581 obyvatel a v roce 2024 celkem 1 384 732. Spočítej celkový a průměrný meziroční růst.</p>
+<details><summary>Nápověda</summary><div>Kolik je to změn?</div></details>
+<details><summary>Postup a výsledek</summary><div><p>Celkem $1\,384\,732/1\,165\,581=1{,}188$, tedy <b>+18,8 %</b>.</p><p>20 změn: $1{,}188^{1/20}=1{,}0087$, tedy <b>+0,87 % ročně</b>.</p></div></details>
+</article>
+<article data-id="t14" data-topic="prumery" data-title="Tržby: nahoru a dolů">
+<p>Tržby v prvním roce vzrostly o 30 %, v druhém klesly o 10 %. Jaký byl celkový a průměrný roční růst?</p>
+<details><summary>Postup a výsledek</summary><div><p>$1{,}3\cdot0{,}9=1{,}17$, celkem <b>+17 %</b>. $\sqrt{1{,}17}=1{,}0817$, průměrně <b>+8,17 % ročně</b>. Aritmetický průměr by dal chybných +10 %.</p></div></details>
+</article>
+<article data-id="t15" data-topic="variabilita" data-title="Popisná statistika z malých dat">
+<p>Hodnoty: 4, 6, 6, 7, 9, 10, 12, 18. Spočítej průměr, medián, modus, rozptyl, $s$, $V$ a $r$.</p>
+<details><summary>Nápověda</summary><div>$n=8$ je sudé, medián je průměr 4. a 5. hodnoty. Rozptyl: průměr čtverců minus čtverec průměru.</div></details>
+<details><summary>Postup a výsledek</summary><div><ul><li>$\bar{x}=72/8=$ <b>9</b>.</li><li>Medián $(7+9)/2=$ <b>8</b>, modus <b>6</b>.</li><li>Průměr čtverců $786/8=98{,}25$, $s^2=98{,}25-81=$ <b>17,25</b>.</li><li>$s=$ <b>4,153</b>, $V=4{,}153/9=$ <b>46,1 %</b>.</li><li>$r=18-4=$ <b>14</b>.</li></ul><p>Průměr je nad mediánem kvůli hodnotě 18: mírné pravostranné zešikmení.</p></div></details>
+</article>
+<article data-id="t16" data-topic="variabilita" data-title="Variační koeficient z tabulky">
+<p>92 studentů podle věku. Spočítej variační koeficient.</p>
+<div class="scroll"><table><tr><th class="n">Věk</th><th class="n">18</th><th class="n">19</th><th class="n">20</th><th class="n">21</th><th class="n">22</th><th class="n">23</th><th class="n">24</th></tr><tr><td class="n">$n_i$</td><td class="n">4</td><td class="n">24</td><td class="n">42</td><td class="n">12</td><td class="n">4</td><td class="n">3</td><td class="n">3</td></tr></table></div>
+<details><summary>Postup a výsledek</summary><div><ol><li>$\bar{x}=1849/92=20{,}098$.</li><li>Výpočtový tvar: $\sum x_i^2n_i=37\,303$, $s^2=37\,303/92-20{,}098^2=$ <b>1,545</b>.</li><li>$s=$ <b>1,243</b>.</li><li>$V=1{,}243/20{,}098=$ <b>6,18 %</b>.</li></ol></div></details>
+</article>
+<article data-id="t17" data-topic="variabilita" data-title="Rozptyl z intervalů">
+<p>Výdaje 200 studentů. Použij středy intervalů.</p>
+<div class="scroll"><table><tr><th>Interval (tis. Kč)</th><th class="n">0–5</th><th class="n">5–10</th><th class="n">10–15</th><th class="n">15–20</th><th class="n">20–25</th><th class="n">25–30</th></tr><tr><td>$n_i$</td><td class="n">13</td><td class="n">92</td><td class="n">63</td><td class="n">19</td><td class="n">12</td><td class="n">1</td></tr></table></div>
+<details><summary>Postup a výsledek</summary><div><p>Středy 2 500, 7 500, … 27 500.</p><ul><li>Průměr: <b>10 700 Kč</b>.</li><li>Rozptyl: <b>24 260 000</b>.</li><li>$s=$ <b>4 925 Kč</b>, $V=$ <b>46,0 %</b>.</li></ul><p>Výsledek je jen přibližný, protože neznáme přesné hodnoty.</p></div></details>
+</article>
+<article data-id="t18" data-topic="variabilita" data-title="Co se stane s ukazateli">
+<p>Původně: $\bar{x}=47\,291$, $s=25\,758$. Co se stane, když a) každému přidáme 1 000, b) každému zdvojnásobíme plat, c) každému snížíme plat o 10 %?</p>
+<details><summary>Řešení</summary><div><ol type="a"><li>$\bar{x}=48\,291$, $s$ a rozptyl stejné, $V$ klesne na 53,34 %.</li><li>$\bar{x}=94\,582$, $s=51\,516$, rozptyl ×4, $V$ stejný.</li><li>$\bar{x}=42\,562$, $s=23\,182$, rozptyl ×0,81, $V$ stejný.</li></ol></div></details>
+</article>
+<article data-id="t19" data-topic="variabilita" data-title="Krabicový graf a odlehlé hodnoty">
+<p>IQ: $Q_1=88{,}75$, medián 103, $Q_3=113$, min 49, max 145. Je některá hodnota odlehlá?</p>
+<details><summary>Postup a výsledek</summary><div><p>$IQR=24{,}25$, $1{,}5\cdot IQR=36{,}375$. Hranice: <b>52,375</b> a <b>149,375</b>.</p><p>Minimum 49 je pod dolní hranicí, <b>je odlehlé</b>. Maximum 145 je uvnitř. V datech je pod hranicí ještě hodnota 50, ta ale v zadání není.</p></div></details>
+</article>
+<article data-id="t20" data-topic="variabilita" data-title="Porovnej variabilitu">
+<p>Děti: průměrná výška 120 cm, $s=5$. Dospělí: 175 cm, $s=7$. Která skupina je variabilnější?</p>
+<details><summary>Řešení</summary><div><p>Různé průměry, proto $V$: děti <b>4,17 %</b>, dospělí <b>4,00 %</b>. Relativně jsou variabilnější <b>děti</b>, i když mají menší $s$.</p></div></details>
+</article>
+<article data-id="t21" data-topic="variabilita" data-title="Rozklad rozptylu: typ 01">
+<div class="scroll"><table><tr><th>Skupina</th><th class="n">Průměrný plat</th><th class="n">Počet</th><th class="n">s</th></tr><tr><td>Muži</td><td class="n">17 500</td><td class="n">60</td><td class="n">854</td></tr><tr><td>Ženy</td><td class="n">16 800</td><td class="n">40</td><td class="n">539</td></tr></table></div>
+<p>Spočítej variační koeficient platů firmy a sílu závislosti.</p>
+<details><summary>Nápověda</summary><div>Průměr, potom vnitro a mezi, jejich součet je rozptyl.</div></details>
+<details><summary>Postup a výsledek</summary><div><ol><li>$\bar{x}=$ <b>17 220</b>.</li><li>Vnitro: $(854^2\cdot60+539^2\cdot40)/100=553\,798$.</li><li>Mezi: $(280^2\cdot60+420^2\cdot40)/100=117\,600$.</li><li>$s^2=671\,398$, $s=819{,}39$.</li><li>$V=$ <b>4,76 %</b>.</li><li>$P^2=$ <b>0,175</b>: slabá až mírná závislost.</li></ol></div></details>
+</article>
+<article data-id="t22" data-topic="variabilita" data-title="Rozklad rozptylu: typ 02">
+<div class="scroll"><table><tr><th>Pobočka</th><th class="n">Plat</th><th class="n">Podíl</th><th class="n">$V_j$</th></tr><tr><td>A</td><td class="n">29 300</td><td class="n">0,42</td><td class="n">0,049</td></tr><tr><td>B</td><td class="n">27 500</td><td class="n">0,27</td><td class="n">0,041</td></tr><tr><td>C</td><td class="n">31 600</td><td class="n">0,31</td><td class="n">0,032</td></tr></table></div>
+<p>Spočítej celkový průměr, variační koeficient a $P^2$.</p>
+<details><summary>Postup a výsledek</summary><div><ol><li>$s_j=V_j\bar{x}_j$: 1 435,7; 1 127,5; 1 011,2.</li><li>$\bar{x}=$ <b>29 527</b>.</li><li>Vnitro <b>1 525 941</b>, mezi <b>2 463 171</b>, celkem 3 989 112.</li><li>$s=1\,997{,}28$, $V=$ <b>6,76 %</b>.</li><li>$P^2=$ <b>0,617</b>: mírná až silná závislost.</li></ol></div></details>
+</article>
+<article data-id="t23" data-topic="zavislost" data-title="Pearson a regrese z malých dat">
+<p>Hodiny učení a body:</p>
+<div class="scroll"><table><tr><th>x</th><td class="n">2</td><td class="n">4</td><td class="n">5</td><td class="n">7</td><td class="n">8</td><td class="n">10</td></tr><tr><th>y</th><td class="n">50</td><td class="n">55</td><td class="n">65</td><td class="n">70</td><td class="n">80</td><td class="n">85</td></tr></table></div>
+<p>Spočítej $r$ a regresní přímku.</p>
+<details><summary>Nápověda</summary><div>Potřebuješ $\bar{x}$, $\bar{y}$, $\overline{xy}$, $\overline{x^2}$, $\overline{y^2}$.</div></details>
+<details><summary>Postup a výsledek</summary><div><ul><li>$\bar{x}=6$, $\bar{y}=67{,}5$, $\overline{xy}=437{,}5$, $\overline{x^2}=43$, $\overline{y^2}=4712{,}5$.</li><li>Kovariance $437{,}5-6\cdot67{,}5=32{,}5$.</li><li>$s_x^2=7$, $s_y^2=156{,}25$.</li><li>$r=32{,}5/\sqrt{7\cdot156{,}25}=$ <b>0,983</b>.</li><li>$b=32{,}5/7=$ <b>4,643</b>, $a=67{,}5-4{,}643\cdot6=$ <b>39,64</b>.</li></ul><p>Každá hodina navíc znamená v průměru o 4,64 bodu víc.</p></div></details>
+</article>
+<article data-id="t24" data-topic="zavislost" data-title="Spearman ručně">
+<div class="scroll"><table><tr><th>x</th><td class="n">3</td><td class="n">1</td><td class="n">4</td><td class="n">2</td><td class="n">5</td><td class="n">6</td></tr><tr><th>y</th><td class="n">10</td><td class="n">14</td><td class="n">25</td><td class="n">12</td><td class="n">90</td><td class="n">40</td></tr></table></div>
+<details><summary>Postup a výsledek</summary><div><p>Pořadí y: 1, 3, 4, 2, 6, 5. $d^2$: 4, 4, 0, 0, 1, 1, součet 10.</p><p>$r_s=1-\frac{60}{6\cdot35}=$ <b>0,714</b>.</p></div></details>
+</article>
+<article data-id="t25" data-topic="zavislost" data-title="Kendall: dvojice">
+<p>Skutečné pořadí akcií: Apple 1, Microsoft 4, Nvidia 2, Amazon 5, Tesla 3. Analytik A řadí: Apple 1, Microsoft 2, Nvidia 3, Amazon 4, Tesla 5. Spočítej $\tau$.</p>
+<details><summary>Postup a výsledek</summary><div><p>10 dvojic. Nesouhlasné: Microsoft–Nvidia, Microsoft–Tesla, Amazon–Tesla. $C=7$, $D=3$, $\tau=$ <b>0,4</b>.</p></div></details>
+</article>
+<article data-id="t26" data-topic="zavislost" data-title="Kontingence 2×2">
+<div class="scroll"><table><tr><th></th><th class="n">Ano</th><th class="n">Ne</th><th class="n">Σ</th></tr><tr><td>Skupina 1</td><td class="n">30</td><td class="n">10</td><td class="n">40</td></tr><tr><td>Skupina 2</td><td class="n">20</td><td class="n">40</td><td class="n">60</td></tr><tr class="sum"><td>Σ</td><td class="n">50</td><td class="n">50</td><td class="n">100</td></tr></table></div>
+<p>Spočítej očekávané četnosti, $G$, $C$ a $V$.</p>
+<details><summary>Postup a výsledek</summary><div><ul><li>Očekávané: 20, 20, 30, 30.</li><li>$G=\frac{10^2}{20}+\frac{10^2}{20}+\frac{10^2}{30}+\frac{10^2}{30}=$ <b>16,67</b>.</li><li>$C=\sqrt{16{,}67/116{,}67}=$ <b>0,378</b>.</li><li>$m=2$, $V=\sqrt{16{,}67/100}=$ <b>0,408</b>.</li></ul></div></details>
+</article>
+<article data-id="t27" data-topic="zavislost" data-title="Vylož regresi">
+<p>Cena ojetého auta: $\hat{y}=781\,786-29\,859x$, kde $x$ je stáří v letech, $r=-0{,}85$.</p><p>Vylož $a$, $b$ a $r^2$. Odhadni cenu auta starého 5 let.</p>
+<details><summary>Řešení</summary><div><ul><li>$a$: teoretická cena nového auta 781 786 Kč.</li><li>$b$: každým rokem cena klesá v průměru o 29 859 Kč.</li><li>$r^2=0{,}723$: stáří vysvětluje 72 % variability ceny.</li><li>Pro 5 let: <b>632 491 Kč</b>.</li></ul></div></details>
+</article>
+<article data-id="t28" data-topic="sber" data-title="Pojmenuj výběr">
+<ol type="a"><li>Tazatel má oslovit 10 žen a 10 mužů v každé věkové skupině.</li><li>Anketa sdílená na Facebooku.</li><li>Rozdělíme firmy podle velikosti a v každé skupině losujeme.</li><li>Vylosujeme obce, v nich adresy a pak jednu osobu.</li></ol>
+<details><summary>Řešení</summary><div><ol type="a"><li>Kvótní.</li><li>Samovýběr.</li><li>Stratifikovaný.</li><li>Vícestupňový.</li></ol></div></details>
+</article>
+<article data-id="t29" data-topic="sber" data-title="Dvakrát menší chyba">
+<p>Průzkum s 500 respondenty má určitou výběrovou chybu. Kolik respondentů potřebuješ na poloviční chybu? Pomůže to i proti chybě pokrytí?</p>
+<details><summary>Řešení</summary><div><p>Čtyřnásobek: <b>2 000</b>. Chybu pokrytí to ale nesníží, protože nevýběrové chyby na $n$ nezávisí.</p></div></details>
+</article>

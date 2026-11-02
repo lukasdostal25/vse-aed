@@ -1,0 +1,128 @@
+<section data-id="typy" data-title="Jak poznat typ proměnné" data-sub="Tři otázky, které vyřeší skoro každý případ">
+<p>Typ proměnné není akademická škatulka. Určuje, <b>jaké výpočty dávají smysl a jaký graf můžeš použít</b>. Když ho určíš špatně, spočítáš třeba průměrný kraj bydliště.</p>
+<div class="box def"><h4>Dělení z předmětu</h4>
+<p><b>Kvalitativní</b> proměnná popisuje vlastnost: <b>nominální</b> (bez přirozeného pořadí: pohlaví, kraj) a <b>ordinální</b> (s přirozeným pořadím: vzdělání, spokojenost).</p>
+<p><b>Kvantitativní</b> proměnná vyjadřuje číselnou hodnotu: <b>diskrétní</b> (oddělené hodnoty, zpravidla počty: počet sourozenců) a <b>spojitá</b> (libovolná hodnota z intervalu: výška, hmotnost, výdaje).</p></div>
+<h2>Postup ve třech otázkách</h2>
+<ol>
+<li><b>Dává smysl hodnoty odečíst?</b> 40 kg − 25 kg = 15 kg dává smysl, proměnná je kvantitativní. „Praha − Brno“ ani „spokojenost 4 − spokojenost 2“ přesný význam nemá, proměnná je kvalitativní.</li>
+<li><b>Je kvalitativní: dají se hodnoty přirozeně seřadit?</b> Ano znamená ordinální, ne nominální.</li>
+<li><b>Je kvantitativní: může mezi dvěma hodnotami ležet další?</b> Mezi 2 a 3 sourozenci nic není, proměnná je diskrétní. Mezi 175 a 176 cm leží 175,5 cm, proměnná je spojitá.</li>
+</ol>
+<div class="box tip"><h4>Klíč: vzdálenost</h4><p>U kvantitativní proměnné umíš vzdálenost přesně změřit. U ordinální víš jen „víc a míň“, ale ne o kolik: vysokoškolské vzdělání je víc než středoškolské, jenže o kolik? U nominální nedává smysl ani „víc“.</p></div>
+<h2>Čtyři pasti</h2>
+<div class="box warn"><h4>Čísla neznamenají kvantitativní</h4><p>Spokojenost 1–5 je zapsaná čísly, ale jsou to jen štítky pro seřazené kategorie, proměnná je <b>ordinální</b>. Stejně tak PSČ nebo ID studenta: čísla, ale proměnná je <b>nominální</b>, protože rozdíl dvou ID nic neznamená.</p></div>
+<div class="box warn"><h4>Subjektivní pořadí se nepočítá</h4><p>Modrou můžeš mít raději než zelenou, ale to je tvoje pořadí. Pro ordinální proměnnou musí být pořadí přirozené, nezávislé na názoru.</p></div>
+<div class="box warn"><h4>Zaokrouhlení nedělá ze spojité diskrétní</h4><p>Výšku zapisujeme v celých cm a výdaje třeba po stovkách. Z povahy jsou ale spojité, zápis je jen omezení přesnosti měření.</p></div>
+<div class="box warn"><h4>Šedé zóny</h4><p>Věk v celých letech nebo mzdy v korunách se dají hájit oběma způsoby. V testu proto napiš nebo si promysli <i>proč</i>. Běžně se věk v letech a rok narození berou jako diskrétní a peníze jako spojité.</p></div>
+<h2>Co z typu plyne</h2>
+<div class="scroll"><table><tr><th>Typ</th><th>Poloha</th><th>Variabilita</th><th>Graf</th></tr>
+<tr><td>Nominální</td><td>modus</td><td>–</td><td>sloupcový</td></tr>
+<tr><td>Ordinální</td><td>modus, medián, kvantily</td><td>–</td><td>sloupcový</td></tr>
+<tr><td>Diskrétní</td><td>modus, medián, průměr</td><td>rozptyl, s, rozpětí</td><td>sloupcový</td></tr>
+<tr><td>Spojitá</td><td>modální interval, medián, průměr</td><td>rozptyl, s, IQR, V</td><td>histogram, krabicový</td></tr></table></div>
+<h2>Vyzkoušej si to</h2>
+<div class="vg" data-a="ordinal"><div class="nm">Stupeň bolesti</div><div class="vals">žádná, mírná, silná</div><div class="why">Hodnoty mají přirozené pořadí, ale neumíš říct, o kolik je silná bolest větší než mírná.</div></div>
+<div class="vg" data-a="nominal"><div class="nm">Typ dopravy</div><div class="vals">auto, vlak, autobus</div><div class="why">Žádná hodnota není přirozeně „víc“. Že máš radši vlak, je subjektivní pořadí.</div></div>
+<div class="vg" data-a="diskretni"><div class="nm">Počet chyb v testu</div><div class="vals">0, 1, 2, 3…</div><div class="why">Je to počet: odečítat můžeš, ale 2,5 chyby neexistuje.</div></div>
+<div class="vg" data-a="spojita"><div class="nm">Délka hovoru</div><div class="vals">3,4 min; 12,07 min</div><div class="why">Mezi každými dvěma délkami může ležet další.</div></div>
+</section>
+
+<section data-id="typ-dat" data-title="Jaká to jsou data" data-sub="Struktura, třídění, čas a formát tabulky">
+<p>Úkol z úvodní prezentace se ptá na víc než jen na typy proměnných. U každého listu projdi tyhle čtyři otázky.</p>
+<h2>1. Strukturovaná, nebo nestrukturovaná?</h2>
+<p><b>Strukturovaná</b> data mají podobu <b>datové matice</b>: řádek je jedna statistická jednotka (pozorování), sloupec jedna proměnná (statistický znak), buňka jedna hodnota. <b>Nestrukturovaná</b> jsou například fotka, zvuk, volný text. Věta „Jmenuji se Petr Novák, je mi 25 let“ je nestrukturovaná, po přepisu do tabulky se sloupci Jméno a Věk už strukturovaná je.</p>
+<h2>2. Netříděná, tříděná, nebo agregovaná?</h2>
+<ul><li><b>Netříděná:</b> každý řádek je jedno pozorování.</li>
+<li><b>Tříděná:</b> hodnoty jedné proměnné jsou rozdělené do tříd a u každé je počet pozorování (20–29 let: 2 zaměstnanci).</li>
+<li><b>Agregovaná:</b> souhrny za skupiny nebo období, například průměrná mzda podle krajů.</li></ul>
+<div class="box warn"><h4>Pozor na agregáty</h4><p>Průměrnou mzdu kraje nedostaneš dalším prostým zprůměrováním: kraje mají různý počet obyvatel. Správně patří váha, viz vážený průměr ve cvičení 2.</p></div>
+<h2>3. Průřezová, časová řada, nebo panel?</h2>
+<div class="scroll"><table><tr><th>Typ</th><th>Jednotek</th><th>Období</th><th>Příklad</th></tr>
+<tr><td>Průřezová</td><td>více</td><td>jedno</td><td>příjem 100 lidí v roce 2026</td></tr>
+<tr><td>Časová řada</td><td>jedna</td><td>více</td><td>kurz EUR/CZK 2022–2025</td></tr>
+<tr><td>Panelová</td><td>více</td><td>více</td><td>HDP více zemí v letech 2022–2025</td></tr></table></div>
+<h2>4. Wide, nebo long?</h2>
+<p>Stejná data, jiné uložení. <b>Wide</b> (široký): jedna jednotka má jeden řádek a hodnoty jsou v různých sloupcích. <b>Long</b> (dlouhý): každá hodnota má vlastní řádek a o čem hodnota je, určuje další sloupec.</p>
+<div class="scroll"><table><tr><th>Student</th><th class="n">Matematika</th><th class="n">Statistika</th></tr><tr><td>Anna</td><td class="n">85</td><td class="n">92</td></tr></table></div>
+<div class="scroll"><table><tr><th>Student</th><th>Předmět</th><th class="n">Známka</th></tr><tr><td>Anna</td><td>Matematika</td><td class="n">85</td></tr><tr><td>Anna</td><td>Statistika</td><td class="n">92</td></tr></table></div>
+<p>U panelových dat se long používá často, protože wide tabulka s mnoha lety a proměnnými rychle naroste do šířky.</p>
+</section>
+
+<section data-id="studenti" data-title="List Studenti" data-sub="Datová matice 200 studentů, 11 proměnných">
+<div class="box ask"><h4>Než začneš</h4><p>V Excelu ke cvičení není u tohoto úkolu oficiální řešení. Vysvětlení níže je moje, opřené o definice z prezentace. Šedé zóny jsou označené.</p></div>
+<div class="scroll"><table><tr><th>ID</th><th>Pohlaví</th><th>Kraj</th><th>Vzdělání rodičů</th><th class="n">Rok nar.</th><th class="n">Věk</th><th class="n">Výška</th><th class="n">Hmotnost</th><th class="n">Sourozenci</th><th class="n">Výdaje</th><th class="n">Spokojenost</th></tr>
+<tr><td>1</td><td>muž</td><td>Plzeňský</td><td>SŠ</td><td class="n">2006</td><td class="n">20</td><td class="n">177</td><td class="n">65</td><td class="n">0</td><td class="n">19 400</td><td class="n">2</td></tr>
+<tr><td>2</td><td>žena</td><td>Pardubický</td><td>VŠ</td><td class="n">2007</td><td class="n">19</td><td class="n">161</td><td class="n">69</td><td class="n">2</td><td class="n">8 000</td><td class="n">4</td></tr>
+<tr><td>3</td><td>žena</td><td>Plzeňský</td><td>VŠ</td><td class="n">2007</td><td class="n">19</td><td class="n">169</td><td class="n">65</td><td class="n">1</td><td class="n">6 100</td><td class="n">4</td></tr></table></div>
+<div class="box def"><h4>Typ dat</h4><p>Strukturovaná, netříděná (jeden řádek je jeden student), průřezová. Otázka wide/long tady nehraje velkou roli: každý student má jeden řádek a každá vlastnost svůj sloupec.</p></div>
+<h2>Tipni každou proměnnou</h2>
+<div class="vg" data-a="nominal"><div class="nm">ID</div><div class="vals">1, 2, 3…</div><div class="why">Past: je to číslo, ale jen identifikátor. Průměrné ID nic neznamená. Graf ani statistiku u něj nedělej.</div></div>
+<div class="vg" data-a="nominal"><div class="nm">Pohlaví</div><div class="vals">muž, žena</div><div class="why">Dvě kategorie bez pořadí. Statistika: modus, četnosti. Graf: sloupcový.</div></div>
+<div class="vg" data-a="nominal"><div class="nm">Kraj bydliště</div><div class="vals">Plzeňský, Pardubický…</div><div class="why">Kraje přirozené pořadí nemají. Řazení podle abecedy nebo podle velikosti je jen naše volba. Graf: sloupcový.</div></div>
+<div class="vg" data-a="ordinal"><div class="nm">Vzdělání rodičů</div><div class="vals">ZŠ, SŠ, VŠ</div><div class="why">Pořadí je přirozené, ale „o kolik víc“ je VŠ než SŠ, přesně říct nejde. Statistika: modus, medián. Graf: sloupcový.</div></div>
+<div class="vg" data-a="diskretni"><div class="nm">Rok narození</div><div class="vals">2004, 2006, 2007…</div><div class="why">Celé oddělené hodnoty, rozdíl dvou let má význam. Šedá zóna: někdo by ho bral jako časový údaj, ale v tomto dělení je to diskrétní.</div></div>
+<div class="vg" data-a="diskretni"><div class="nm">Věk</div><div class="vals">19, 20, 22…</div><div class="why">Takto v celých letech jde o diskrétní. Šedá zóna: věk jako plynoucí čas je z podstaty spojitý. Když to v testu rozvedeš, ukážeš, že chápeš rozdíl.</div></div>
+<div class="vg" data-a="spojita"><div class="nm">Výška (cm)</div><div class="vals">177, 161, 169</div><div class="why">Celé centimetry jsou jen přesnost zápisu, skutečná výška může být 169,4 cm. Graf: histogram, krabicový.</div></div>
+<div class="vg" data-a="spojita"><div class="nm">Hmotnost (kg)</div><div class="vals">65, 69, 65</div><div class="why">Stejný důvod jako u výšky.</div></div>
+<div class="vg" data-a="diskretni"><div class="nm">Počet sourozenců</div><div class="vals">0, 1, 2, 3</div><div class="why">Učebnicový příklad: je to počet a 2,5 sourozence neexistuje. Průměr 1,1 sourozence přesto dává smysl. Graf: sloupcový.</div></div>
+<div class="vg" data-a="spojita"><div class="nm">Výdaje (Kč/měs.)</div><div class="vals">19 400, 8 000, 6 100</div><div class="why">Peníze bereme jako spojité, hodnot je mnoho a jemně na sebe navazují. Výpočetně je budeš třídit do intervalů. Graf: histogram.</div></div>
+<div class="vg" data-a="ordinal"><div class="nm">Spokojenost se školou (1–5)</div><div class="vals">2, 4, 4</div><div class="why">Hlavní past listu. Čísla jen kódují pořadí, rozdíl mezi 1 a 2 nemusí být stejný jako mezi 4 a 5. Správná míra polohy je medián nebo modus.</div></div>
+</section>
+
+<section data-id="zeme" data-title="List Země" data-sub="27 států EU, jeden řádek za stát">
+<div class="scroll"><table><tr><th>Země</th><th>Kód</th><th class="n">HDP na obyv. (EU = 100)</th><th class="n">Cenová hladina</th><th class="n">Naděje dožití</th></tr>
+<tr><td>Belgie</td><td>BE</td><td class="n">117</td><td class="n">116,7</td><td class="n">82,4</td></tr><tr><td>Bulharsko</td><td>BG</td><td class="n">66</td><td class="n">60,5</td><td class="n">75,8</td></tr><tr><td>Česko</td><td>CZ</td><td class="n">90</td><td class="n">88,5</td><td class="n">80,1</td></tr></table></div>
+<div class="box def"><h4>Typ dat</h4><p>Strukturovaná a <b>agregovaná</b>: statistickou jednotkou je stát, ale každá hodnota je souhrnem za miliony lidí. <b>Průřezová</b>, protože jde o více zemí v jednom okamžiku.</p></div>
+<div class="vg" data-a="nominal"><div class="nm">Země, Kód</div><div class="vals">Belgie / BE</div><div class="why">Názvy bez přirozeného pořadí. Kód nese stejnou informaci jako název.</div></div>
+<div class="vg" data-a="spojita"><div class="nm">HDP na obyvatele v PPS</div><div class="vals">117, 66, 90</div><div class="why">Past: tabulka ukazuje celá čísla, ale jde o index s libovolnou hodnotou. Hodnota 117 znamená o 17 % nad průměrem EU.</div></div>
+<div class="vg" data-a="spojita"><div class="nm">Cenová hladina</div><div class="vals">116,7; 60,5</div><div class="why">Index, hodnoty mohou být libovolné.</div></div>
+<div class="vg" data-a="spojita"><div class="nm">Naděje dožití (roky)</div><div class="vals">82,4; 75,8</div><div class="why">Délka života měřená v letech, desetinná místa to potvrzují.</div></div>
+<div class="box warn"><h4>Na co si dát pozor</h4><p>Průměr hodnot „HDP na obyvatele“ přes státy není průměr EU: Malta i Německo by měly stejnou váhu. Je to poměrový ukazatel, viz harmonický a vážený průměr.</p></div>
+</section>
+
+<section data-id="kraje" data-title="List Kraje" data-sub="14 krajů ČR, souhrnné údaje">
+<div class="scroll"><table><tr><th>Kraj</th><th class="n">Obyvatel 1. 1. 2025</th><th class="n">Průměrná mzda 2024</th><th class="n">Medián mzdy 2024</th><th class="n">Podíl na obyv.</th></tr>
+<tr><td>Hl. m. Praha</td><td class="n">1 397 880</td><td class="n">62 022</td><td class="n">49 775</td><td class="n">12,8 %</td></tr><tr><td>Středočeský</td><td class="n">1 466 215</td><td class="n">48 552</td><td class="n">42 100</td><td class="n">13,4 %</td></tr><tr><td>Jihočeský</td><td class="n">653 227</td><td class="n">43 693</td><td class="n">38 853</td><td class="n">6,0 %</td></tr></table></div>
+<div class="box def"><h4>Typ dat</h4><p>Strukturovaná, <b>agregovaná</b> a <b>průřezová</b>. Mzdy jsou souhrnem za zaměstnance kraje.</p></div>
+<div class="vg" data-a="nominal"><div class="nm">Kraj</div><div class="vals">Praha, Středočeský…</div><div class="why">Bez přirozeného pořadí.</div></div>
+<div class="vg" data-a="diskretni"><div class="nm">Počet obyvatel</div><div class="vals">1 397 880; 653 227</div><div class="why">Je to počet lidí, tedy celé číslo. V praxi se u tak velkých čísel často zachází jako se spojitou, ale definičně je to diskrétní.</div></div>
+<div class="vg" data-a="spojita"><div class="nm">Průměrná mzda (Kč)</div><div class="vals">62 022; 48 552</div><div class="why">Peníze a navíc vypočtený průměr.</div></div>
+<div class="vg" data-a="spojita"><div class="nm">Podíl kraje na obyvatelstvu</div><div class="vals">0,128; 0,134</div><div class="why">Podíl může být libovolné číslo mezi 0 a 1.</div></div>
+<div class="box tip"><h4>Co si z listu odnést</h4><p>V každém kraji je průměrná mzda vyšší než medián. To je typický znak <b>pravostranně zešikmeného</b> rozdělení: pár vysokých platů táhne průměr nahoru, zatímco většina lidí má méně.</p></div>
+</section>
+
+<section data-id="mzda-rada" data-title="Listy Hrubá mzda a Časová řada" data-sub="Jedna proměnná napříč lidmi a dvě v čase">
+<h2>Hrubá mzda</h2>
+<p>Jeden sloupec, 500 hodnot: 48 112, 36 789, 27 371…</p>
+<div class="box def"><h4>Typ dat</h4><p>Strukturovaná, <b>netříděná</b> (řádek je jeden člověk), <b>průřezová</b>.</p></div>
+<div class="vg" data-a="spojita"><div class="nm">Hrubá měsíční mzda (Kč)</div><div class="vals">48 112; 36 789</div><div class="why">Peníze, obrovský počet možných hodnot. Graf: histogram nebo krabicový.</div></div>
+<p>Průměr je 52 202 Kč, medián 44 337 Kč, rozsah od 20 800 do 194 751 Kč. Průměr je o 8 tisíc výš než medián, tedy opět pravostranné zešikmení. <b>Nadpoloviční většina lidí má pod průměrem</b>, proto se pro „typickou“ mzdu hodí medián.</p>
+<h2>Časová řada</h2>
+<div class="scroll"><table><tr><th>Rok</th><th class="n">Inflace (%)</th><th class="n">Nezaměstnanost (%)</th></tr><tr><td>1993</td><td class="n">20,8</td><td class="n">4,3</td></tr><tr><td>1994</td><td class="n">10,0</td><td class="n">4,3</td></tr><tr><td>1995</td><td class="n">9,1</td><td class="n">4,0</td></tr></table></div>
+<div class="box def"><h4>Typ dat</h4><p>Strukturovaná, agregovaná (celostátní ukazatele) a <b>časová řada</b>: jedna jednotka, Česko, sledovaná v mnoha letech.</p></div>
+<div class="vg" data-a="spojita"><div class="nm">Míra inflace (%)</div><div class="vals">20,8; 10; 9,1</div><div class="why">Procenta s libovolnou hodnotou. Graf: spojnicový, protože sledujeme vývoj v čase.</div></div>
+<div class="vg" data-a="spojita"><div class="nm">Nezaměstnanost (%)</div><div class="vals">4,3; 4,0</div><div class="why">Podíl lidí vyjádřený v procentech.</div></div>
+<div class="box warn"><h4>Rok tu neřeš jako obyčejnou proměnnou</h4><p>Rok je časová osa. Průměr nebo histogram roků nedává smysl. Dva ukazatele navíc mají různou úroveň, takže je lepší je nedávat do jednoho grafu se dvěma osami.</p></div>
+</section>
+
+<section data-id="tabulka" data-title="List Tabulka" data-sub="Tabulka, která datovou maticí není">
+<p>Tohle je nejzajímavější list. Vypadá jako tabulka, ale <b>k analýze ji přímo použít nejde</b>.</p>
+<div class="scroll"><table><tr><th>Jméno</th><th>Kraj</th><th>Rodiče</th><th>Výška/váha</th><th>Věk</th><th>Sourozenci</th><th>Výdaje</th><th>Spokojenost</th></tr>
+<tr><td>č. 2</td><td>Pardubický</td><td>VŠ</td><td>161 cm, 69 kg</td><td>19</td><td>2</td><td>8000</td><td>4</td></tr>
+<tr><td>č. 3</td><td>Plzeňský</td><td>vysokoškolské</td><td>169/65</td><td>19 let</td><td>1</td><td>6 100 Kč</td><td>4 – spokojen</td></tr>
+<tr><td>č. 10</td><td>Olomoucký</td><td>maturita</td><td>177/66</td><td>20 let</td><td>1</td><td>17 900 Kč</td><td>?</td></tr>
+<tr><td>č. 11</td><td>Stč. kraj</td><td>maturita</td><td>167 cm, 58 kg</td><td>19</td><td>2</td><td>nechce uvést</td><td>4</td></tr>
+<tr><td>č. 1</td><td>Plzeňský</td><td>maturita</td><td>177/65</td><td>20 let</td><td>jedináček</td><td>19 400 Kč</td><td>2</td></tr></table></div>
+<details><summary>Najdi aspoň šest problémů, pak rozklikni</summary><div><ol>
+<li><b>Dvě proměnné v jednom sloupci:</b> výška a hmotnost („161 cm, 69 kg“).</li>
+<li><b>Různé zápisy téže hodnoty:</b> VŠ / vysokoškolské, SŠ / maturita, Praha / praha / Hl. m. Praha.</li>
+<li><b>Čísla uložená jako text:</b> „19 let“, „6 100 Kč“, „cca 12700“. Excel je nesečte.</li>
+<li><b>Chybějící hodnoty různě označené:</b> „?“, „nechce uvést“.</li>
+<li><b>Hodnota slovem místo čísla:</b> „jedináček“ znamená 0 sourozenců.</li>
+<li><b>Řádky, které nejsou pozorování:</b> ŽENY, MUŽI, průměr ženy, CELKEM. Pohlaví by mělo být sloupec.</li>
+<li><b>Nesrovnatelné hodnoty:</b> podle poznámky jsou výdaje č. 4 včetně bydlení, ostatní bez něj.</li>
+<li><b>Informace v barvě:</b> „žlutě = nutno ověřit“. Barvu statistický nástroj nepřečte.</li>
+</ol></div></details>
+<div class="box def"><h4>Závěr</h4><p>Informace je strukturovaná jen zdánlivě. Není to datová matice, protože neplatí „řádek = pozorování, sloupec = proměnná, buňka = jedna hodnota“. Než s tím začneš počítat, musíš data <b>předzpracovat</b>. Z nekvalitních dat nedostaneš kvalitní výsledek: <i>garbage in, garbage out</i>.</p></div>
+</section>

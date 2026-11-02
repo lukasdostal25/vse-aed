@@ -1,0 +1,55 @@
+<section data-id="poloha" data-title="Míry polohy" data-sub="Průměry, medián, kvantily, modus">
+<div class="scroll"><table><tr><th>Co</th><th>Vzorec</th><th>Kdy</th><th>Excel</th></tr>
+<tr><td>Aritmetický průměr</td><td>$\bar{x}=\frac{\sum x_i}{n}$</td><td>hodnoty, jejichž součet má smysl</td><td>PRŮMĚR</td></tr>
+<tr><td>Vážený</td><td>$\bar{x}=\frac{\sum x_in_i}{n}=\sum x_ip_i$</td><td>tabulka četností, skupinové průměry</td><td>SOUČIN.SKALÁRNÍ</td></tr>
+<tr><td>Harmonický</td><td>$\bar{x}_H=\frac{n}{\sum 1/x_i}$</td><td>poměry se stejným čitatelem</td><td>HARMEAN</td></tr>
+<tr><td>Vážený harmonický</td><td>$\bar{x}_H=\frac{\sum n_i}{\sum n_i/x_i}$</td><td>poměry, váhou je čitatel</td><td>ručně</td></tr>
+<tr><td>Geometrický</td><td>$\bar{x}_G=\sqrt[n]{\prod k_i}$</td><td>koeficienty růstu</td><td>GEOMEAN</td></tr>
+<tr><td>Ze začátku a konce</td><td>$\bar{x}_G=\sqrt[n]{y_n/y_0}$</td><td>$n$ = počet změn</td><td>$=(y_n/y_0)$^$(1/n)$</td></tr>
+<tr><td>Medián</td><td>prostřední hodnota, při sudém $n$ průměr dvou</td><td>šikmá data, ordinální</td><td>MEDIAN</td></tr>
+<tr><td>Kvartily, percentily</td><td>první $P_i$ nad 0,25 / 0,75 / p</td><td>rozdělení na části</td><td>QUARTIL.INC, PERCENTIL.INC</td></tr>
+<tr><td>Modus</td><td>nejčastější hodnota</td><td>i nominální</td><td>MODE.MULT</td></tr></table></div>
+<div class="box tip"><p>Pro kladné hodnoty vždy platí $\bar{x}_H\le\bar{x}_G\le\bar{x}$.</p></div>
+</section>
+<section data-id="variabilita" data-title="Míry variability" data-sub="Rozpětí, rozptyl, variační koeficient, rozklad">
+<div class="scroll"><table><tr><th>Co</th><th>Vzorec</th><th>Poznámka</th><th>Excel</th></tr>
+<tr><td>Rozpětí</td><td>$r=x_{max}-x_{min}$</td><td>citlivé na extrémy</td><td>MAX − MIN</td></tr>
+<tr><td>Kvartilové rozpětí</td><td>$q=Q_3-Q_1$</td><td>prostředních 50 %</td><td>QUARTIL.INC</td></tr>
+<tr><td>Rozptyl</td><td>$s^2=\frac{\sum(x_i-\bar{x})^2}{n}=\overline{x^2}-\bar{x}^2$</td><td>čtvercové jednotky</td><td>VAR.P</td></tr>
+<tr><td>Z tabulky</td><td>$s^2=\frac{\sum n_i(x_i-\bar{x})^2}{n}$</td><td></td><td>ručně</td></tr>
+<tr><td>Směrodatná odchylka</td><td>$s=\sqrt{s^2}$</td><td>původní jednotky</td><td>SMODCH.P</td></tr>
+<tr><td>Variační koeficient</td><td>$V=s/\bar{x}$</td><td>porovnání skupin</td><td>SMODCH.P / PRŮMĚR</td></tr>
+<tr><td>Odlehlé hodnoty</td><td>mimo $Q_1-1{,}5q$ a $Q_3+1{,}5q$</td><td>krabicový graf</td><td></td></tr></table></div>
+<h2>Rozklad rozptylu</h2>
+<div class="formula">$$s^2=\underbrace{\frac{\sum s_j^2n_j}{n}}_{\text{vnitro}}+\underbrace{\frac{\sum(\bar{x}_j-\bar{x})^2n_j}{n}}_{\text{mezi}}\qquad P^2=\frac{\text{mezi}}{s^2}$$</div>
+<p>Když máš $V_j$, převeď: $s_j=V_j\bar{x}_j$. Když máš $p_j$, nahraď tím $n_j/n$.</p>
+<h2>Změna hodnot</h2>
+<div class="scroll"><table><tr><th></th><th>$\bar{x}$</th><th>$s^2$</th><th>$s$</th><th>$V$</th></tr><tr><td>$x+c$</td><td>$\bar{x}+c$</td><td>stejný</td><td>stejná</td><td>změní se</td></tr><tr><td>$c\cdot x$</td><td>$c\bar{x}$</td><td>$c^2s^2$</td><td>$cs$</td><td>stejný</td></tr></table></div>
+</section>
+<section data-id="zavislost" data-title="Míry závislosti" data-sub="Korelace, kontingence, regrese">
+<div class="scroll"><table><tr><th>Co</th><th>Vzorec</th><th>Excel</th></tr>
+<tr><td>Pearson</td><td>$r=\frac{\overline{xy}-\bar{x}\bar{y}}{\sqrt{(\overline{x^2}-\bar{x}^2)(\overline{y^2}-\bar{y}^2)}}$</td><td>CORREL, PEARSON</td></tr>
+<tr><td>Spearman</td><td>$r_s=1-\frac{6\sum d_i^2}{n(n^2-1)}$</td><td>RANK.AVG, pak CORREL</td></tr>
+<tr><td>Kendall</td><td>$\tau=\frac{C-D}{\binom{n}{2}}$</td><td>COMBIN pro počet dvojic</td></tr>
+<tr><td>Očekávaná četnost</td><td>$n'_{ij}=\frac{n_{i.}n_{.j}}{n}$</td><td>ručně</td></tr>
+<tr><td>G ($\chi^2$)</td><td>$G=\sum\sum\frac{(n_{ij}-n'_{ij})^2}{n'_{ij}}$</td><td>ručně</td></tr>
+<tr><td>Pearsonovo C</td><td>$C=\sqrt{\frac{G}{n+G}}$</td><td>ručně</td></tr>
+<tr><td>Cramerovo V</td><td>$V=\sqrt{\frac{G}{n(m-1)}}$, $m=\min(r,s)$</td><td>ručně</td></tr>
+<tr><td>Směrnice</td><td>$b=\frac{\overline{xy}-\bar{x}\bar{y}}{\overline{x^2}-\bar{x}^2}=r\frac{s_y}{s_x}$</td><td>spojnice trendu</td></tr>
+<tr><td>Absolutní člen</td><td>$a=\bar{y}-b\bar{x}$</td><td>spojnice trendu</td></tr>
+<tr><td>Determinace</td><td>$r^2$</td><td>$R^2$ v grafu</td></tr></table></div>
+</section>
+<section data-id="excel" data-title="Postupy v Excelu" data-sub="Kde co najít">
+<div class="scroll"><table><tr><th>Chci</th><th>Cesta</th></tr>
+<tr><td>Kontingenční tabulku</td><td>Vložení → Kontingenční tabulka</td></tr>
+<tr><td>Procenta v ní</td><td>Nastavení polí hodnot → Zobrazit hodnoty jako</td></tr>
+<tr><td>Histogram nebo krabicový graf</td><td>Vložení → Statistický graf</td></tr>
+<tr><td>Histogram s tabulkou</td><td>Data → Analýza dat → Histogram</td></tr>
+<tr><td>Bez mezer v histogramu</td><td>Formát datové řady → Šířka mezery 0 %</td></tr>
+<tr><td>Vše najednou</td><td>Data → Analýza dat → Popisná statistika (výběrové $s$)</td></tr>
+<tr><td>Rozdělit text</td><td>Data → Text do sloupců</td></tr>
+<tr><td>Tečky na čárky</td><td>Ctrl+H</td></tr>
+<tr><td>Spočítat neznámou</td><td>Data → Citlivostní analýza → Hledání řešení</td></tr>
+<tr><td>Regresní přímku</td><td>Bodový graf → Přidat spojnici trendu → rovnice a $R^2$</td></tr>
+<tr><td>Procenta</td><td>Formát buněk → Číslo → Procenta</td></tr></table></div>
+</section>

@@ -1,0 +1,10 @@
+{
+  "name": "Statistika · portál",
+  "short_name": "Statistika",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fbfaf7",
+  "theme_color": "#0f6a86",
+  "lang": "cs"
+}

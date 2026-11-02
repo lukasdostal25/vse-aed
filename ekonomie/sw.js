@@ -1,5 +1,5 @@
 /* Service worker — čtečka The Economy 2.0. Offline cache pro aplikaci, text i obrázky. */
-const CACHE = 'econ-v17';
+const CACHE = 'econ-v18';
 const SHELL = ['./', './index.html', './style.css', './app.js', './manifest.webmanifest', './data/toc.json', './data/cs/meta.json', './data/cs/titles.json', './data/portal.json', './data/trainer.json',
   'https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css',
   'https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js',
@@ -9,7 +9,7 @@ self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => Promise.all(SHELL.map(u => c.add(u).catch(() => {})))).then(() => self.skipWaiting()));
 });
 self.addEventListener('activate', e => {
-  e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k))))
+  e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k.startsWith('econ-') && k !== CACHE).map(k => caches.delete(k))))
     .then(() => self.clients.claim()));
 });
 self.addEventListener('fetch', e => {

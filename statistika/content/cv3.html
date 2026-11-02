@@ -1,0 +1,108 @@
+<section data-id="harmonicky" data-title="Harmonický průměr" data-sub="Rychlost, hustota, cena za kus">
+<div class="box warn"><h4>Klasická past</h4><p>Čtyři úseky po 100 km rychlostmi 20, 25, 50 a 100 km/h. Aritmetický průměr dá 48,75 km/h. <b>To je špatně.</b></p></div>
+<p>Pomalým úsekem jedeš déle, takže na něj připadá víc času. Rychlosti nemají stejnou váhu.</p>
+<div class="scroll"><table><tr><th class="n">Délka (km)</th><th class="n">Rychlost</th><th class="n">Čas (h)</th></tr><tr><td class="n">100</td><td class="n">20</td><td class="n">5</td></tr><tr><td class="n">100</td><td class="n">25</td><td class="n">4</td></tr><tr><td class="n">100</td><td class="n">50</td><td class="n">2</td></tr><tr><td class="n">100</td><td class="n">100</td><td class="n">1</td></tr><tr class="sum"><td class="n">400</td><td class="n"></td><td class="n">12</td></tr></table></div>
+<p>Průměrná rychlost = celková dráha / celkový čas = 400 / 12 = <b>33,33 km/h</b>.</p>
+<h2>Vzorce</h2>
+<div class="formula">$$\bar{x}_H=\frac{n}{\sum \frac{1}{x_i}}=\frac{4}{\frac{1}{20}+\frac{1}{25}+\frac{1}{50}+\frac{1}{100}}=33{,}33$$</div>
+<p>Úseky různě dlouhé (100, 150, 200, 300 km) potřebují <b>vážený harmonický průměr</b>, vahami jsou délky:</p>
+<div class="formula">$$\bar{x}_H=\frac{\sum n_i}{\sum \frac{n_i}{x_i}}=\frac{750}{5+6+4+3}=\frac{750}{18}=41{,}67$$</div>
+<p>Excel má HARMEAN jen pro prostý harmonický průměr. Vážený počítáš ručně.</p>
+<h2>Kdy harmonický a kdy aritmetický</h2>
+<div class="box def"><h4>Pravidlo pro poměrový ukazatel</h4><p>Poměr je <b>čitatel / jmenovatel</b> (km/h, obyv./km², Kč/kg).</p><ul><li>Znáš <b>čitatele</b> jako váhu nebo je stejný: <b>harmonický</b> (stejná dráha, různé rychlosti).</li><li>Znáš <b>jmenovatele</b> jako váhu nebo je stejný: <b>vážený aritmetický</b> (stejný čas, různé rychlosti).</li></ul></div>
+<div class="box tip"><h4>Záchranná brzda</h4><p>Vždy funguje: <b>celkový čitatel / celkový jmenovatel</b>. Když si nevíš rady se vzorcem, spočítej součty.</p></div>
+<h2>Hustota zalidnění</h2>
+<p>Pět okresů Vysočiny: 504 025 obyvatel na 6 795,78 km², hustota = <b>74,17 obyv./km²</b>. Vážený harmonický průměr hustot s vahami podle obyvatel dá totéž číslo. Rozloha a počet obyvatel se sčítat dají, proto u nich stačí aritmetický průměr: když má smysl součet, má smysl aritmetický průměr.</p>
+<div class="box warn"><h4>Past: chybí váhy</h4><p>List 04 dává jen hustoty a počty obcí. Průměrnou hustotu z toho <b>spočítat nejde</b>, chybí obyvatelé nebo rozloha. „Nelze určit“ může být správná odpověď.</p></div>
+</section>
+
+<section data-id="geometricky" data-title="Geometrický průměr" data-sub="Průměrné tempo růstu">
+<div class="box def"><h4>Koeficient růstu</h4><p>Číslo, kterým násobíš předchozí hodnotu. Růst o 10 % je 1,10; pokles o 7 % je 0,93; beze změny je 1.</p></div>
+<h2>Cena zboží</h2>
+<p>Změny +10 %, +5 %, −7 %, 0 %.</p>
+<p><b>Celková změna</b> je součin, ne součet: $1{,}1\cdot1{,}05\cdot0{,}93\cdot1=1{,}07415$, tedy <b>+7,415 %</b>.</p>
+<p><b>Průměrná změna</b> je geometrický průměr:</p>
+<div class="formula">$$\bar{x}_G=\sqrt[4]{1{,}07415}=1{,}018 \Rightarrow +1{,}8\ \%$$</div>
+<p>Zkouška: $100\cdot1{,}018^4 = 107{,}4$. Sedí.</p>
+<div class="box warn"><h4>Proč ne aritmetický průměr</h4><p>Změny se na sebe <b>násobí</b>, základ se každý měsíc mění. +50 % a −50 % průměrně nedá 0 %: $1{,}5\cdot0{,}5=0{,}75$, tedy pokles o 25 %.</p></div>
+<h2>Znám jen začátek a konec</h2>
+<p>Praha: 1 165 581 obyvatel v roce 2004 a 1 384 732 v roce 2024. Mezilehlé koeficienty se při násobení vykrátí:</p>
+<div class="formula">$$\bar{x}_G=\sqrt[n]{\frac{y_{konec}}{y_{začátek}}}=\sqrt[20]{\frac{1\,384\,732}{1\,165\,581}}=1{,}0087$$</div>
+<p>Celkem +18,8 %, průměrně <b>+0,87 % ročně</b>.</p>
+<div class="box warn"><h4>Nejčastější chyba: počet změn</h4><p>Od 2004 do 2024 je 21 hodnot, ale jen <b>20 změn</b>. Odmocnina je dvacátá. Stejně tak leden až květen jsou 4 změny.</p></div>
+<div class="box tip"><p>Kalkulačka: n-tou odmocninu spočítáš jako $x^{1/n}$. V Excelu GEOMEAN nebo <code>=(B52/B32)^(1/20)</code>.</p></div>
+</section>
+
+<section data-id="procenta" data-title="Procenta, body a uříznutá osa" data-sub="Tři slova, která se pletou">
+<p>Strana A má 10 %, strana B 15 %.</p>
+<div class="box def"><ul><li>Rozdíl v <b>procentních bodech</b>: 15 − 10 = <b>5 p. b.</b></li><li>Rozdíl v <b>procentech</b>: 15 / 10 − 1 = <b>50 %</b>.</li></ul><p>Obě věty jsou pravdivé, ale každá říká něco jiného.</p></div>
+<div class="box def"><h4>Bazický bod</h4><p>1 bazický bod = 0,01 procentního bodu.</p></div>
+<h2>Investice A 3,0 %, B 3,1 %</h2>
+<ul><li>„O 0,1 procenta“: <b>ne</b>. V procentech je rozdíl $3{,}1/3-1\approx3{,}3$ %.</li><li>„O 0,1 procentního bodu“: <b>ano</b>.</li><li>„O 1 bazický bod“: <b>ne</b>, je to 10 bazických bodů.</li></ul>
+<div class="box warn"><h4>Graf, který lže</h4><p>Sloupcový graf s osou, která nezačíná na nule, ukáže B jako mnohonásobně lepší. Skutečný rozdíl je malý. Sloupcový graf musí začínat na nule.</p></div>
+</section>
+
+<section data-id="popisna" data-title="Popisná statistika" data-sub="Všechny ukazatele a jejich výklad">
+<p>Na IQ 176 osob se počítá celá sada ukazatelů. Hodnoty i věty jsou ty, které má umět každý.</p>
+<div class="scroll"><table><tr><th>Ukazatel</th><th class="n">Hodnota</th><th>Excel</th></tr>
+<tr><td>Průměr</td><td class="n">101,11</td><td>PRŮMĚR</td></tr><tr><td>Medián</td><td class="n">103</td><td>MEDIAN</td></tr><tr><td>Modus</td><td class="n">102</td><td>MODE.MULT</td></tr>
+<tr><td>Dolní kvartil</td><td class="n">88,75</td><td>QUARTIL.INC(data; 1)</td></tr><tr><td>Horní kvartil</td><td class="n">113</td><td>QUARTIL.INC(data; 3)</td></tr>
+<tr><td>Min a max</td><td class="n">49; 145</td><td>MIN, MAX</td></tr><tr><td>Rozpětí r</td><td class="n">96</td><td>MAX − MIN</td></tr><tr><td>Kvartilové rozpětí q</td><td class="n">24,25</td><td>$Q_3-Q_1$</td></tr>
+<tr><td>Rozptyl</td><td class="n">321,91</td><td>VAR.P</td></tr><tr><td>Směrodatná odchylka</td><td class="n">17,94</td><td>SMODCH.P</td></tr><tr><td>Variační koeficient</td><td class="n">17,74 %</td><td>SMODCH.P / PRŮMĚR</td></tr><tr><td>MAD</td><td class="n">12</td><td>MEDIAN z |x − medián|</td></tr>
+<tr><td>95. percentil</td><td class="n">128,5</td><td>PERCENTIL.INC</td></tr><tr><td>1. decil</td><td class="n">80</td><td>PERCENTIL.INC</td></tr></table></div>
+<h2>Věty pro interpretaci</h2>
+<ul><li><b>Medián:</b> polovina osob má IQ nejvýše 103, polovina aspoň 103.</li><li><b>Horní kvartil:</b> 75 % pozorování je nejvýše 113, zbylých 25 % aspoň 113.</li><li><b>Kvartilové rozpětí:</b> prostředních 50 % hodnot leží v intervalu širokém 24,25 bodu.</li><li><b>Směrodatná odchylka:</b> hodnoty se od průměru odchylují typicky o 17,94 bodu.</li><li><b>Variační koeficient:</b> směrodatná odchylka je 17,74 % průměru.</li></ul>
+<div class="box warn"><h4>Překlep ve zdrojovém Excelu</h4><p>V řešení je u variačního koeficientu text „17,47 %“. Výpočet v buňce dává 0,1774, správně je tedy 17,74 %.</p></div>
+<h2>Vzorce rozptylu</h2>
+<div class="formula">$$s^2=\frac{\sum(x_i-\bar{x})^2}{n}=\overline{x^2}-\bar{x}^2$$</div>
+<p>Druhý tvar je <b>výpočtový</b>: průměr čtverců minus čtverec průměru. Na kalkulačce bývá rychlejší.</p>
+<div class="formula">$$s=\sqrt{s^2}\qquad V=\frac{s}{\bar{x}}$$</div>
+<h2>Z tabulky četností</h2>
+<div class="formula">$$s^2=\frac{\sum n_i(x_i-\bar{x})^2}{n}=\sum p_i(x_i-\bar{x})^2$$</div>
+<p>Sourozenci: $\bar{x}=1{,}1$, $s^2=28{,}7/30=0{,}9567$, $s=0{,}9781$, $V=88{,}92$ %. Kumulované četnosti k tomu nepotřebuješ.</p>
+<div class="box warn"><h4>Past: VAR.P, nebo VAR.S</h4><p>Předmět počítá populačně (dělení $n$, VAR.P, SMODCH.P). <b>Analýza dat → Popisná statistika vypisuje výběrové hodnoty</b> (dělení $n-1$): u IQ směrodatnou odchylku 17,99 místo 17,94. Není to chyba, ale v úloze by to vyšlo jinak.</p></div>
+<div class="box tip"><h4>Co ještě ve výstupu Analýzy dat je</h4><p><b>Chyba střední hodnoty</b> je $s/\sqrt{n}$ (výběrová): 1,356. <b>Šikmost:</b> kladná vpravo, záporná vlevo. <b>Špičatost:</b> kladná je špičatější, záporná plošší tvar než normální rozdělení. Tady stačí základní pochopení.</p></div>
+<h2>Absolutní a relativní variabilita</h2>
+<p>Rozptyl, $s$, $r$ a $q$ jsou <b>absolutní</b>, skupiny s různým průměrem nebo jednotkami podle nich porovnávat nejdeš. Variační koeficient je <b>relativní</b>.</p>
+<ul><li><b>Děti:</b> průměr 120 cm, $s=5$, $V=4{,}17$ %.</li><li><b>Dospělí:</b> průměr 175 cm, $s=7$, $V=4{,}00$ %.</li></ul>
+<p>Dospělí mají větší $s$, ale relativně jsou <b>méně</b> variabilní.</p>
+<div class="box tip"><h4>Investice</h4><p>A: výnos 18 %, riziko 12 %, $V=66{,}7$ %. B: výnos 16 %, riziko 10 %, $V=62{,}5$ %. Rizikově averzní volí B, vyhledávající riziko A. Podle variačního koeficientu je relativně méně riziková <b>B</b>. Rozhodnutí tak záleží na postoji k riziku.</p></div>
+</section>
+
+<section data-id="vlastnosti" data-title="Vlastnosti průměru a rozptylu" data-sub="Co se stane, když přičteš nebo vynásobíš">
+<p>Otázka na pochopení: nemusíš nic přepočítávat, stačí tahle tabulka.</p>
+<div class="scroll"><table><tr><th>Změna hodnot</th><th>Průměr</th><th>Rozptyl</th><th>s</th><th>V</th></tr>
+<tr><td><b>+ c</b></td><td>+ c</td><td>beze změny</td><td>beze změny</td><td>změní se</td></tr>
+<tr><td><b>× c</b></td><td>× c</td><td>× c²</td><td>× c</td><td>beze změny</td></tr></table></div>
+<h2>Proč</h2>
+<p>Přičtení posune celý soubor, ale <b>vzdálenosti mezi hodnotami</b> zůstanou. Násobení roztáhne celou osu, proto se $s$ změní $c$-krát, a rozptyl, který je čtvercový, $c^2$-krát. $V$ je podíl $s/\bar{x}$ a $c$ se vykrátí.</p>
+<h2>Příjem 100 lidí</h2>
+<div class="scroll"><table><tr><th></th><th class="n">Průměr</th><th class="n">s</th><th class="n">V</th></tr>
+<tr><td>Původní</td><td class="n">47 291</td><td class="n">25 758</td><td class="n">54,47 %</td></tr>
+<tr><td>+ 1 000</td><td class="n">48 291</td><td class="n">25 758</td><td class="n">53,34 %</td></tr>
+<tr><td>× 2</td><td class="n">94 582</td><td class="n">51 516</td><td class="n">54,47 %</td></tr>
+<tr><td>− 10 % (× 0,9)</td><td class="n">42 562</td><td class="n">23 182</td><td class="n">54,47 %</td></tr></table></div>
+<div class="box warn"><h4>Past: „o 10 %“</h4><p>Pokles o 10 % je <b>násobení 0,9</b>, ne odečtení konstanty. Rozptyl se tak změní 0,81krát, ne 0,9krát.</p></div>
+</section>
+
+<section data-id="rozklad" data-title="Rozklad rozptylu" data-sub="Odkud se bere celková variabilita">
+<div class="box tip"><h4>Co bude v testu</h4><p>V řešení listu 03 cvičící poznamenal, že takový příklad určitě dávat nebude: <b>v testu maximálně příklad typu 01 nebo 02</b>. Soustřeď se na výpočet ze skupinových údajů. Ověř si to případně u vyučujícího.</p></div>
+<p>Rozptyl celé firmy se dá složit ze dvou částí:</p>
+<div class="formula">$$s^2=\underbrace{\overline{s_j^2}}_{\text{vnitroskupinový}}+\underbrace{s^2_{\bar{x}}}_{\text{meziskupinový}}$$</div>
+<ul><li><b>Vnitroskupinový:</b> jak se liší lidé uvnitř skupiny, $\frac{\sum s_j^2 n_j}{n}$.</li><li><b>Meziskupinový:</b> jak se liší průměry skupin od celku, $\frac{\sum(\bar{x}_j-\bar{x})^2n_j}{n}$.</li></ul>
+<h2>Typ 01: dostaneš průměr, počet a s</h2>
+<div class="scroll"><table><tr><th>Skupina</th><th class="n">Plat</th><th class="n">Počet</th><th class="n">s</th></tr><tr><td>Muži</td><td class="n">17 500</td><td class="n">60</td><td class="n">854</td></tr><tr><td>Ženy</td><td class="n">16 800</td><td class="n">40</td><td class="n">539</td></tr></table></div>
+<ol><li><b>Celkový průměr:</b> $(17\,500\cdot60+16\,800\cdot40)/100=17\,220$.</li>
+<li><b>Vnitroskupinový:</b> $(854^2\cdot60+539^2\cdot40)/100=553\,798$.</li>
+<li><b>Meziskupinový:</b> $(280^2\cdot60+420^2\cdot40)/100=117\,600$.</li>
+<li><b>Celkový rozptyl:</b> $553\,798+117\,600=671\,398$.</li>
+<li><b>Směrodatná odchylka:</b> $\sqrt{671\,398}=819{,}39$.</li>
+<li><b>Variační koeficient:</b> $819{,}39/17\,220=4{,}76$ %.</li>
+<li><b>Poměr determinace:</b> $P^2=117\,600/671\,398=0{,}175$.</li></ol>
+<div class="box def"><h4>Poměr determinace</h4><p>Podíl meziskupinové variability na celkové, od 0 do 1. Tady 17,5 % variability platů se vysvětlí pohlavím, jde o slabou až mírnou závislost.</p></div>
+<h2>Typ 02: dostaneš podíly a variační koeficient</h2>
+<p>Trik: $s_j=V_j\cdot\bar{x}_j$. Podíly $p_j$ nahradí $n_j/n$.</p>
+<div class="scroll"><table><tr><th>Pobočka</th><th class="n">Plat</th><th class="n">$p_j$</th><th class="n">$V_j$</th><th class="n">$s_j$</th></tr><tr><td>A</td><td class="n">29 300</td><td class="n">0,42</td><td class="n">4,9 %</td><td class="n">1 435,7</td></tr><tr><td>B</td><td class="n">27 500</td><td class="n">0,27</td><td class="n">4,1 %</td><td class="n">1 127,5</td></tr><tr><td>C</td><td class="n">31 600</td><td class="n">0,31</td><td class="n">3,2 %</td><td class="n">1 011,2</td></tr></table></div>
+<p>Celkový průměr 29 527 Kč, vnitroskupinový rozptyl 1 525 941, meziskupinový 2 463 171, celkový 3 989 112, $s=1\,997{,}28$, $V=6{,}76$ %, $P^2=0{,}617$: mírná až silná závislost mezi pobočkou a platem.</p>
+<div class="box warn"><h4>Co se plete</h4><ul><li>Rozptyly se sčítají, <b>směrodatné odchylky ne</b>. Vždy nejdřív umocni.</li><li>Vnitroskupinový rozptyl není prostý průměr, je vážený.</li><li>$V$ a $s$ zadání smíchá: převeď je.</li></ul></div>
+</section>

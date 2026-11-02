@@ -1,0 +1,78 @@
+<section data-id="cetnosti" data-title="Četnosti a modus" data-sub="Kolik čeho je, absolutně i relativně">
+<p>Četnosti jsou nejjednodušší souhrn a u nominální proměnné v podstatě jediný.</p>
+<div class="box def"><h4>Čtyři četnosti</h4>
+<p>$n_i$ <b>absolutní:</b> kolik pozorování je v kategorii.<br>$p_i = n_i/n$ <b>relativní:</b> jaký podíl to je.<br>$N_i$ <b>kumulovaná absolutní:</b> kolik jich je v této a všech nižších kategoriích.<br>$P_i$ <b>kumulovaná relativní:</b> totéž jako podíl.</p></div>
+<div class="box warn"><h4>Kumulace není vždy možná</h4><p>Vyžaduje pořadí. U ordinální a kvantitativní proměnné ano, u nominální ne: „kolik lidí má nejvýše Plzeňský kraj“ nedává smysl.</p></div>
+<div class="box tip"><h4>Rychlá kontrola</h4><p>Součet $p_i$ musí být 100 % a poslední $N_i$ se musí rovnat $n$.</p></div>
+<h2>Modus</h2>
+<p>Nejčastější hodnota, u kategorií <b>modální kategorie</b>, u intervalů <b>modální interval</b>. Jediná míra polohy pro nominální proměnnou.</p>
+<ul><li>Preferovaný sport: fotbal 13, plavání 7, hokej 6, atletika 4, modus je <b>fotbal</b>.</li><li>Pohlaví: 15 mužů a 15 žen, <b>modus neexistuje</b>, žádná kategorie nepřevažuje.</li></ul>
+<p>V Excelu najdeš více modů přes MODE.MULT. Četnosti spočítáš přes COUNTIF nebo kontingenční tabulku.</p>
+</section>
+
+<section data-id="kontingencni" data-title="Řádková a sloupcová procenta" data-sub="Jedna buňka, tři různé věty">
+<p>Kontingenční tabulka třídí podle dvou proměnných zároveň. Tady se dělá nejčastější interpretační chyba.</p>
+<div class="scroll"><table><tr><th>Sport</th><th class="n">Muž</th><th class="n">Žena</th><th class="n">Celkem</th></tr>
+<tr><td>atletika</td><td class="n">2</td><td class="n">2</td><td class="n">4</td></tr><tr><td>fotbal</td><td class="n">8</td><td class="n">5</td><td class="n">13</td></tr><tr><td>hokej</td><td class="n">3</td><td class="n">3</td><td class="n">6</td></tr><tr><td>plavání</td><td class="n">2</td><td class="n">5</td><td class="n">7</td></tr><tr class="sum"><td>Celkem</td><td class="n">15</td><td class="n">15</td><td class="n">30</td></tr></table></div>
+<h2>Buňka muž × hokej = 3</h2>
+<div class="scroll"><table><tr><th>Procento z</th><th>Výpočet</th><th>Správná věta</th></tr>
+<tr><td>celku</td><td>3 / 30 = 10 %</td><td>10 % všech respondentů jsou muži, kteří preferují hokej.</td></tr>
+<tr><td>sloupce</td><td>3 / 15 = 20 %</td><td>20 % mužů preferuje hokej.</td></tr>
+<tr><td>řádku</td><td>3 / 6 = 50 %</td><td>50 % fanoušků hokeje jsou muži.</td></tr></table></div>
+<div class="box tip"><h4>Pomůcka</h4><p>Věta vždy začíná <b>celkem, ze kterého procento počítáš</b>: „Z mužů…“ je 15, „Z fanoušků hokeje…“ je 6. Když nevíš, co je základ, nevíš, co to číslo znamená.</p></div>
+<p>V Excelu: Nastavení polí hodnot → Zobrazit hodnoty jako → % z celkového součtu / % ze součtu sloupce / % ze součtu řádku. Graf: klik do tabulky → Kontingenční graf.</p>
+<div class="box warn"><h4>Různě velké skupiny</h4><p>Když je 118 žen a 82 mužů, absolutní počty srovnávat nejdou. Spočítej procenta zvlášť za každou skupinu.</p></div>
+</section>
+
+<section data-id="tabulka" data-title="Tabulka četností" data-sub="Medián, kvartily a průměr bez Excelu">
+<p>Na papíře se dá těžko počítat se stovkami surových hodnot, takže je dobré umět pracovat přímo s tabulkou. Tohle si proto dobře osvoj.</p>
+<div class="scroll"><table><tr><th class="n">$x_i$ sourozenců</th><th class="n">$n_i$</th><th class="n">$N_i$</th><th class="n">$p_i$</th><th class="n">$P_i$</th></tr>
+<tr><td class="n">0</td><td class="n">9</td><td class="n">9</td><td class="n">0,300</td><td class="n">0,300</td></tr>
+<tr><td class="n">1</td><td class="n">12</td><td class="n">21</td><td class="n">0,400</td><td class="n">0,700</td></tr>
+<tr><td class="n">2</td><td class="n">7</td><td class="n">28</td><td class="n">0,233</td><td class="n">0,933</td></tr>
+<tr><td class="n">3</td><td class="n">1</td><td class="n">29</td><td class="n">0,033</td><td class="n">0,967</td></tr>
+<tr><td class="n">4</td><td class="n">1</td><td class="n">30</td><td class="n">0,033</td><td class="n">1,000</td></tr></table></div>
+<h2>Jak číst kumulované sloupce</h2>
+<p>21 studentů má <b>nejvýše</b> jednoho sourozence, 70 % má nejvýše jednoho. „Nejvýše“ znamená včetně této hodnoty a všech menších.</p>
+<h2>Kvantily z tabulky</h2>
+<div class="box def"><h4>Pravidlo</h4><p>Hledej první hodnotu, kde $P_i$ <b>poprvé přesáhne</b> hranici: 0,25 pro dolní kvartil, 0,5 pro medián, 0,75 pro horní kvartil.</p></div>
+<ul><li><b>$Q_1 = 0$:</b> 0,300 je první nad 0,25.</li><li><b>Medián $= 1$:</b> 0,700 je první nad 0,5.</li><li><b>$Q_3 = 2$:</b> 0,933 je první nad 0,75.</li></ul>
+<div class="box warn"><h4>Interpretace kvartilu</h4><p>Není to „25 % má přesně 0“. Správně: <b>25 % studentů má nejvýše 0 sourozenců</b> a zbytek má aspoň 0.</p></div>
+<h2>Průměr z tabulky</h2>
+<p>Vynásob hodnoty četnostmi. Tohle je vážený průměr:</p>
+<div class="formula">$$\bar{x}=\frac{\sum x_i n_i}{n}=\frac{0\cdot 9+1\cdot 12+2\cdot 7+3\cdot 1+4\cdot 1}{30}=\frac{33}{30}=1{,}1$$</div>
+<p>Nebo přes podíly: $\bar{x}=\sum x_i p_i = 0\cdot0{,}3+1\cdot0{,}4+\dots = 1{,}1$. V Excelu pomůže SOUČIN.SKALÁRNÍ.</p>
+<h2>Rozpětí</h2>
+<p>Variační rozpětí $r = max - min = 4$ říká, jak široký je celý soubor. Kvartilové rozpětí $q = Q_3 - Q_1 = 2$ říká, jak široká je prostřední polovina.</p>
+<h2>Medián, nebo průměr?</h2>
+<div class="box tip"><p>U <b>malých souborů a nesymetrických dat</b> (mzdy, ceny) použij <b>medián</b>, průměr strhnou extrémy. U symetrických dat bez extrémů jsou si blízké a oba jsou v pořádku.</p></div>
+</section>
+
+<section data-id="intervaly" data-title="Spojitá veličina v intervalech" data-sub="IQ proti příjmu: symetrie a šikmost">
+<p>Spojité hodnoty je potřeba rozdělit do intervalů. Nástroj: <code>ČETNOSTI()</code> nebo <b>Data → Analýza dat → Histogram</b> s horními hranicemi tříd.</p>
+<div class="box warn"><h4>Excel a histogram</h4><p>Výstup z Analýzy dat má mezery jako sloupcový graf. Oprav to: pravý klik na sloupce → Formát datové řady → Šířka mezery 0 %. Když označíš i záhlaví, zaškrtni Popisky.</p></div>
+<h2>IQ: symetrické rozdělení</h2>
+<div class="scroll"><table><tr><th>Interval</th><th class="n">$n_i$</th><th class="n">$P_i$</th></tr><tr><td>≤ 69</td><td class="n">5</td><td class="n">0,05</td></tr><tr><td>70–79</td><td class="n">6</td><td class="n">0,11</td></tr><tr><td>80–89</td><td class="n">15</td><td class="n">0,26</td></tr><tr><td>90–109</td><td class="n">48</td><td class="n">0,74</td></tr><tr><td>110–119</td><td class="n">12</td><td class="n">0,86</td></tr><tr><td>120–129</td><td class="n">9</td><td class="n">0,95</td></tr><tr><td>130+</td><td class="n">5</td><td class="n">1,00</td></tr></table></div>
+<p>Dolní kvartil je v intervalu 80–89 (0,26 ≥ 0,25), medián v 90–109, horní kvartil v 110–119. Skutečné hodnoty: $Q_1 = 89$, medián 100, $Q_3 = 111{,}25$. Průměr 99,93 je skoro stejný jako medián, takže <b>průměr je tady dobrý ukazatel</b>.</p>
+<div class="box warn"><h4>Past v modálním intervalu</h4><p>Modální je 90–109, ale tento interval je dvakrát širší než ostatní. Čím širší interval, tím víc se do něj vejde. Při nestejných šířkách modus ber opatrně.</p></div>
+<h2>Příjem: pravostranně zešikmené rozdělení</h2>
+<figure data-chart="hist" data-d='{"l":["≤15","15–30","30–45","45–60","60–75","75–90","90+"],"v":[5,23,26,22,11,10,3]}'><figcaption>Příjem v tisících Kč, n = 100. Modální interval je 30–45 tisíc.</figcaption></figure>
+<p>Průměr 45 772 Kč je větší než medián 43 640 Kč, protože pár velkých hodnot táhne průměr nahoru.</p>
+<div class="scroll"><table><tr><th>Tvar</th><th>Vztah</th><th>Vhodná poloha</th></tr><tr><td>symetrický</td><td>průměr ≈ medián</td><td>průměr i medián</td></tr><tr><td>pravostranně zešikmený</td><td>průměr &gt; medián</td><td>medián</td></tr><tr><td>levostranně zešikmený</td><td>průměr &lt; medián</td><td>medián</td></tr></table></div>
+<div class="box tip"><h4>Proč to je důležité</h4><p>Když je průměr nad mediánem, průměrnou mzdu nedosáhne ani polovina lidí. Proto se pro mezinárodní srovnání mezd hodí spíš medián.</p></div>
+</section>
+
+<section data-id="vazeny" data-title="Vážený průměr" data-sub="Průměr průměrů se nepočítá prostě">
+<p>Listy 06–09 opakují jednu myšlenku: <b>když skupiny nejsou stejně velké, skupinové průměry musíš vážit</b>.</p>
+<div class="formula">$$\bar{x}=\frac{\sum \bar{x}_j n_j}{n}=\sum \bar{x}_j p_j$$</div>
+<h2>Voliči pěti stran</h2>
+<div class="scroll"><table><tr><th>Strana</th><th class="n">Voličů</th><th class="n">Průměrný věk</th><th class="n">Součin</th></tr><tr><td>A</td><td class="n">250</td><td class="n">25</td><td class="n">6 250</td></tr><tr><td>B</td><td class="n">50</td><td class="n">31</td><td class="n">1 550</td></tr><tr><td>C</td><td class="n">120</td><td class="n">32</td><td class="n">3 840</td></tr><tr><td>D</td><td class="n">200</td><td class="n">43</td><td class="n">8 600</td></tr><tr><td>E</td><td class="n">380</td><td class="n">51</td><td class="n">19 380</td></tr><tr class="sum"><td>Celkem</td><td class="n">1 000</td><td class="n"></td><td class="n">39 620</td></tr></table></div>
+<p>Vážený průměr: 39 620 / 1 000 = <b>39,62 roku</b>. Prostý průměr pěti čísel by dal 36,4, protože by malou stranu B počítal stejně jako velkou E.</p>
+<h2>Obrácená úloha: dopočet neznámé</h2>
+<p>Firma má 100 poboček a celkový průměrný obrat 22,86 mil. Kč. Neznáš počet poboček v městě D ani obrat v městě C.</p>
+<ol><li>Počet doplníš z celku: $100-10-15-17-32=26$.</li><li>Sestavíš rovnici z $\sum x_j p_j$: $2{,}72+3{,}96+0{,}17x_C+5{,}85+6{,}08=22{,}86$.</li><li>Vyřešíš: $0{,}17x_C=4{,}25$, takže $x_C=25$ mil. Kč.</li></ol>
+<div class="box tip"><p>V Excelu to udělá i <b>Data → Citlivostní analýza → Hledání řešení</b>, v testu na papíře ale stačí rovnice.</p></div>
+<h2>Čtení z tabulky</h2>
+<p>V tabulce platů najdi hodnotu podle praxe a třídy a vynásob podílem: $0{,}2\cdot 53\,430+0{,}3\cdot 59\,940+0{,}5\cdot 76\,540=66\,938$ Kč. Podíl poslední skupiny dopočítáš: $1-0{,}2-0{,}3=0{,}5$.</p>
+<div class="box warn"><h4>Past</h4><p>Pozor na to, co je řádek a co sloupec: „lékaři s praxí do 12 let, třída 13“ a „třída 12, praxe 13“ jsou úplně jiná buňka.</p></div>
+</section>

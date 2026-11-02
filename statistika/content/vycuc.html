@@ -1,0 +1,48 @@
+<section data-id="test" data-title="Než půjdeš na test" data-sub="Formát a priority">
+<div class="box def"><h4>Co víme z prezentace a od tebe</h4><ul><li><b>Průběžný test:</b> podle úvodní prezentace 9. 11. při cvičení, průřez vším probraným. Studijní texty dodávají, že termín upřesní cvičící, takže si datum ověř.</li><li><b>Forma:</b> na papír s kalkulačkou, přístup k Excelu, nic se v něm neodevzdává.</li><li><b>Váha:</b> dva testy se stejnou váhou. Průběžný test opravit nejde.</li><li><b>Známky:</b> 1 od 90 %, 2 od 75 %, 3 od 60 %. Pásmo 50–59 % v řádném termínu je 4+ a dává nárok na jeden opravný termín závěrečného testu.</li></ul></div>
+<h2>Kam dát čas, když je ho málo</h2>
+<ol><li><b>Typy proměnných a volba grafu.</b> Rychlé body a základ všeho dalšího.</li><li><b>Tabulka četností</b>: medián, kvartily, průměr a rozptyl ručně.</li><li><b>Který průměr</b>: harmonický, geometrický, vážený.</li><li><b>Procenta a procentní body, vlastnosti průměru a rozptylu.</b> Teorie, málo počítání.</li><li><b>Rozklad rozptylu</b>: jen typ 01 a 02.</li><li><b>Korelace, kontingenční koeficienty, regrese.</b> Procvič výklad výsledku a malé výpočty.</li></ol>
+<p class="src">Pořadí je moje doporučení, ne oficiální rozsah testu.</p>
+</section>
+<section data-id="promenne" data-title="Proměnné a data" data-sub="Základ, na kterém stojí všechno">
+<h3>Co umět</h3><ul><li>Určit u proměnné nominální, ordinální, diskrétní a spojitá, a říct proč.</li><li>Rozlišit netříděná, tříděná a agregovaná data; průřez, časovou řadu a panel; wide a long.</li></ul>
+<h3>Proč je to důležité</h3><p>Typ proměnné rozhoduje o přípustných výpočtech i grafu. Špatný typ vede ke špatnému všemu dál.</p>
+<div class="box warn"><h4>Na co si dát bacha</h4><ul><li>Čísla nejsou automaticky kvantitativní: spokojenost 1–5 je ordinální, ID nominální.</li><li>Subjektivní pořadí se nepočítá.</li><li>Celé centimetry neznamenají diskrétní proměnnou.</li></ul></div>
+<h3>V čem se to liší</h3><p>Jednodušší je nominální (stačí četnosti). Složitější jsou hraniční případy: věk v letech, peníze, rok. Tam rozhoduje zdůvodnění.</p>
+</section>
+<section data-id="grafy" data-title="Grafy" data-sub="Jeden typ dat, jeden správný graf">
+<h3>Co umět</h3><ul><li>Přiřadit graf: sloupcový, histogram, krabicový, spojnicový, bodový.</li><li>Přečíst krabicový graf a najít odlehlé hodnoty.</li><li>Z histogramu poznat tvar.</li></ul>
+<h3>Proč je to důležité</h3><p>Graf ukáže, co číslo schová: šikmost, odlehlé hodnoty, nelineární vztah.</p>
+<div class="box warn"><h4>Na co si dát bacha</h4><ul><li>Histogram bez mezer, sloupcový s mezerami.</li><li>Sloupcový graf s osou neod nuly klame.</li><li>Výsečový se nedoporučuje.</li></ul></div>
+<h3>V čem se to liší</h3><p>Diskrétní s málo hodnotami kreslíš sloupcově jako kategorie, spojitou musíš nejdřív rozdělit do intervalů, a tvar pak závisí na jejich šířce.</p>
+</section>
+<section data-id="poloha" data-title="Míry polohy" data-sub="Jaká hodnota je typická">
+<h3>Co umět</h3><ul><li>Spočítat medián, kvartily, modus a průměr ze surových dat i tabulky.</li><li>Rozhodnout mezi mediánem a průměrem.</li><li>Vyložit větu „25 % má nejvýše…“.</li></ul>
+<h3>Proč je to důležité</h3><p>U mezd se průměr a medián liší a vedou k jiným závěrům: „průměrnou mzdu“ nedosáhne většina lidí.</p>
+<div class="box warn"><h4>Na co si dát bacha</h4><ul><li>Průměr je citlivý na extrémy, medián ne.</li><li>V tabulce hledej první $P_i$ nad hranicí.</li><li>Modus nemusí existovat a modální interval záleží na šířce.</li><li>Průměr průměrů bez vah je chyba.</li></ul></div>
+<h3>V čem se to liší</h3><p>Symetrická data: průměr ≈ medián. Pravostranně zešikmená: průměr &gt; medián. Levostranně: průměr &lt; medián.</p>
+</section>
+<section data-id="prumery" data-title="Který průměr" data-sub="Aritmetický, vážený, harmonický, geometrický">
+<div class="scroll"><table><tr><th>Situace</th><th>Průměr</th></tr><tr><td>součet dává smysl</td><td>aritmetický</td></tr><tr><td>skupiny různé velikosti</td><td>vážený aritmetický</td></tr><tr><td>poměr, známý čitatel (dráha)</td><td>harmonický</td></tr><tr><td>poměr, známý jmenovatel (čas)</td><td>vážený aritmetický</td></tr><tr><td>změny v čase, násobení</td><td>geometrický</td></tr></table></div>
+<h3>Proč je to důležité</h3><p>Všechny vzorce dají nějaké číslo a Excel chybu nenahlásí. Rozhoduješ ty, podle významu dat.</p>
+<div class="box warn"><h4>Na co si dát bacha</h4><ul><li>Geometrický: počet změn je o jednu menší než počet hodnot.</li><li>Harmonický: bez vah poměrový průměr nespočítáš.</li><li>Kdykoli pochybuješ: celkový čitatel / celkový jmenovatel.</li></ul></div>
+</section>
+<section data-id="variabilita" data-title="Variabilita" data-sub="Jak moc se hodnoty liší">
+<h3>Co umět</h3><ul><li>Spočítat rozptyl, $s$ a $V$ ze surových dat i tabulky.</li><li>Říct, co se stane při $+c$ a $\times c$.</li><li>Rozklad rozptylu, typ 01 a 02.</li></ul>
+<h3>Proč je to důležité</h3><p>Dva soubory se stejným průměrem mohou být úplně jiné. Průměrný výnos bez rizika nic neříká.</p>
+<div class="box warn"><h4>Na co si dát bacha</h4><ul><li>Rozptyl se nevykládá, je ve čtvercových jednotkách.</li><li>Různé průměry: porovnávej $V$, ne $s$.</li><li>Analýza dat dává výběrové $s$ (dělení $n-1$), VAR.P a SMODCH.P populační.</li><li>Rozptyly se sčítají, odchylky ne.</li></ul></div>
+</section>
+<section data-id="procenta" data-title="Procenta a klamavé grafy" data-sub="Rychlé body v testu">
+<ul><li>Z 10 % na 15 % je +5 procentních bodů a +50 %.</li><li>1 bazický bod = 0,01 p. b.</li><li>Pokles o 10 % je ×0,9; dvakrát o 10 % je ×0,81, ne −20 %.</li></ul>
+<div class="box warn"><h4>Na co si dát bacha</h4><p>Vždy si ujasni, ke kterému základu procento počítáš. Řádková a sloupcová procenta jsou stejná chyba v jiném převleku.</p></div>
+</section>
+<section data-id="zavislost" data-title="Závislost" data-sub="Korelace, kontingence, regrese">
+<h3>Co umět</h3><ul><li>Vybrat míru podle typu proměnných.</li><li>Spočítat Spearmana z malé tabulky, Kendalla z dvojic a $G$, $C$, $V$ z kontingenční tabulky.</li><li>Vyložit $r$, $b$, $a$, $r^2$ a $P^2$.</li></ul>
+<h3>Proč je to důležité</h3><p>Závislost je to, co analytik v praxi řeší nejčastěji, a nejvíc se v ní chybuje při výkladu.</p>
+<div class="box warn"><h4>Na co si dát bacha</h4><ul><li>$r\approx0$ neznamená nezávislost, jen ne lineární.</li><li>Korelace není příčina.</li><li>Jeden extrém umí změnit Pearsona, proto se vždy podívej na graf.</li><li>$b$ a $r$ mají stejné znaménko, ne velikost.</li><li>Absolutní člen může být nesmysl.</li><li>$C$ a $V$ nemají směr.</li></ul></div>
+<div class="scroll"><table><tr><th>Míra</th><th>Rozsah</th><th>Směr?</th><th>Měří</th></tr><tr><td>Pearson</td><td>−1 až 1</td><td>ano</td><td>lineární vztah</td></tr><tr><td>Spearman, Kendall</td><td>−1 až 1</td><td>ano</td><td>monotónní vztah, pořadí</td></tr><tr><td>C, V</td><td>0 až 1</td><td>ne</td><td>kategorie</td></tr><tr><td>$P^2$, $r^2$</td><td>0 až 1</td><td>ne</td><td>vysvětlená variabilita</td></tr></table></div>
+</section>
+<section data-id="sber" data-title="Sběr dat" data-sub="Teorie pro testové otázky">
+<ul><li><b>Primární</b> sbíráš sám, <b>sekundární</b> přebíráš.</li><li><b>Pravděpodobnostní</b> výběr umožňuje spočítat chybu, <b>kvótní</b> korektně ne.</li><li><b>CAWI</b> web, <b>CATI</b> telefon, <b>CAPI</b> tablet, <b>PAPI</b> papír.</li><li>Nevýběrové chyby: pokrytí, neodpovědi, měření, zpracování. S větším $n$ se nezmenšují.</li><li>Poloviční chyba vyžaduje čtyřnásobek respondentů.</li></ul>
+<p class="src">Podle studijních textů J. Horníčka. Jestli tahle část patří do průběžného testu, záleží na probrané látce.</p>
+</section>

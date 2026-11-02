@@ -1,0 +1,91 @@
+<section data-id="pearson" data-title="Pearsonův koeficient" data-sub="Síla a směr lineární závislosti">
+<p>Měří, <b>jak moc body leží na přímce</b>. Výška a hmotnost 100 studentů:</p>
+<figure data-chart="scatter" data-d='{"p":[[185,96],[161,70],[186,109],[173,77],[176,67],[175,100],[160,74],[176,87],[175,92],[171,66],[174,78],[172,96],[173,96],[172,79],[173,72],[153,57],[178,95],[175,82],[169,83],[158,57],[168,66],[166,82],[178,87],[183,101],[168,80]],"line":[-143.12,1.3021],"h":210}'><figcaption>Výřez 25 studentů z dat a přímka proložená celým souborem.</figcaption></figure>
+<div class="formula">$$r_{xy}=\frac{\overline{xy}-\bar{x}\bar{y}}{\sqrt{(\overline{x^2}-\bar{x}^2)(\overline{y^2}-\bar{y}^2)}}$$</div>
+<p>Čitatel je <b>kovariance</b>. Sama závisí na jednotkách, proto se dělí směrodatnými odchylkami a výsledek je vždy mezi −1 a 1.</p>
+<h2>Výpočet</h2>
+<p>$\bar{x}=170{,}42$, $\bar{y}=78{,}78$, $\overline{xy}=13\,495{,}04$. Čitatel: $13\,495{,}04-170{,}42\cdot78{,}78=69{,}35$. Jmenovatel: 88,56. Výsledek <b>$r=0{,}783$</b>.</p>
+<h2>Jak to vyložit</h2>
+<div class="scroll"><table><tr><th>|r|</th><th>Síla</th></tr><tr><td>pod 0,3</td><td>slabá</td></tr><tr><td>0,3 až 0,7</td><td>střední</td></tr><tr><td>nad 0,7</td><td>silná</td></tr></table></div>
+<p>Hranice jsou orientační. Řešení cvičení u stejných 0,78 píše jednou „mírná až silná“ a jednou „silná“. Podstatné je uvést <b>tři věci: síla, směr a slovo lineární</b>: „silná pozitivní lineární závislost“.</p>
+<div class="box warn"><h4>Kdy Pearson nestačí</h4><ul><li>Je citlivý na <b>extrémní hodnoty</b>.</li><li>Předpokládá <b>lineární</b> vztah; řešení ke cvičení vyžaduje i přibližně normální rozdělení, což posoudíš z histogramů.</li><li>$r\approx0$ znamená jen, že není <b>lineární</b> závislost. Jiná existovat může.</li><li>Korelace neprokazuje příčinu.</li></ul></div>
+<p>Excel: CORREL nebo PEARSON. Graf: Vložení → Bodový, u osy si nastav minimum (pravý klik na osu → Formát osy).</p>
+</section>
+
+<section data-id="spearman" data-title="Spearmanův koeficient" data-sub="Počítá s pořadím, ne s hodnotami">
+<p>Příjem a úspory 100 studentů. Jeden student má příjem 259 200 Kč, ale úspory jen 15 700 Kč. Pearson vyjde 0,639, přitom z dat je vidět, že s příjmem úspory jasně rostou.</p>
+<div class="box def"><h4>Myšlenka</h4><p>Nahraď hodnoty jejich <b>pořadím</b>. Extrémní student dostane pořadí 100 a dál už od ostatních „neuteče“.</p></div>
+<div class="formula">$$r_s=1-\frac{6\sum d_i^2}{n(n^2-1)}$$</div>
+<p>$d_i$ je rozdíl pořadí u i-tého pozorování.</p>
+<h2>Malý příklad</h2>
+<div class="scroll"><table><tr><th class="n">x</th><th class="n">y</th><th class="n">pořadí x</th><th class="n">pořadí y</th><th class="n">$d^2$</th></tr>
+<tr><td class="n">3</td><td class="n">10</td><td class="n">3</td><td class="n">1</td><td class="n">4</td></tr><tr><td class="n">1</td><td class="n">14</td><td class="n">1</td><td class="n">3</td><td class="n">4</td></tr><tr><td class="n">4</td><td class="n">25</td><td class="n">4</td><td class="n">4</td><td class="n">0</td></tr><tr><td class="n">2</td><td class="n">12</td><td class="n">2</td><td class="n">2</td><td class="n">0</td></tr><tr><td class="n">5</td><td class="n">90</td><td class="n">5</td><td class="n">6</td><td class="n">1</td></tr><tr><td class="n">6</td><td class="n">40</td><td class="n">6</td><td class="n">5</td><td class="n">1</td></tr><tr class="sum"><td colspan="4">Součet</td><td class="n">10</td></tr></table></div>
+<p>$r_s=1-\frac{6\cdot10}{6\cdot35}=0{,}714$. Pearson by tady kvůli hodnotě 90 dal jen 0,662.</p>
+<div class="box warn"><h4>Shodné hodnoty</h4><p>Stejné hodnoty dostanou <b>průměr svých pořadí</b>: dvě hodnoty na 4. a 5. místě mají obě 4,5. V Excelu <code>RANK.AVG(hodnota; oblast; 1)</code>. Třetí argument 1 znamená, že nejmenší má pořadí 1.</p></div>
+<p>Pro příjem a úspory: $\sum d^2=16\,860{,}5$, $n=100$, <b>$r_s=0{,}899$</b>, silná pozitivní závislost. Stejně vyjde CORREL na pořadích.</p>
+<h2>Kdy Spearman</h2>
+<ul><li>vztah je <b>monotónní, ale ne lineární</b>,</li><li>data jsou <b>ordinální</b>,</li><li>jsou tam <b>extrémní hodnoty</b> nebo rozdělení není normální.</li></ul>
+<div class="box warn"><h4>Ani Spearman nezachytí všechno</h4><p>Investice a zisk firmy: zisk roste a pak klesá, jde o oblouk. Pearson 0,23 a Spearman 0,21 vypadají jako „skoro nic“, přitom závislost je silná.</p></div>
+<figure data-chart="scatter" data-d='{"p":[[50,800],[55,900],[60,1200],[65,1550],[70,1650],[75,1800],[80,1850],[85,1920],[90,1930],[95,1900],[100,1800],[105,1700],[110,1500],[115,1200],[120,950]],"r":4,"h":170}'><figcaption>Silná kvadratická závislost, kterou žádný z koeficientů neodhalí.</figcaption></figure>
+</section>
+
+<section data-id="kendall" data-title="Kendallův koeficient" data-sub="Souhlasné a nesouhlasné dvojice">
+<p>Kendall porovnává <b>každou dvojici</b>: je pořadí v obou proměnných stejné?</p>
+<div class="formula">$$\tau=\frac{C-D}{\binom{n}{2}}=\frac{2(C-D)}{n(n-1)}$$</div>
+<p>$C$ je počet souhlasných (konkordantních) dvojic, $D$ nesouhlasných (diskordantních).</p>
+<h2>Analytici a akcie</h2>
+<div class="scroll"><table><tr><th>Akcie</th><th class="n">Analytik A</th><th class="n">Analytik B</th><th class="n">Skutečné pořadí</th></tr><tr><td>Apple</td><td class="n">1</td><td class="n">5</td><td class="n">1</td></tr><tr><td>Microsoft</td><td class="n">2</td><td class="n">1</td><td class="n">4</td></tr><tr><td>Nvidia</td><td class="n">3</td><td class="n">4</td><td class="n">2</td></tr><tr><td>Amazon</td><td class="n">4</td><td class="n">2</td><td class="n">5</td></tr><tr><td>Tesla</td><td class="n">5</td><td class="n">3</td><td class="n">3</td></tr></table></div>
+<p>5 akcií je $\binom{5}{2}=10$ dvojic. Dvojice Microsoft a Nvidia u analytika A: A dává Microsoft výš (2 a 3), ve skutečnosti je Nvidia výš (4 a 2), jde o <b>nesouhlas</b>.</p>
+<ul><li><b>A:</b> $C=7$, $D=3$, $\tau=(7-3)/10=0{,}4$.</li><li><b>B:</b> $C=1$, $D=9$, $\tau=(1-9)/10=-0{,}8$.</li></ul>
+<p>Lepší je analytik A. B má silnou <b>zápornou</b> shodu: je „dobrý“ jen v tom, že se trefuje obráceně.</p>
+<div class="box warn"><h4>Pozor</h4><p>Pořadí 1 tady znamená nejvyšší výnos. Skutečné pořadí si proto musíš nejdřív určit sám z výnosů 8 %, 3 %, 6 %, 1 %, 4 %.</p></div>
+</section>
+
+<section data-id="datasaurus" data-title="Pozor: stejná čísla, různá data" data-sub="Proč se vždy dívat na graf">
+<p>V listech data_01 až data_13 je 13 souborů se 142 body. Všechny mají téměř shodné: $\bar{x}\approx54{,}3$, $\bar{y}\approx47{,}8$, výběrové $s_x\approx16{,}8$, $s_y\approx26{,}9$ a $r\approx-0{,}06$.</p>
+<p>Znamená to, že jsou to stejná data? Přepínej je:</p>
+<div data-saurus></div>
+<div class="box tip"><h4>Co si odnést</h4><p>Čísla shrnou, ale neukážou tvar. Před korelací nebo regresí <b>vždy nakresli graf</b>. Řešení cvičení zvlášť upozorňuje na data_04 a data_10.</p></div>
+</section>
+
+<section data-id="kontingence" data-title="Závislost kategorických proměnných" data-sub="Očekávané četnosti, G, C a V">
+<p>Pohlaví, obor nebo strana: tady korelaci nespočítáš. Princip: <b>porovnej skutečné četnosti s tím, co by bylo při nezávislosti</b>.</p>
+<h2>Postup</h2>
+<p>Umístění výrobku a úroveň prodeje, 183 výrobků:</p>
+<div class="scroll"><table><tr><th></th><th class="n">malý</th><th class="n">střední</th><th class="n">velký</th><th class="n">Σ</th></tr><tr><td>A dole</td><td class="n">25</td><td class="n">9</td><td class="n">10</td><td class="n">44</td></tr><tr><td>B v očích</td><td class="n">11</td><td class="n">36</td><td class="n">11</td><td class="n">58</td></tr><tr><td>C pokladna</td><td class="n">13</td><td class="n">16</td><td class="n">52</td><td class="n">81</td></tr><tr class="sum"><td>Σ</td><td class="n">49</td><td class="n">61</td><td class="n">73</td><td class="n">183</td></tr></table></div>
+<p><b>1. Očekávaná četnost</b> = řádkový součet × sloupcový součet / n.</p>
+<div class="formula">$$n'_{ij}=\frac{n_{i.}\cdot n_{.j}}{n}\qquad n'_{A,malý}=\frac{44\cdot49}{183}=11{,}78$$</div>
+<p><b>2. Statistika G</b> (jinde značená $\chi^2$), součet přes všechny buňky:</p>
+<div class="formula">$$G=\sum\sum\frac{(n_{ij}-n'_{ij})^2}{n'_{ij}}=62{,}28$$</div>
+<p><b>3. Koeficienty</b>, $m=\min(r,s)$, tedy menší z počtu řádků a sloupců:</p>
+<div class="formula">$$C=\sqrt{\frac{G}{n+G}}=0{,}504\qquad V=\sqrt{\frac{G}{n(m-1)}}=0{,}412$$</div>
+<p>$C$ je Pearsonův, $V$ Cramerův koeficient. Oba jsou od 0 do 1.</p>
+<div class="box tip"><h4>Kontrola očekávaných četností</h4><p>Řádkové, sloupcové i celkové součty musí vyjít stejně jako u skutečných četností.</p></div>
+<div class="box warn"><h4>Co si pohlídat</h4><ul><li>Koeficienty říkají <b>sílu, ne směr</b>. U nominálních proměnných směr nedává smysl.</li><li>Do vzorce patří <b>absolutní</b> četnosti, ne procenta.</li><li>Prohození řádků a sloupců výsledek nezmění.</li></ul></div>
+<h2>Další výsledky z Excelu</h2>
+<div class="scroll"><table><tr><th>Úloha</th><th class="n">n</th><th class="n">G</th><th class="n">C</th><th class="n">V</th></tr><tr><td>Pohlaví × obor (4×2)</td><td class="n">100</td><td class="n">8,38</td><td class="n">0,278</td><td class="n">0,290</td></tr><tr><td>Umístění × prodej (3×3)</td><td class="n">183</td><td class="n">62,28</td><td class="n">0,504</td><td class="n">0,412</td></tr><tr><td>Vzdělání × strana (3×4)</td><td class="n">500</td><td class="n">117,47</td><td class="n">0,436</td><td class="n">0,343</td></tr></table></div>
+</section>
+
+<section data-id="regrese" data-title="Regresní přímka" data-sub="Závislost zapsaná rovnicí">
+<p>Korelace říká, jak silný vztah je. Regrese říká, <b>jak se $y$ změní, když se změní $x$</b>.</p>
+<div class="formula">$$\hat{y}=a+bx\qquad b=\frac{\overline{xy}-\bar{x}\bar{y}}{\overline{x^2}-\bar{x}^2}\qquad a=\bar{y}-b\bar{x}$$</div>
+<p>$x$ je nezávislá proměnná (na ose x), $y$ závislá. V Excelu: bodový graf, pravý klik na bod, Přidat spojnici trendu, Lineární, zobrazit rovnici a $R^2$.</p>
+<h2>Výška a hmotnost</h2>
+<p><b>hmotnost = −143,12 + 1,3021 · výška</b>, $r=0{,}783$, $r^2=0{,}613$.</p>
+<ul><li><b>Směrnice b = 1,30:</b> každý další centimetr výšky znamená <b>v průměru</b> o 1,3 kg vyšší hmotnost.</li><li><b>Absolutní člen a = −143,12:</b> teoretická hmotnost při výšce 0 cm, <b>věcně nesmysl</b>. Slouží jen k umístění přímky.</li><li><b>$r^2$ = 61 %:</b> výška vysvětluje 61 % variability hmotnosti.</li></ul>
+<h2>Stáří a cena auta</h2>
+<p><b>cena = 781 786 − 29 859 · stáří</b>, $r=-0{,}850$, $r^2=0{,}723$.</p>
+<ul><li><b>b:</b> každým dalším rokem cena klesne v průměru o 29 859 Kč.</li><li><b>a:</b> teoretická cena nového auta, tady má smysl.</li><li><b>$r^2$:</b> stáří vysvětluje 72 % variability ceny.</li><li><b>Odhad:</b> auto staré 5 let: $781\,786-29\,859\cdot5=632\,491$ Kč.</li></ul>
+<div class="box def"><h4>Vztah b a r</h4><p>Mají vždy <b>stejné znaménko</b>, protože oba měří směr. Velikost se liší: $r$ je bez jednotek a nejvýše 1, $b$ je v jednotkách $y$ na jednotku $x$. Proto b = 1,30 neznamená, že $r$ je větší než 1. Platí $b=r\cdot\frac{s_y}{s_x}$.</p></div>
+<div class="box warn"><h4>Na co dát pozor</h4><ul><li>Záleží na tom, co je $x$ a co $y$: přímka závislosti hmotnosti na výšce není totéž co výšky na hmotnosti.</li><li>Odhad mimo rozsah dat může být nesmyslný.</li><li>„Vysvětluje“ je statistické slovo, neznamená „způsobuje“.</li></ul></div>
+</section>
+
+<section data-id="volba" data-title="Kterou míru závislosti zvolit" data-sub="Přehled na jednu obrazovku">
+<div class="scroll"><table><tr><th>Dvojice proměnných</th><th>Míra</th></tr>
+<tr><td>číselná × číselná, lineární vztah</td><td>Pearson $r$, regrese</td></tr>
+<tr><td>číselná × číselná, monotónní nebo s extrémy</td><td>Spearman $r_s$, Kendall $\tau$</td></tr>
+<tr><td>ordinální × ordinální nebo číselná</td><td>Spearman $r_s$, Kendall $\tau$</td></tr>
+<tr><td>nominální × nominální</td><td>$G$ ($\chi^2$), $C$, $V$</td></tr>
+<tr><td>kategorická × číselná</td><td>rozklad rozptylu, $P^2$</td></tr></table></div>
+<div class="box tip"><p>Interaktivní verzi najdeš v <a href="#/pruvodce">Rozhodovacím průvodci</a>.</p></div>
+</section>

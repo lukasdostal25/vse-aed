@@ -1,0 +1,59 @@
+<section data-id="excel" data-title="Základní práce v Excelu" data-sub="Vzorce, funkce a kontingenční tabulka">
+<p>Tohle cvičení je hlavně o nástrojích. Teorie je málo, ale stejné postupy pak používáš všude.</p>
+<div class="box tip"><h4>Doplněk Analýza dat</h4><p>Histogram a popisnou statistiku dělá nástroj na kartě <b>Data → Analýza → Analýza dat</b>. Když tam není: Soubor → Možnosti → Doplňky → Spravovat: Doplňky aplikace Excel → Přejít → zaškrtni Analytické nástroje.</p></div>
+<h2>Funkce, které se opakují</h2>
+<div class="scroll"><table><tr><th>Excel česky</th><th>Co dělá</th></tr>
+<tr><td>SUMA, PRŮMĚR, POČET</td><td>součet, aritmetický průměr, počet čísel</td></tr>
+<tr><td>GEOMEAN, HARMEAN</td><td>geometrický a harmonický průměr</td></tr>
+<tr><td>COUNTIF(oblast; podmínka)</td><td>kolik buněk splňuje podmínku</td></tr>
+<tr><td>POWER, EXP, LN</td><td>mocnina, $e^x$, přirozený logaritmus</td></tr></table></div>
+<p>Příklad z listu 02: kolik okresů je v Kraji Vysočina? <code>=COUNTIF(G12:G87;"Kraj Vysočina")</code> dá 5.</p>
+<h2>Kontingenční tabulka</h2>
+<p><b>Vložení → Kontingenční tabulka.</b> Přetáhneš proměnnou do řádků a jinou do hodnot. To je nejrychlejší cesta k souhrnům za skupiny.</p>
+<div class="box warn"><h4>Počet, nebo součet?</h4><p>Otázka „kolik <i>okresů</i> je v kraji“ chce <b>Počet</b> řádků (Vysočina: 5). Otázka „kolik <i>obcí</i> je v kraji“ chce <b>Součet</b> sloupce Počet obcí (Vysočina: 704). Přepneš přes Nastavení polí hodnot.</p></div>
+<h2>Vypočtený ukazatel</h2>
+<p>Hustota zalidnění = obyvatelé / rozloha, například Benešov: 99 323 / 1 474,69 = 67,35 obyv./km². Takovým podílům se říká <b>poměrové ukazatele</b> a mají vlastní pravidla průměrování, viz cvičení 3.</p>
+</section>
+
+<section data-id="import" data-title="Oddělovače a text do sloupců" data-sub="Když se data v Excelu nechovají jako čísla">
+<p>Dvě typické potíže při otevření cizích dat. Nejsou o statistice, ale bez nich se k ní nedostaneš.</p>
+<h2>Desetinná tečka</h2>
+<p>Americký formát má desetinnou tečku a hodnoty odděluje čárkou. Evropský má desetinnou čárku a odděluje středníkem. V české verzi Excelu se proto <b>4.5 může vzít jako datum</b> (4. května) nebo jako text.</p>
+<div class="box warn"><h4>Tichá chyba</h4><p>Součet takového sloupce vyjde 0 nebo jen z části hodnot a Excel nic nehlásí. Na listu 03 vyjde součet 0, po opravě 2 083,3.</p></div>
+<ul><li><b>Najít a nahradit (Ctrl+H):</b> Najít „.“, nahradit „,“, Nahradit vše. Mění jen tento výběr.</li>
+<li><b>Možnosti → Upřesnit:</b> vypni systémové oddělovače a nastav vlastní. Mění chování ve všech sešitech.</li></ul>
+<h2>Text do sloupců</h2>
+<p>Celý řádek je v jedné buňce: <code>Mazda RX4,21,6,160,110,3.9,…</code></p>
+<ol><li>Označ sloupec a dej <b>Data → Text do sloupců</b>.</li><li>Zvol <b>Oddělovač</b> a zaškrtni čárku.</li><li>V části <b>Upřesnit</b> nastav desetinný oddělovač na tečku, tím se 3.9 rovnou změní na číslo 3,9.</li><li>Zvol cíl a dokonči.</li></ol>
+</section>
+
+<section data-id="grafy" data-title="Který graf kdy" data-sub="Typ grafu vybírá typ proměnné, ne vkus">
+<p>Tohle je nejdůležitější část cvičení 1. Vždy se ptej: <b>jaká je to proměnná a co chci ukázat?</b></p>
+<h2>Sloupcový graf</h2>
+<p>Pro <b>kategorickou nebo diskrétní</b> proměnnou. Sloupce mají mezery, protože kategorie na sebe nenavazují.</p>
+<figure data-chart="bar" data-d='{"l":["HB","JI","PE","TR","ZR"],"v":[93692,112415,71571,109183,117164]}'></figure>
+<div class="box warn"><h4>Výsečový graf spíš ne</h4><p>Lidé lépe čtou výšku sloupce než úhel. Při mnoha kategoriích je výseč nečitelná a dvě skupiny vyžadují dva grafy.</p></div>
+<h2>Histogram</h2>
+<p>Pro <b>spojitou</b> proměnnou. Ukazuje četnosti v intervalech a tvar rozdělení. <b>Nemá mezery</b>, protože horní hranice intervalu je dolní hranicí dalšího.</p>
+<figure data-chart="hist" data-d='{"l":["≤69","70–79","80–89","90–99","100–109","110–119","120+"],"v":[5,6,15,23,25,12,14]}'></figure>
+<div class="box tip"><h4>Počet intervalů</h4><p>Volíš ho ty. Málo intervalů tvar vyhladí, moc z něj udělá hřeben. Startovní odhad je Sturgesovo pravidlo $k \approx 1 + 3{,}3\log_{10} n$, pro $n=200$ asi 9. Výsledek vždy posuď očima.</p></div>
+<h2>Krabicový graf</h2>
+<p>Pro <b>spojitou</b> proměnnou. Stručně ukáže medián, kvartily a <b>odlehlé hodnoty</b>. Vhodný pro srovnání skupin.</p>
+<figure data-chart="box" data-d='[49,56,88.75,103,113,145,145]'><figcaption>IQ 176 osob. Hodnoty 49 a 50 leží pod dolní hranicí 52,4, a jsou proto odlehlé. Graf popisuje minimum 49.</figcaption></figure>
+<p>Odlehlá je hodnota mimo tento interval:</p><div class="formula">$$\langle Q_1 - 1{,}5\cdot IQR;\ Q_3 + 1{,}5\cdot IQR\rangle$$</div><p>Vous sahá k poslední hodnotě, která v intervalu ještě leží.</p>
+<h2>Spojnicový graf</h2>
+<p>Pro <b>vývoj v čase</b>. Spotřeba piva v ČR, litry na osobu:</p>
+<figure data-chart="line" data-d='{"x":[2013,2014,2015,2016,2017,2018,2019,2020,2021,2022],"y":[147,147,146.6,146.9,144.3,145.2,146,139.9,135.4,142.9],"y0":0}'><figcaption>Osa y od nuly: pokles vypadá mírně.</figcaption></figure>
+<figure data-chart="line" data-d='{"x":[2013,2014,2015,2016,2017,2018,2019,2020,2021,2022],"y":[147,147,146.6,146.9,144.3,145.2,146,139.9,135.4,142.9]}'><figcaption>Stejná data, osa uříznutá na 135: stejný pokles vypadá dramaticky.</figcaption></figure>
+<div class="box warn"><h4>Manipulace s osou y</h4><p>Není to zakázané, ale u sloupcového grafu je uříznutá osa vždy zavádějící, protože výška sloupce pak neodpovídá hodnotě. Změníš ji přes pravý klik na osu → Formát osy.</p></div>
+<h2>Bodový graf</h2>
+<p>Pro <b>vztah dvou číselných proměnných</b>, jeden bod je jedna jednotka.</p>
+<figure data-chart="scatter" data-d='{"p":[[180,72],[197,86],[205,81],[202,85],[180,71],[160,63],[183,71],[185,73],[183,72],[150,55],[170,65],[190,75],[170,67]],"h":180}'><figcaption>Výška a hmotnost 13 studentů z listu 08_Grafy.</figcaption></figure>
+<h2>Přehled</h2>
+<div class="scroll"><table><tr><th>Co ukazuješ</th><th>Graf</th><th>Excel: Vložení →</th></tr>
+<tr><td>kategorie, diskrétní</td><td>sloupcový</td><td>Sloupcový nebo kruhový</td></tr>
+<tr><td>tvar spojité proměnné</td><td>histogram</td><td>Statistický graf</td></tr>
+<tr><td>kvartily, odlehlé hodnoty</td><td>krabicový</td><td>Statistický graf</td></tr>
+<tr><td>vývoj v čase</td><td>spojnicový</td><td>Spojnicový nebo plošný</td></tr>
+<tr><td>vztah dvou čísel</td><td>bodový</td><td>Bodový (X, Y)</td></tr></table></div>
+</section>
