@@ -20,8 +20,8 @@ function runQuiz(root,data,key){
   const upd=()=>{ if(sc) sc.textContent='Skóre: '+ok+' / '+data.length+' (zodpovězeno '+done+')'; store(key,ok+'/'+done)};
   data.forEach((d,i)=>{
     const q=document.createElement('div'); q.className='q';
-    q.innerHTML='<div class="qt">'+(i+1)+'. '+d.q+'</div>';
-    d.o.forEach((t,j)=>{const b=document.createElement('button');b.className='opt';b.innerHTML=String.fromCharCode(97+j)+') '+t;
+    q.innerHTML='<div class="qt"><span class="no">'+(i+1)+'</span><span>'+d.q+'</span></div>';
+    d.o.forEach((t,j)=>{const b=document.createElement('button');b.className='opt';b.innerHTML='<span class="lt">'+String.fromCharCode(97+j)+'</span><span>'+t+'</span>';
       b.onclick=()=>{ if(q.classList.contains('done'))return; q.classList.add('done'); done++;
         if(j===d.c){ok++;b.classList.add('good')}else{b.classList.add('wrong');$$('.opt',q)[d.c].classList.add('good')}
         upd()}; q.appendChild(b)});
@@ -98,7 +98,30 @@ $$('input.prog').forEach(c=>{ c.checked=store('p_'+c.dataset.k)==='1'; c.onchang
 })();
 
 (function(){try{var m=document.querySelector('main');if(!m)return;var hs=[].slice.call(m.querySelectorAll(':scope > h2'));if(hs.length<2)return;var h1=m.querySelector('h1');var c=document.createElement('div');c.className='chips noprint';
-hs.forEach(function(h,i){h.id=h.id||'s'+(i+1);var a=document.createElement('a');a.href='#'+h.id;a.textContent=h.textContent.replace(/^\d+\s*·\s*/,'').replace(/^[0-9]+\s*/,'').slice(0,26);c.appendChild(a);});
+hs.forEach(function(h,i){h.id=h.id||'s'+(i+1);var a=document.createElement('a');a.href='#'+h.id;a.textContent=(h.firstChild?h.firstChild.textContent:h.textContent).replace(/^\d+\s*·\s*/,'').replace(/^[0-9]+\s*/,'').slice(0,26);c.appendChild(a);});
 if(h1&&h1.parentNode===m&&h1.nextSibling)h1.parentNode.insertBefore(c,h1.nextSibling);
 var onscroll=function(){var cur=0;hs.forEach(function(h,i){if(h.getBoundingClientRect().top<160)cur=i;});[].forEach.call(c.children,function(a,i){a.classList.toggle('on',i===cur);});};
 window.addEventListener('scroll',onscroll,{passive:true});onscroll();}catch(e){}})();
+
+/* ---- kartičky ---- */
+function runCards(root,cards){
+  if(!root)return;
+  const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+  let queue,known,total,cur,flipped;
+  function start(list){queue=shuf(list);total=queue.length;known=0;draw();}
+  function draw(){
+    if(!queue.length){root.innerHTML='<div class="fcw"><div class="end"><h3>Hotovo!</h3><p>Zvládnuto '+known+' z '+total+' kartiček.</p><div class="fcb"><button class="yes" id="fca">Projít znovu</button></div></div></div>';root.querySelector('#fca').onclick=()=>start(cards);return}
+    cur=queue[0];flipped=false;
+    root.innerHTML='<div class="fcw"><div class="bar"><i style="width:'+Math.round(100*known/total)+'%"></i></div><div class="st2"><span>Zbývá '+queue.length+'</span><span>Umím '+known+' / '+total+'</span></div>'
+     +'<div class="fc"><div class="in2"><div class="face front"><div class="tag">'+cur.g+'</div><div class="q2">'+cur.f+'</div><div class="tap">Řekni si odpověď a klepni na kartu →</div></div><div class="face back">'+cur.b+'</div></div></div>'
+     +'<div class="fcb" style="visibility:hidden"><button class="no">✗ Nevěděl</button><button class="yes">✓ Věděl</button></div></div>';
+    const fc=root.querySelector('.fc'),bt=root.querySelector('.fcb');
+    fc.onclick=e=>{if(e.target.closest('.fm'))return;flipped=!flipped;fc.classList.toggle('flip',flipped);bt.style.visibility=flipped?'visible':'hidden'};
+    root.querySelector('.no').onclick=()=>{queue.shift();queue.splice(Math.min(queue.length,4),0,cur);draw()};
+    root.querySelector('.yes').onclick=()=>{queue.shift();known++;draw()};
+  }
+  start(cards);
+}
+/* ---- indikace posouvání vzorců ---- */
+function fmHints(){$$('.fm').forEach(f=>{if(f.dataset.h)return;if(f.scrollWidth>f.clientWidth+4){f.dataset.h=1;const s=document.createElement('div');s.className='sh';s.textContent='↔ posuň prstem do strany';f.parentNode.insertBefore(s,f.nextSibling)}})}
+window.addEventListener('load',()=>{setTimeout(fmHints,300)});
