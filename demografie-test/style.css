@@ -279,7 +279,7 @@ h2 .sub{display:block;font:700 13px 'Inter';letter-spacing:.05em;color:#00796a;m
 .fcw .st2{display:flex;justify-content:space-between;font:700 14px 'Inter';color:#444;margin:0 4px 10px}
 .fc{perspective:1200px;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .fc .in2{position:relative}
-.fc .face.back{display:none}.fc.flip .face.front{display:none}.fc.flip .face.back{display:flex}
+.fc .face.back{display:none}.fc.flip .face.front{display:none}.fc.flip .face.back{display:block}
 .fc .face{border-radius:26px;padding:22px 20px;display:flex;flex-direction:column;min-height:380px}
 .fc .front{background:var(--ink);color:#fff;justify-content:center;align-items:flex-start}
 .fc .front .tag{font:700 12px 'Inter';letter-spacing:.06em;text-transform:uppercase;color:#2fd8bd;margin-bottom:14px}
