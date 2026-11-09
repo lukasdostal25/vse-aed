@@ -104,23 +104,42 @@ var onscroll=function(){var cur=0;hs.forEach(function(h,i){if(h.getBoundingClien
 window.addEventListener('scroll',onscroll,{passive:true});onscroll();}catch(e){}})();
 
 /* ---- kartičky ---- */
-function runCards(root,cards){
-  if(!root)return;
+function runCards(root,cards,opts){
+  if(!root)return; opts=opts||{};
   const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
-  let queue,known,total,cur,flipped;
+  let queue,known,total,cur,flipped,busy=false;
+  const sv=()=>{try{return JSON.parse(localStorage.getItem(opts.key)||'[]')}catch(e){return[]}};
   function start(list){queue=shuf(list);total=queue.length;known=0;draw();}
   function draw(){
     if(!queue.length){root.innerHTML='<div class="fcw"><div class="end"><h3>Hotovo!</h3><p>Zvládnuto '+known+' z '+total+' kartiček.</p><div class="fcb"><button class="yes" id="fca">Projít znovu</button></div></div></div>';root.querySelector('#fca').onclick=()=>start(cards);return}
     cur=queue[0];flipped=false;
-    root.innerHTML='<div class="fcw"><div class="bar"><i style="width:'+Math.round(100*known/total)+'%"></i></div><div class="st2"><span>Zbývá '+queue.length+'</span><span>Umím '+known+' / '+total+'</span></div>'
-     +'<div class="fc"><div class="in2"><div class="face front"><div class="tag">'+cur.g+'</div><div class="q2">'+cur.f+'</div><div class="tap">Řekni si odpověď a klepni na kartu →</div></div><div class="face back">'+cur.b+'</div></div></div>'
+    root.innerHTML='<div class="fcw"><div class="st2"><span>Vzorec '+Math.min(known+1,total)+' / '+total+'</span><span>Umím '+known+'</span></div><div class="bar"><i style="width:'+Math.round(100*known/total)+'%"></i></div>'
+     +'<div class="fc"><div class="in2"><div class="face front"><div class="tag">'+cur.g+'</div><div class="q2">'+cur.f+'</div></div><div class="face back">'+cur.b+'</div></div></div>'
      +'<div class="fcb" style="visibility:hidden"><button class="no">✗ Nevěděl</button><button class="yes">✓ Věděl</button></div></div>';
     const fc=root.querySelector('.fc'),bt=root.querySelector('.fcb');
-    fc.onclick=e=>{if(e.target.closest('.fm'))return;flipped=!flipped;fc.classList.toggle('flip',flipped);bt.style.visibility=flipped?'visible':'hidden'};
+    fc.onclick=e=>{if(e.target.closest('.fm')||busy)return;busy=true;
+      const P='perspective(1000px) ';
+      const a1=fc.animate([{transform:P+'rotateY(0deg)'},{transform:P+'rotateY(90deg)'}],{duration:170,easing:'ease-in'});
+      a1.onfinish=()=>{flipped=!flipped;fc.classList.toggle('flip',flipped);bt.style.visibility=flipped?'visible':'hidden';
+        const a2=fc.animate([{transform:P+'rotateY(-90deg)'},{transform:P+'rotateY(0deg)'}],{duration:190,easing:'ease-out'});a2.onfinish=()=>{busy=false}}};
     root.querySelector('.no').onclick=()=>{queue.shift();queue.splice(Math.min(queue.length,4),0,cur);draw()};
-    root.querySelector('.yes').onclick=()=>{queue.shift();known++;draw()};
+    root.querySelector('.yes').onclick=()=>{queue.shift();known++;if(opts.key){const s=sv();if(s.indexOf(cur.f)<0){s.push(cur.f);try{localStorage.setItem(opts.key,JSON.stringify(s))}catch(e){}}}if(opts.onchange)opts.onchange();draw()};
   }
+  root._start=start;
   start(cards);
+}
+/* ---- Vzorce: režimy a sady ---- */
+function vzorceUI(all,sets){
+  const root=document.getElementById('cards-vzorce'),chips=document.getElementById('sets');if(!root)return;
+  const vk=document.getElementById('vk'),vp=document.getElementById('vp');
+  document.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.seg button').forEach(x=>x.classList.toggle('on',x===b));const k=b.dataset.m==='k';vk.hidden=!k;vp.hidden=k;document.querySelectorAll('.done-row,.pager').forEach(x=>x.style.display=k?'none':'');window.scrollTo(0,0);if(!k)fmHints()});
+  let sel=sets[0][0];
+  const kn=k=>{try{return JSON.parse(localStorage.getItem('fk-'+k)||'[]').length}catch(e){return 0}};
+  function paint(){chips.innerHTML=sets.map(s=>{const n=s[2].length,k=Math.min(kn(s[0]),n);return '<button class="sc'+(s[0]===sel?' on':'')+'" data-k="'+s[0]+'"><b>'+s[1]+'</b><span>'+k+' / '+n+'</span><i><u style="width:'+Math.round(100*k/n)+'%"></u></i></button>'}).join('');
+    chips.querySelectorAll('.sc').forEach(b=>b.onclick=()=>{sel=b.dataset.k;paint();run()})}
+  function run(){const s=sets.find(x=>x[0]===sel);runCards(root,s[2],{key:'fk-'+sel,onchange:paint})}
+  document.querySelectorAll('.done-row,.pager').forEach(x=>x.style.display='none');
+  paint();run();
 }
 /* ---- indikace posouvání vzorců ---- */
 function fmHints(){$$('.fm').forEach(f=>{if(f.dataset.h)return;if(f.scrollWidth>f.clientWidth+4){f.dataset.h=1;const s=document.createElement('div');s.className='sh';s.textContent='↔ posuň prstem do strany';f.parentNode.insertBefore(s,f.nextSibling)}})}
