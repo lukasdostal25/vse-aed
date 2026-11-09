@@ -96,3 +96,9 @@ $$('input.prog').forEach(c=>{ c.checked=store('p_'+c.dataset.k)==='1'; c.onchang
   document.getElementById('lxmode').onchange=()=>{fld();draw()};
   $$('#lexbox input').forEach(i=>i.oninput=draw);fld();$$('#lexbox .pre')[2].click();
 })();
+
+(function(){try{var m=document.querySelector('main');if(!m)return;var hs=[].slice.call(m.querySelectorAll(':scope > h2'));if(hs.length<2)return;var h1=m.querySelector('h1');var c=document.createElement('div');c.className='chips noprint';
+hs.forEach(function(h,i){h.id=h.id||'s'+(i+1);var a=document.createElement('a');a.href='#'+h.id;a.textContent=h.textContent.replace(/^\d+\s*·\s*/,'').replace(/^[0-9]+\s*/,'').slice(0,26);c.appendChild(a);});
+if(h1&&h1.parentNode===m&&h1.nextSibling)h1.parentNode.insertBefore(c,h1.nextSibling);
+var onscroll=function(){var cur=0;hs.forEach(function(h,i){if(h.getBoundingClientRect().top<160)cur=i;});[].forEach.call(c.children,function(a,i){a.classList.toggle('on',i===cur);});};
+window.addEventListener('scroll',onscroll,{passive:true});onscroll();}catch(e){}})();
