@@ -125,3 +125,10 @@ function runCards(root,cards){
 /* ---- indikace posouvání vzorců ---- */
 function fmHints(){$$('.fm').forEach(f=>{if(f.dataset.h)return;if(f.scrollWidth>f.clientWidth+4){f.dataset.h=1;const s=document.createElement('div');s.className='sh';s.textContent='↔ posuň prstem do strany';f.parentNode.insertBefore(s,f.nextSibling)}})}
 window.addEventListener('load',()=>{setTimeout(fmHints,300)});
+
+/* ---- vyskakovací okna ---- */
+document.addEventListener('click',function(e){var b=e.target.closest('.info');if(!b)return;var t=document.getElementById('i-'+b.dataset.i);if(!t)return;
+ var m=document.createElement('div');m.className='modal';m.innerHTML='<div class="sheet"><button class="x" aria-label="Zavřít">✕</button></div>';
+ var sh=m.firstChild;sh.appendChild(t.content.cloneNode(true));document.body.appendChild(m);document.body.style.overflow='hidden';
+ var close=function(){m.remove();document.body.style.overflow=''};m.addEventListener('click',function(ev){if(ev.target===m||ev.target.closest('.x'))close()});
+ document.addEventListener('keydown',function k(ev){if(ev.key==='Escape'){close();document.removeEventListener('keydown',k)}});});
