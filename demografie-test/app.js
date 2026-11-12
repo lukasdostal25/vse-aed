@@ -78,13 +78,14 @@ $$('input.prog').forEach(c=>{ c.checked=store('p_'+c.dataset.k)==='1'; c.onchang
       const tt2=t2===null?t1:t2;tmin=t1-2;tmax=tt2+3;amin=Math.max(0,X-2);amax=X+3;
       txt='Dožívající se přesného věku '+X+' = vodorovná úsečka ve výšce '+X+' od času '+t1+' do '+(tt2+1)+'.';shape=[[t1,X],[tt2+1,X]];t2=tt2;
     }
-    const cell=46,ml=40,mb=30,mt=10,W=ml+(tmax-tmin)*cell+10,H=mt+(amax-amin)*cell+mb;
+    const cell=46,ml=48,mb=42,mt=10,W=ml+(tmax-tmin)*cell+10,H=mt+(amax-amin)*cell+mb;
     const XX=t=>ml+(t-tmin)*cell,YY=a=>mt+(amax-a)*cell;let s='<svg viewBox="0 0 '+W+' '+H+'" class="lexis" xmlns="http://www.w3.org/2000/svg">';
     for(let t=tmin;t<tmax;t++)for(let a=amin;a<amax;a++){s+='<rect x="'+XX(t)+'" y="'+YY(a+1)+'" width="'+cell+'" height="'+cell+'" fill="none" stroke="#9aa5b1"/><line x1="'+XX(t)+'" y1="'+YY(a)+'" x2="'+XX(t+1)+'" y2="'+YY(a+1)+'" stroke="#c3ccd6"/>'}
     if(mode==='dead'&&shape&&shape.length>=3)s+='<polygon points="'+shape.map(p=>XX(p[0]).toFixed(1)+','+YY(p[1]).toFixed(1)).join(' ')+'" fill="#ff8a00" fill-opacity=".75" stroke="#c25f00" stroke-width="2"/>';
     else if(shape&&shape.length===2)s+='<line x1="'+XX(shape[0][0])+'" y1="'+YY(shape[0][1])+'" x2="'+XX(shape[1][0])+'" y2="'+YY(shape[1][1])+'" stroke="#d9480f" stroke-width="5"/>';
-    for(let t=tmin;t<=tmax;t++)s+='<text x="'+XX(t)+'" y="'+(H-10)+'" font-size="11" text-anchor="middle" fill="#374151">'+t+'</text>';
-    for(let a=amin;a<=amax;a++)s+='<text x="'+(ml-6)+'" y="'+(YY(a)+4)+'" font-size="11" text-anchor="end" fill="#374151">'+a+'</text>';
+    for(let t=tmin;t<tmax;t++)s+='<text x="'+(XX(t)+cell/2)+'" y="'+(H-24)+'" font-size="11" text-anchor="middle" fill="#374151">'+t+'</text>';
+    for(let a=amin;a<amax;a++)s+='<text x="'+(ml-6)+'" y="'+(YY(a)-cell/2+4)+'" font-size="11" text-anchor="end" fill="#374151">'+a+'</text>';
+    s+='<text x="'+(ml+(tmax-tmin)*cell/2)+'" y="'+(H-6)+'" font-size="11" text-anchor="middle" fill="#6b7280" font-style="italic">kalendářní rok t (pás mezi čarami)</text><text x="8" y="'+(mt+(amax-amin)*cell/2)+'" font-size="11" text-anchor="middle" fill="#6b7280" font-style="italic" transform="rotate(-90 8 '+(mt+(amax-amin)*cell/2)+')">dokončený věk x</text>';
     out.innerHTML=s+'</svg>';desc.textContent=txt;
   }
   const preset={
